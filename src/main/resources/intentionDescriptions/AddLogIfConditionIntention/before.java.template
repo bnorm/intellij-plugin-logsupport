@@ -1,0 +1,8 @@
+public class X implements Runnable {
+
+	private final static Logger log = LoggerFactory.getLogger(X.class);
+
+	public void run() {
+		log.info("LOG001020:Starting to process X");
+	}
+}

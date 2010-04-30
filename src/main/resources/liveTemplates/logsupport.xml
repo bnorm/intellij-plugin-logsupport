@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2010, Juergen Kellerer and other contributors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<templateSet group="logsupport">
+	<template id="logsupport-logt" name="logt"
+			  value="$LOGGER$.$LOGMETHOD$&quot;$LOGID$$END$&quot;);"
+			  description="Logs a trace message" toReformat="true" toShortenFQNames="true">
+
+		<variable name="LOGGER" expression="resolveLoggerInstance" defaultValue="log" alwaysStopAt="false"/>
+		<variable name="LOGMETHOD" expression="resolveLogMethod(LOGGER, &quot;trace&quot;)" defaultValue="trace("
+				  alwaysStopAt="false"/>
+		<variable name="LOGID" expression="createNextLogId(&quot;trace&quot;)" defaultValue="" alwaysStopAt="false"/>
+
+		<context>
+			<option name="JAVA_CODE" value="true"/>
+			<option name="JAVA_COMMENT" value="false"/>
+			<option name="JAVA_STRING" value="false"/>
+			<option name="XML" value="false"/>
+			<option name="HTML" value="false"/>
+			<option name="JSP" value="false"/>
+			<option name="COMPLETION" value="false"/>
+			<option name="GROOVY" value="false"/>
+			<option name="OTHER" value="false"/>
+		</context>
+	</template>
+
+	<template id="logsupport-logd" name="logd"
+			  value="$LOGGER$.$LOGMETHOD$&quot;$LOGID$$END$&quot;);"
+			  description="Logs a debug message" toReformat="true" toShortenFQNames="true">
+
+		<variable name="LOGGER" expression="resolveLoggerInstance" defaultValue="log" alwaysStopAt="false"/>
+		<variable name="LOGMETHOD" expression="resolveLogMethod(LOGGER, &quot;debug&quot;)" defaultValue="debug("
+				  alwaysStopAt="false"/>
+		<variable name="LOGID" expression="createNextLogId(&quot;debug&quot;)" defaultValue="" alwaysStopAt="false"/>
+
+		<context>
+			<option name="JAVA_CODE" value="true"/>
+			<option name="JAVA_COMMENT" value="false"/>
+			<option name="JAVA_STRING" value="false"/>
+			<option name="XML" value="false"/>
+			<option name="HTML" value="false"/>
+			<option name="JSP" value="false"/>
+			<option name="COMPLETION" value="false"/>
+			<option name="GROOVY" value="false"/>
+			<option name="OTHER" value="false"/>
+		</context>
+	</template>
+
+	<template id="logsupport-logi" name="logi"
+			  value="$LOGGER$.$LOGMETHOD$&quot;$LOGID$$END$&quot;);"
+			  description="Logs an info message" toReformat="true" toShortenFQNames="true">
+
+		<variable name="LOGGER" expression="resolveLoggerInstance" defaultValue="log" alwaysStopAt="false"/>
+		<variable name="LOGMETHOD" expression="resolveLogMethod(LOGGER, &quot;info&quot;)" defaultValue="info("
+				  alwaysStopAt="false"/>
+		<variable name="LOGID" expression="createNextLogId(&quot;info&quot;)" defaultValue="" alwaysStopAt="false"/>
+
+		<context>
+			<option name="JAVA_CODE" value="true"/>
+			<option name="JAVA_COMMENT" value="false"/>
+			<option name="JAVA_STRING" value="false"/>
+			<option name="XML" value="false"/>
+			<option name="HTML" value="false"/>
+			<option name="JSP" value="false"/>
+			<option name="COMPLETION" value="false"/>
+			<option name="GROOVY" value="false"/>
+			<option name="OTHER" value="false"/>
+		</context>
+	</template>
+
+	<template id="logsupport-logw" name="logw"
+			  value="$LOGGER$.$LOGMETHOD$&quot;$LOGID$$END$&quot;);"
+			  description="Logs a warning message" toReformat="true" toShortenFQNames="true">
+
+		<variable name="LOGGER" expression="resolveLoggerInstance" defaultValue="log" alwaysStopAt="false"/>
+		<variable name="LOGMETHOD" expression="resolveLogMethod(LOGGER, &quot;warn&quot;)" defaultValue="warn("
+				  alwaysStopAt="false"/>
+		<variable name="LOGID" expression="createNextLogId(&quot;warn&quot;)" defaultValue="" alwaysStopAt="false"/>
+
+		<context>
+			<option name="JAVA_CODE" value="true"/>
+			<option name="JAVA_COMMENT" value="false"/>
+			<option name="JAVA_STRING" value="false"/>
+			<option name="XML" value="false"/>
+			<option name="HTML" value="false"/>
+			<option name="JSP" value="false"/>
+			<option name="COMPLETION" value="false"/>
+			<option name="GROOVY" value="false"/>
+			<option name="OTHER" value="false"/>
+		</context>
+	</template>
+
+	<template id="logsupport-loge" name="loge"
+			  value="$LOGGER$.$LOGMETHOD$&quot;$LOGID$$END$&quot;, $THROWABLE$);"
+			  description="Logs an error message" toReformat="true" toShortenFQNames="true">
+
+		<variable name="LOGGER" expression="resolveLoggerInstance" defaultValue="log" alwaysStopAt="false"/>
+		<variable name="LOGMETHOD" expression="resolveLogMethod(LOGGER, &quot;error&quot;)" defaultValue="error("
+				  alwaysStopAt="false"/>
+		<variable name="THROWABLE" expression="variableOfType(&quot;java.lang.Throwable&quot;)" defaultValue=""
+				  alwaysStopAt="false"/>
+		<variable name="LOGID" expression="createNextLogId(&quot;error&quot;)" defaultValue="" alwaysStopAt="false"/>
+
+		<context>
+			<option name="JAVA_CODE" value="true"/>
+			<option name="JAVA_COMMENT" value="false"/>
+			<option name="JAVA_STRING" value="false"/>
+			<option name="XML" value="false"/>
+			<option name="HTML" value="false"/>
+			<option name="JSP" value="false"/>
+			<option name="COMPLETION" value="false"/>
+			<option name="GROOVY" value="false"/>
+			<option name="OTHER" value="false"/>
+		</context>
+	</template>
+</templateSet>

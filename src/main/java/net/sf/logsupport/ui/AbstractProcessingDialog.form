@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="net.sf.logsupport.ui.AbstractProcessingDialog">
+  <grid id="cbd77" binding="centerPane" layout-manager="GridLayoutManager" row-count="8" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="48" y="54" width="436" height="231"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="761a8" class="javax.swing.JRadioButton" binding="file">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="File"/>
+        </properties>
+      </component>
+      <vspacer id="3458b">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <component id="804c8" class="javax.swing.JRadioButton" binding="allFiles">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="All files in"/>
+        </properties>
+      </component>
+      <component id="6909a" class="javax.swing.JCheckBox" binding="recursion">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="2" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Include subdirectories"/>
+        </properties>
+      </component>
+      <vspacer id="60889">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="15"/>
+          </grid>
+        </constraints>
+      </vspacer>
+      <grid id="e886c" binding="optionsPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none" title="Options"/>
+        <children/>
+      </grid>
+      <component id="fe703" class="javax.swing.JRadioButton" binding="module">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Module"/>
+        </properties>
+      </component>
+      <component id="361df" class="javax.swing.JRadioButton" binding="wholeProject">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Whole project"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+  <buttonGroups>
+    <group name="scopeSelectionGroup">
+      <member id="51fc3"/>
+      <member id="51fc3"/>
+      <member id="2cd03"/>
+      <member id="761a8"/>
+      <member id="804c8"/>
+      <member id="fe703"/>
+      <member id="361df"/>
+    </group>
+  </buttonGroups>
+</form>
