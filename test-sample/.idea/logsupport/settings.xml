@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LogSupport">
+    <option name="logConfigurations">
+      <ProjectLogConfigurations>
+        <option name="defaultLogConfiguration">
+          <DefaultLogConfiguration>
+            <option name="conditionalLogLevels">
+              <set>
+                <option value="trace" />
+                <option value="debug" />
+              </set>
+            </option>
+            <option name="defaultFrameworkName" value="java-util-logging" />
+            <option name="logIdName" value="Hex ID" />
+            <option name="logIdSequenceValue" value="1470" />
+          </DefaultLogConfiguration>
+        </option>
+        <option name="targetedLogConfigurations">
+          <list>
+            <TargetedLogConfiguration>
+              <option name="conditionalLogLevels">
+                <set>
+                  <option value="trace" />
+                  <option value="debug" />
+                </set>
+              </option>
+              <option name="defaultFrameworkName" value="Intellij-IDEA" />
+              <option name="logIdSequenceValue" value="1470" />
+              <option name="targetScopeName" value="Tests" />
+            </TargetedLogConfiguration>
+            <TargetedLogConfiguration>
+              <option name="conditionalLogLevels">
+                <set>
+                  <option value="trace" />
+                  <option value="debug" />
+                </set>
+              </option>
+              <option name="defaultFrameworkName" value="log4j-1.2" />
+              <option name="logIdName" value="Default" />
+              <option name="logIdSequenceValue" value="240" />
+              <option name="targetScopeName" value="Test Scope" />
+            </TargetedLogConfiguration>
+            <TargetedLogConfiguration>
+              <option name="conditionalLogLevels">
+                <set>
+                  <option value="trace" />
+                  <option value="debug" />
+                </set>
+              </option>
+              <option name="defaultFrameworkName" value="slf4j" />
+              <option name="logIdSequenceValue" value="1470" />
+              <option name="targetScopeName" value="LogBack Scope" />
+            </TargetedLogConfiguration>
+          </list>
+        </option>
+      </ProjectLogConfigurations>
+    </option>
+    <option name="logIds">
+      <list>
+        <LogId>
+          <option name="name" value="Default" />
+        </LogId>
+        <LogId>
+          <option name="format" value="hexadecimal" />
+          <option name="formatPattern" value="%05x" />
+          <option name="matcherPattern" value="^(#*[A-Za-z_\-+~\.]+[A-Fa-f0-9]+[:;#]).*$" />
+          <option name="maxValue" value="1048575" />
+          <option name="name" value="Hex ID" />
+          <option name="prefix" value="#SuperLOG-" />
+        </LogId>
+      </list>
+    </option>
+  </component>
+</project>
+

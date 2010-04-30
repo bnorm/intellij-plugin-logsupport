@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2010, Juergen Kellerer and other contributors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<idea-plugin version="2" url="http://logsupport.sf.net/">
+	<id>LogSupport</id>
+	<name>Log Support</name>
+
+	<description><![CDATA[
+		Makes using log frameworks as painless as printing to <code>stdout</code> by
+		adding <b>intentions</b>, <b>live templates</b> and <b>code inspections</b> that
+		support most aspects of the configured log framework.<br>
+		<p>
+		On top of the basic feature set, enterprise class features like <b>log ID</b> and
+		<b>log review</b> generation are available to help improving the overall
+		quality of the generated log.
+		<p>
+		<b>Features:</b>
+		<ul>
+			<li>Supports possibly any log framework and facade</li>
+			<li>
+				Pre-configured and tested with: <i>log4j12</i>, <i>slf4j</i>,
+				<i>java.util.logging</i> and <i>commons log</i>
+			</li>
+			<li>Assists in the generation of log IDs</li>
+			<li>
+				Generates editable XHTML review documents containing a collection of log messages
+				that can be reviewed and adjusted by a non-developer (e.g. technical writer).
+			</li>
+			<li>
+				Adds 5 live templates <code>logt</code>, <code>logd</code>, <code>logi</code>,
+				<code>logw</code> and <code>loge</code> that offer a framework neutral way
+				of using log calls in the day to day business.
+			</li>
+			<li>
+				Adds 5 intentions and context actions that allow:
+				<ul>
+					<li>Wrapping and unwrapping log calls in '<code>if</code>' conditions.</li>
+					<li>Add, update, replace or remove log IDs.</li>
+				</ul>
+			</li>
+			<li>
+				Adds 3 code inspections that verify whether:
+				<ul>
+					<li>
+						Log calls are wrapped in '<code>if</code>' conditions
+						(depending on the project setup)
+					</li>
+					<li>
+						Formatted messages are valid when using MessageFormat or
+						printf enabled frameworks.
+					</li>
+					<li>
+						Throwables can be combined with formatted messages
+						(e.g. logback does not support this)
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<p>
+		Full usage instructions can be found at the plugin's <a href="http://logsupport.sf.net/">homepage</a>.
+		<p>
+	]]></description>
+
+	<change-notes><![CDATA[
+		<ul>
+			<li>1.0.1
+				<ol>
+					<li>Fixed several minor bugs.</li>
+					<li>Runs on IntelliJ IDEA 8 and 9 now.</li>
+					<li>Released sources on SF.net.</li>
+				</ol>
+			</li>
+			<li>1.0
+				<ol>
+					<li>Initial Release for IDEA >= 8.</li>
+				</ol>
+			</li>
+		</ul>
+	]]></change-notes>
+
+	<version>1.0.1</version>
+	<vendor>Juergen Kellerer</vendor>
+	<category>Code tools</category>
+
+	<resource-bundle>net.sf.logsupport.L10N</resource-bundle>
+
+	<idea-version since-build="8000"/>
+
+	<application-components>
+		<component>
+			<implementation-class>net.sf.logsupport.LogSupportComponent</implementation-class>
+		</component>
+	</application-components>
+
+	<project-components>
+		<component>
+			<implementation-class>net.sf.logsupport.LogSupportProjectComponent</implementation-class>
+		</component>
+	</project-components>
+
+	<actions>
+		<group id="LogSupport.ProcessLogReviews" icon="/icons/logsupport-16.png" popup="true"
+				text="Log Review" description="Allows to generate or integrate log review documents.">
+			<add-to-group group-id="ToolsMenu" anchor="last"/>
+
+			<action id="LogSupport.GenerateLogReview" class="net.sf.logsupport.actions.GenerateLogReview"
+					text="Generate Log Review" icon="/icons/generate-review.png"
+					description="Generates a new log review document, containing the log messages of the current project."/>
+
+			<action id="LogSupport.IntegrateLogReview" class="net.sf.logsupport.actions.IntegrateLogReview"
+					text="Integrate Log Review" icon="/icons/integrate-review.png"
+					description="Integrates a reviewed log review document, overriding the log messages inside the project."/>
+		</group>
+
+		<group id="LogSupport.ProcessLogCallsInContext" icon="/icons/logsupport-16.png" popup="true"
+				text="Log Support" description="Log related processing methods.">
+			<add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="CodeMenu" anchor="last"/>
+            <add-to-group group-id="NavbarPopupMenu" anchor="last"/>
+
+			<action id="LogSupport.AddLogIfConditions" class="net.sf.logsupport.actions.AddLogIfConditions"
+					text="Add missing 'if' statements"
+					description="Add 'if' statements to selected log levels where missing."/>
+
+			<action id="LogSupport.RemoveLogIfConditions" class="net.sf.logsupport.actions.RemoveLogIfConditions"
+					text="Remove 'if' statement from log calls"
+					description="Remove 'if' statement from selected log levels where missing."/>
+
+			<separator/>
+
+			<action id="LogSupport.AddLogIds" class="net.sf.logsupport.actions.AddLogIds"
+					text="Add log IDs" icon="/icons/add-logids.png"
+					description="Adds log IDs to selected log levels where missing."/>
+
+			<action id="LogSupport.AddOrReplaceLogIds" class="net.sf.logsupport.actions.AddOrReplaceLogIds"
+					text="Add or replace log IDs" icon="/icons/sync-logids.png"
+					description="Adds or replaces log IDs on selected log levels."/>
+
+			<separator/>
+
+			<action id="LogSupport.RemoveLogIds" class="net.sf.logsupport.actions.RemoveLogIds"
+					text="Remove log IDs" icon="/icons/remove-logids.png"
+					description="Removes all log IDs from selected log levels."/>
+		</group>
+	</actions>
+
+	<extensions defaultExtensionNs="com.intellij">
+		<liveTemplateMacro implementation="net.sf.logsupport.livetemplates.ResolveLoggerInstance"/>
+		<liveTemplateMacro implementation="net.sf.logsupport.livetemplates.ResolveLogMethod"/>
+		<liveTemplateMacro implementation="net.sf.logsupport.livetemplates.CreateNextLogId"/>
+		<liveTemplateOptionalProcessor implementation="net.sf.logsupport.livetemplates.TemplatePostProcessor"/>
+		<defaultLiveTemplatesProvider implementation="net.sf.logsupport.livetemplates.TemplatesProvider"/>
+
+		<inspectionToolProvider implementation="net.sf.logsupport.inspections.InspectionsProvider"/>
+
+		<intentionAction>			
+			<categoryKey>name</categoryKey>
+			<className>net.sf.logsupport.intentions.AddLogIfConditionIntention</className>
+		</intentionAction>
+		<intentionAction>
+			<categoryKey>name</categoryKey>
+			<className>net.sf.logsupport.intentions.RemoveLogIfConditionIntention</className>
+		</intentionAction>
+
+		<intentionAction>
+			<categoryKey>name</categoryKey>
+			<className>net.sf.logsupport.intentions.AddLogIdIntention</className>
+		</intentionAction>
+		<intentionAction>
+			<categoryKey>name</categoryKey>
+			<className>net.sf.logsupport.intentions.ReplaceLogIdIntention</className>
+		</intentionAction>
+		<intentionAction>
+			<categoryKey>name</categoryKey>
+			<className>net.sf.logsupport.intentions.RemoveLogIdIntention</className>
+		</intentionAction>
+	</extensions>
+</idea-plugin>

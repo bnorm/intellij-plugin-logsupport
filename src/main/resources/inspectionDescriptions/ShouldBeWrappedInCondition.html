@@ -1,0 +1,21 @@
+<html>
+<body>
+<font face="verdana" size="-1">
+	<b>Log calls should be conditional:</b>
+	<br><br>
+	This inspection reports that the call to a log method should be wrapped inside
+	an '<code>if</code>' statement that tests whether the corresponding log level is enabled for
+	logging or not.
+	<br><br>
+	Most log frameworks support querying what levels are enabled to improve the
+	overall application performance when logging is set to a <b>lower level</b>.
+	The improvement is achieved by skipping String concatenation and
+	other conversions related to the log call.
+	<br><br>
+	<b>Note:</b>Whether the inspection reports this or not, depends on the project
+	settings of the "Log Support" plugin and on the capabilities of the used log framework.
+	<br>
+	<sub>Powered by Log Support</sub>
+</font>
+</body>
+</html>

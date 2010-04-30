@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>-LogReview-</title>
+	<style type="text/css">
+		html, head, body, div, td, th {
+			font-family: sans-serif;
+			font-size: 11pt;
+		}
+
+		body, div {
+			padding: 6pt;
+		}
+
+		table {
+			border-collapse: collapse;
+			border: 1px solid #cccccc;
+		}
+
+		.logSource {
+		color: #aaaaaa;
+		}
+
+		.logId {
+			font-weight: bold;
+		}
+
+		.logLevel {
+			color: #aaaaaa;
+			font-weight: bold;
+		}
+
+		.logMessage {}
+
+		.constant {
+			font-weight: bold;
+			color: red;
+		}
+
+		#headerRow {
+			background-color: #eeeeee;
+		}
+	</style>
+</head>
+
+<body>
+<h1>-LogReview-</h1>
+
+<div style="border: 1px solid #ee9922; background-color: #fffcee">
+	<b>Notes:</b>
+	<ul>
+		<li>
+			This is an editable review of a collection of log messages that exist inside
+			the project. When editing messages, please be careful not to modify or remove
+			the markers for constant value "<span id="constantWrapper" class="constant">#?#</span>" or
+			break "<span class="constant">#/#</span>". If the markers are missing the changes
+			will not match the corresponding sources and integrations of the review will fail
+			on the message.
+		</li>
+		<li>
+			Adjustments to this document can be made with any XML/XHTML aware editor, including
+			favourite word processors as long as they do not modify the general document
+			structure and are able to store the result as XHTML document. Any visual formatting
+			applied to the messages will be stripped when integrating the changes into the project.
+			<br/>
+			When the document structure was modified or the resulting document is not valid XHTML,
+			it will be very likely not possible to integrate the changes into the project.
+		</li>
+		<li>
+			Depending on the settings that were applied when this review was created, the
+			collection of messages may be equal to all the log messages that exist inside the project.
+		</li>
+		<li>
+			It's not possible to change the log level or source file by editing the values inside
+			this review. Changes to these columns are ignored.
+		</li>
+	</ul>
+</div>
+
+<p/>
+
+<table id="reviewTable" border="1" cellspacing="0" cellpadding="3" width="100%">
+	<thead>
+	<tr id="headerRow">
+		<th align="left">Level</th>
+		<th align="left">ID</th>
+		<th align="left">Message</th>
+		<th align="left">Source file(s)</th>
+	</tr>
+	</thead>
+	<tbody id="templateRow">
+	<tr valign="top">
+		<td class="logLevel">INFO</td>
+		<td class="logId">#LOG-1000010:</td>
+		<td class="logMessage">Sample Message</td>
+		<td class="logSource">Path/To/Source</td>
+	</tr>
+	</tbody>
+</table>
+
+<hr size="1"/>
+
+<div align="center">Created with "Log Support" an IntelliJ IDEA Plugin by Juergen Kellerer</div>
+
+</body>
+</html>
