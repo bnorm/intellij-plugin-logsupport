@@ -31,7 +31,7 @@ import static org.junit.Assert.*;
 public class VerifyFormattedMessageTest {
 
 	VerifyFormattedMessage inspection = new VerifyFormattedMessage();
-	String customMessageTemplate = "This is a {} message with {} placeholders.";
+	String customMessageTemplate = "This is a {} message with placeholders.{}";
 	String mfTemplate = "{0} is a {2} message with {1,number}{1,number} placeholders.";
 
 	@Test
