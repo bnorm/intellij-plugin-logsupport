@@ -19,6 +19,7 @@ package net.sf.logsupport.util;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.StdFileTypes;
@@ -48,12 +49,27 @@ import java.util.*;
  */
 public class VirtualFileUtil {
 
+	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.util.VirtualFileUtil");
+
 	final static List<FileType> SUPPORTED_TYPES = Arrays.asList((FileType) StdFileTypes.JAVA);
 
+	/**
+	 * Returns true of the given file is of a processable file type.
+	 *
+	 * @param file the file to check.
+	 * @return true if the file can be processed by the plugin.
+	 */
 	public static boolean isSupportedFile(VirtualFile file) {
 		return SUPPORTED_TYPES.contains(file.getFileType());
 	}
 
+	/**
+	 * Converts the given list of files to files that the plugin can understand.
+	 *
+	 * @param files		   the files to convert.
+	 * @param passDirectories specifies whether directories are passed to the resulting list.
+	 * @return A reduced list containing only supported files and directories (optional).
+	 */
 	@NotNull
 	public static List<VirtualFile> toSupportedFiles(@NotNull List<VirtualFile> files, boolean passDirectories) {
 		List<VirtualFile> supportedFiles = new ArrayList<VirtualFile>(files.size());
@@ -64,6 +80,14 @@ public class VirtualFileUtil {
 		return supportedFiles;
 	}
 
+	/**
+	 * Changes the given input into a list of files.
+	 *
+	 * @param project   The project to operate on.
+	 * @param input	 The input list that may be a mix of directories and files.
+	 * @param recursive specifies whether directories should be processed recursively.
+	 * @return A list containing only files (any directory is resolved against it's children).
+	 */
 	@NotNull
 	public static List<VirtualFile> toFiles(Project project, @NotNull List<VirtualFile> input, boolean recursive) {
 		ProjectRootManager prm = ProjectRootManager.getInstance(project);
@@ -87,6 +111,14 @@ public class VirtualFileUtil {
 		return files;
 	}
 
+	/**
+	 * Strips all files from the input list.
+	 *
+	 * @param input	  the input list to convert to directories.
+	 * @param useParents specifies whether parent directories are read out
+	 *                   of file entries and appended to the result list.
+	 * @return A resulting list containing only directories.
+	 */
 	public static List<VirtualFile> toDirectories(@NotNull List<VirtualFile> input, boolean useParents) {
 		List<VirtualFile> files = new ArrayList<VirtualFile>();
 		for (VirtualFile file : input) {
@@ -102,6 +134,12 @@ public class VirtualFileUtil {
 		return files;
 	}
 
+	/**
+	 * Returns a list of currently selected files or directories.
+	 *
+	 * @param project the project to look for selections.
+	 * @return A list of currently selected files or directories.
+	 */
 	@NotNull
 	public static List<VirtualFile> getSelectedFiles(Project project) {
 		final List<VirtualFile> selectedFiles = new ArrayList<VirtualFile>();
@@ -121,6 +159,13 @@ public class VirtualFileUtil {
 		return selectedFiles;
 	}
 
+	/**
+	 * Checks whether the given directory has sub-directories.
+	 *
+	 * @param project   the project to operate on.
+	 * @param directory the directory to check.
+	 * @return true if the given directory has sub-directories.
+	 */
 	public static boolean hasSubdirectories(Project project, VirtualFile directory) {
 		if (directory != null) {
 			ProjectRootManager prm = ProjectRootManager.getInstance(project);
@@ -135,6 +180,13 @@ public class VirtualFileUtil {
 		return false;
 	}
 
+	/**
+	 * Returns a list of all source directories in the given project.
+	 *
+	 * @param project	  the project to check.
+	 * @param includeTests specifies whether test-source directories should be included.
+	 * @return a list of all source directories in the given project.
+	 */
 	@NotNull
 	public static List<VirtualFile> getSourceDirectories(Project project, boolean includeTests) {
 		List<VirtualFile> sources = new ArrayList<VirtualFile>();
@@ -145,6 +197,13 @@ public class VirtualFileUtil {
 		return sources;
 	}
 
+	/**
+	 * Returns a list of all source directories in the given module.
+	 *
+	 * @param module	   the module to check.
+	 * @param includeTests specifies whether test-source directories should be included.
+	 * @return a list of all source directories in the given module.
+	 */
 	@NotNull
 	public static List<VirtualFile> getSourceDirectories(Module module, boolean includeTests) {
 		ModuleRootManager rootManager = ModuleRootManager.getInstance(module);
@@ -165,39 +224,6 @@ public class VirtualFileUtil {
 		}
 
 		return sourceFiles;
-	}
-
-	public static void makeFilesWritable(Project project, Collection<PsiFile> files) {
-		ProjectLevelVcsManager manager = ProjectLevelVcsManager.getInstance(project);
-		Map<AbstractVcs, List<VirtualFile>> vcsFiles = new IdentityHashMap<AbstractVcs, List<VirtualFile>>();
-
-		for (PsiFile file : files) {
-			if (!file.isWritable()) {
-				VirtualFile vf = file.getVirtualFile();
-				if (vf == null)
-					continue;
-				AbstractVcs vcs = manager.getVcsFor(vf);
-				if (vcs == null)
-					continue;
-				List<VirtualFile> vFiles = vcsFiles.get(vcs);
-				if (vFiles == null)
-					vcsFiles.put(vcs, vFiles = new ArrayList<VirtualFile>());
-
-				vFiles.add(vf);
-			}
-		}
-
-		for (Map.Entry<AbstractVcs, List<VirtualFile>> entry : vcsFiles.entrySet()) {
-			EditFileProvider p = entry.getKey().getEditFileProvider();
-			if (p == null)
-				continue;
-			try {
-				p.editFiles(entry.getValue().toArray(new VirtualFile[entry.getValue().size()]));
-			} catch (VcsException e) {
-				// TODO: Log
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private VirtualFileUtil() {

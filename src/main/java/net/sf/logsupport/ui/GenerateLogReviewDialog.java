@@ -16,7 +16,9 @@
 
 package net.sf.logsupport.ui;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.EmptyRunnable;
 import com.intellij.openapi.util.Key;
@@ -33,7 +35,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -44,6 +47,8 @@ import java.util.List;
  * @version 1.0
  */
 public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
+
+	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.ui.GenerateLogReviewDialog");
 
 	static final Key<Comparator[]> SORT_ORDER = Key.create("LOG_SUPPORT_GENERATE_REVIEW_SORT_ORDER");
 
@@ -199,6 +204,14 @@ public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
 
 		return new Runnable() {
 			public void run() {
+				// Check if we have something to do
+				if (reviewableCalls.isEmpty()) {
+					Messages.showInfoMessage(
+							"Did not find any log messages inside this project.",
+							"No log messages found.");
+					return;
+				}
+
 				// Sorting the calls first
 				Collections.sort(reviewableCalls, new Comparator<PsiMethodCallExpression>() {
 
@@ -222,11 +235,13 @@ public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
 					new LogReviewCodec(reviewFile).encode(reviewableCalls);
 
 					// Open the file afterwards, using the system default viewer.
-					if (Desktop.isDesktopSupported())
+					if (Desktop.isDesktopSupported() && reviewFile.exists())
 						Desktop.getDesktop().open(reviewFile);
 				} catch (IOException e) {
-					// TODO: Log
-					e.printStackTrace();
+					LOG.error(String.format("Failed writing into the log review file '%s'", reviewFile), e);
+					Messages.showErrorDialog(String.format(
+							"Failed writing into the log review file '%s'", reviewFile),
+							"Failed creating log review.");
 				}
 			}
 		};

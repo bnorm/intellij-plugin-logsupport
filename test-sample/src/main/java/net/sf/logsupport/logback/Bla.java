@@ -21,4 +21,11 @@ public class Bla {
         log.warn("#SuperLOG-00384:asda");
         log.warn("#SuperLOG-0038e:asdasd");
     }
+
+    {
+        logd
+
+        if (log.isDebugEnabled())
+            log.debug("");
+    }
 }

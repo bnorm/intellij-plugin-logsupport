@@ -25,10 +25,15 @@
 
 	<groupId>net.sf.logsupport</groupId>
 	<artifactId>idea-plugin</artifactId>
-	<version>1.0.1</version>
-
+	<version>1.0.2</version>
+	
+	<inceptionYear>2010</inceptionYear>
+	<url>https://logsupport.sf.net/</url>
 	<name>Log Support - IntelliJ IDEA Plugin</name>
-	<description>A plugin that simplifies the usage of various log frameworks in IntelliJ IDEA</description>
+	<description>
+		A plugin that simplifies the usage of various log frameworks 
+		in IntelliJ IDEA
+	</description>
 
 	<properties>
 		<idea.name>IntelliJ IDEA</idea.name>
@@ -43,6 +48,38 @@
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		</license>
 	</licenses>
+
+	<developers>
+		<developer>
+			<id>jkellerer</id>
+			<name>Juergen Kellerer</name>
+			<timezone>+1</timezone>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<downloadUrl>http://plugins.intellij.net/plugin/?idea&amp;id=4953</downloadUrl>
+		<site>
+			<id>logsupport.shell.sourceforge.net</id>
+			<name>logsupport.sourceforge.net</name>
+			<url>sftp://web.sourceforge.net/home/groups/l/lo/logsupport/htdocs/</url>
+		</site>
+	</distributionManagement>
+
+	<issueManagement>
+		<system>SourceForge BugTracker</system>
+		<url>http://sourceforge.net/tracker/?group_id=319796&amp;atid=1344454</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:svn:https://logsupport.svn.sourceforge.net/svnroot/logsupport/trunk</connection>
+		<tag>HEAD</tag>
+		<url>http://logsupport.svn.sourceforge.net/viewvc/logsupport/trunk/</url>		
+	</scm>
 
 	<build>
 		<finalName>logsupport-plugin</finalName>
@@ -61,6 +98,7 @@
 				<configuration>
 					<descriptors>
 						<descriptor>assembly.xml</descriptor>
+						<descriptor>source-assembly.xml</descriptor>
 					</descriptors>
 				</configuration>
 				<executions>
@@ -101,6 +139,24 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>issue-tracking</report>
+							<report>license</report>
+							<report>scm</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<dependencies>
 		<dependency>

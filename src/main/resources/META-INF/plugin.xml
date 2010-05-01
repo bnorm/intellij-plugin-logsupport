@@ -22,7 +22,7 @@
 	<description><![CDATA[
 		Makes using log frameworks as painless as printing to <code>stdout</code> by
 		adding <b>intentions</b>, <b>live templates</b> and <b>code inspections</b> that
-		support most aspects of the configured log framework.<br>
+		support the most important aspects of the configured log framework.<br>
 		<p>
 		On top of the basic feature set, enterprise class features like <b>log ID</b> and
 		<b>log review</b> generation are available to help improving the overall
@@ -77,6 +77,12 @@
 
 	<change-notes><![CDATA[
 		<ul>
+			<li>1.0.2
+				<ol>
+					<li>Fixed bugs in the action "Integrate Log Review".</li>
+					<li>Added shortening of FQ names when logger field is added.</li>
+				</ol>
+			</li>
 			<li>1.0.1
 				<ol>
 					<li>Fixed several minor bugs.</li>
@@ -92,7 +98,7 @@
 		</ul>
 	]]></change-notes>
 
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<vendor>Juergen Kellerer</vendor>
 	<category>Code tools</category>
 

@@ -16,30 +16,24 @@
 
 package net.sf.logsupport.actions;
 
-import com.intellij.codeInsight.CodeInsightUtilBase;
 import com.intellij.codeInsight.actions.ReformatCodeProcessor;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.wm.impl.CommandProcessor;
-import com.intellij.openapi.wm.impl.commands.FinalizableCommand;
-import com.intellij.openapi.wm.impl.commands.InvokeLaterCmd;
 import com.intellij.psi.*;
+import net.sf.logsupport.L10N;
 import net.sf.logsupport.ui.IntegrateLogReviewDialog;
 import net.sf.logsupport.ui.util.Dialogs;
 import net.sf.logsupport.util.LogPsiElementFactory;
 import net.sf.logsupport.util.LogPsiUtil;
-import net.sf.logsupport.util.LogReviewCodec;
 import net.sf.logsupport.util.VirtualFileUtil;
 
-import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 import static net.sf.logsupport.util.LogMessageUtil.*;
@@ -52,81 +46,73 @@ import static net.sf.logsupport.util.LogMessageUtil.*;
  */
 public class IntegrateLogReview extends AbstractAction {
 
+	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.actions.IntegrateLogReview");
+
 	@Override
 	protected void projectActionPerformed(AnActionEvent e, final Project project) {
 		IntegrateLogReviewDialog dialog = new IntegrateLogReviewDialog(project);
+
 		dialog.show();
+
 		if (dialog.isOK()) {
-			PsiManager manager = PsiManager.getInstance(project);
-			PsiDocumentManager documentManager = PsiDocumentManager.getInstance(project);
+			final List<LogMessage> reviewedMessages = dialog.getReviewedMessages();
 
-			List<LogMessage> messages;
-			LogReviewCodec codec = new LogReviewCodec(dialog.getReviewFile());
-			try {
-				messages = codec.decode();
-			} catch (IOException e1) {
-				Messages.showErrorDialog(project,
-						"Cannot read the contents of the given XHTML file.",
-						"Integration Failed");
-				return;
-			}
+			PsiDocumentManager.getInstance(project).commitAllDocuments();
 
-			documentManager.commitAllDocuments();
+			final PsiManager manager = PsiManager.getInstance(project);
 			final Map<PsiFile, Map<LogMessage, List<LogMessage>>> mappedMessages = getMappedMessages(manager);
 
-			// Remove all files that do not match or do not contain changes
-			int messageCount = 0;
+			LOG.info("Identifying files that contain reviewed messages.");
+			final int pendingChangeCount = removeAllUnchangedMessages(mappedMessages, reviewedMessages);
 
-			reduceLoop:
-			for (Iterator<Map<LogMessage, List<LogMessage>>> i = mappedMessages.values().iterator(); i.hasNext();) {
-				Map<LogMessage, List<LogMessage>> fileMessages = i.next();
-				for (LogMessage message : messages) {
-					List<LogMessage> msgs = fileMessages.get(message);
-					if (msgs != null) {
-						Iterator<LogMessage> mi = msgs.iterator();
-						while (mi.hasNext())
-							if (mi.next().logMessage.equals(message.logMessage))
-								mi.remove();
-
-						if (!msgs.isEmpty()) {
-							messageCount += msgs.size();
-							continue reduceLoop;
-						}
-					}
-				}
-				i.remove();
+			if (mappedMessages.isEmpty()) {
+				LOG.info("Not applying any reviewed message, operation was either cancelled or " +
+						"review did not contain any changes.");
+				return;
 			}
 
-			if (mappedMessages.isEmpty())
+			if (!Dialogs.confirmOverwrite(L10N.message("IntegrateLogReview.integrateConfirmation",
+					pendingChangeCount, mappedMessages.size()))) {
+
+				LOG.info(String.format("Aborted the integration of %d messages in %d files.",
+						pendingChangeCount, mappedMessages.size()));
 				return;
+			}
 
-			if (!Dialogs.confirmOverwrite(String.format(
-					"%d log messages in %d files", messageCount, mappedMessages.size())))
-				return;
+			final ProgressManager pm = ProgressManager.getInstance();
+			pm.runProcessWithProgressSynchronously(new Runnable() {
+				public void run() {
+					final ProgressIndicator indicator = pm.getProgressIndicator();
+					indicator.setIndeterminate(true);
 
-			VirtualFileUtil.makeFilesWritable(project, mappedMessages.keySet());
+					manager.startBatchFilesProcessingMode();
+					try {
+						final String title = L10N.message("IntegrateLogReview.integrateApplyJobTitle", pendingChangeCount);
 
-			manager.startBatchFilesProcessingMode();
-			try {
-				final List<LogMessage> reviewedMessages = messages;
-				final String title = "Integrating all changed log messages.";
-
-				ProgressManager.getInstance().runProcessWithProgressSynchronously(new Runnable() {
-					public void run() {
-						new WriteCommandAction(project, title, null) {
+						Set<PsiFile> processableFiles = mappedMessages.keySet();
+						new WriteCommandAction(project, title,
+								processableFiles.toArray(new PsiFile[processableFiles.size()])) {
 							protected void run(Result result) throws Throwable {
-								getWriteOperation(mappedMessages, reviewedMessages).run();
+								indicator.setText(title);
+								getWriteOperation(mappedMessages, reviewedMessages, indicator).run();
 							}
 						}.execute();
-      				}
-    			}, title, true, project);
-			} finally {
-				manager.finishBatchFilesProcessingMode();
-			}
+					} finally {
+						manager.finishBatchFilesProcessingMode();
+					}
+				}
+			}, dialog.getTitle(), true, project);
 		}
 	}
 
-	protected Map<PsiFile, Map<LogMessage, List<LogMessage>>> getMappedMessages(PsiManager manager) {
+	/**
+	 * Search all log messages and maps them against the PsiFile that contained the message.
+	 * Similar messages are grouped under the first message used as key.
+	 *
+	 * @param manager the PsiManager to use.
+	 * @return a map of PsiFile to the log messages it contains.
+	 */
+	private Map<PsiFile, Map<LogMessage, List<LogMessage>>> getMappedMessages(PsiManager manager) {
 		Map<PsiFile, Map<LogMessage, List<LogMessage>>> messageMap =
 				new HashMap<PsiFile, Map<LogMessage, List<LogMessage>>>();
 
@@ -135,6 +121,7 @@ public class IntegrateLogReview extends AbstractAction {
 		allFiles = VirtualFileUtil.toSupportedFiles(allFiles, false);
 
 		for (VirtualFile virtualFile : allFiles) {
+			checkCanceled();
 			PsiFile file = manager.findFile(virtualFile);
 			if (file == null)
 				continue;
@@ -149,28 +136,89 @@ public class IntegrateLogReview extends AbstractAction {
 		return messageMap;
 	}
 
-	protected Runnable getWriteOperation(
+	/**
+	 * Normalizes the pending changes by removing all unchanged messages.
+	 *
+	 * @param mappedMessages   The messages contained inside the project mapped against the PsiFile.
+	 * @param reviewedMessages A flat list of all reviewed messages that are pending their integration.
+	 * @return The count of pending of changes.
+	 */
+	private int removeAllUnchangedMessages(
+			Map<PsiFile, Map<LogMessage, List<LogMessage>>> mappedMessages,
+			List<LogMessage> reviewedMessages) {
+
+		int pendingChangeCount = 0;
+
+		reduceLoop:
+		for (Iterator<Map<LogMessage, List<LogMessage>>> i = mappedMessages.values().iterator(); i.hasNext();) {
+			checkCanceled();
+
+			Map<LogMessage, List<LogMessage>> fileMessages = i.next();
+			for (LogMessage message : reviewedMessages) {
+				List<LogMessage> similarFileMessages = fileMessages.get(message);
+				if (similarFileMessages != null) {
+					Iterator<LogMessage> mi = similarFileMessages.iterator();
+					while (mi.hasNext()) {
+						LogMessage m = mi.next();
+
+						if (m.logMessage.equals(message.logMessage)) {
+							if (LOG.isDebugEnabled())
+								LOG.debug("Not integrating unchanged log message '" + message + "'");
+							mi.remove();
+						}
+
+						if (m.logMessage.size() != message.logMessage.size()) {
+							LOG.warn("The log message artifacts differ in length, " +
+									"not applying reviewed message '" + message + "' to '" + m + "'");
+							mi.remove();
+						}
+					}
+
+					if (!similarFileMessages.isEmpty()) {
+						pendingChangeCount += similarFileMessages.size();
+						continue reduceLoop;
+					}
+				}
+			}
+			i.remove();
+		}
+
+		return pendingChangeCount;
+	}
+
+	/**
+	 * Returns the actual write operation.
+	 *
+	 * @param mappedMessages   The messages contained inside the project mapped against the PsiFile.
+	 * @param reviewedMessages A flat list of all reviewed messages that are pending their integration.
+	 * @param indicator		The indicator to use for specifying the overall progress.
+	 * @return A runnable that performs the actual writes.
+	 */
+	private Runnable getWriteOperation(
 			final Map<PsiFile, Map<LogMessage, List<LogMessage>>> mappedMessages,
-			final List<LogMessage> reviewedMessages) {
-		
+			final List<LogMessage> reviewedMessages, final ProgressIndicator indicator) {
+
 		return new Runnable() {
 			public void run() {
+				indicator.setIndeterminate(false);
+				double processedFiles = 0, totalFiles = mappedMessages.size();
 
 				for (Map.Entry<PsiFile, Map<LogMessage, List<LogMessage>>> entry : mappedMessages.entrySet()) {
+					checkCanceled();
+
 					final PsiFile file = entry.getKey();
 					final LogPsiElementFactory elementFactory = LogPsiUtil.getFactory(file);
 					final Map<LogMessage, List<LogMessage>> fileMessages = entry.getValue();
+
+					VirtualFile virtualFile = file.getVirtualFile();
+					if (virtualFile != null)
+						indicator.setText2(virtualFile.getPresentableUrl());
 
 					boolean changed = false;
 					for (LogMessage message : reviewedMessages) {
 						List<LogMessage> msgs = fileMessages.get(message);
 						if (msgs != null) {
 							for (LogMessage msg : msgs) {
-								if (msg.logMessage.size() != message.logMessage.size()) {
-									// TODO: Log warning!
-									continue;
-								}
-
 								Iterator<MessageArtifact> source = message.logMessage.iterator();
 								Iterator<MessageArtifact> target = msg.logMessage.iterator();
 
@@ -192,6 +240,9 @@ public class IntegrateLogReview extends AbstractAction {
 								file.getProject(), file, file.getTextRange());
 						codeProcessor.runWithoutProgress();
 					}
+
+					processedFiles++;
+					indicator.setFraction(processedFiles / totalFiles);
 				}
 			}
 
@@ -200,7 +251,7 @@ public class IntegrateLogReview extends AbstractAction {
 				String delimiters = "\"\n\r\\";
 				StringBuilder string = new StringBuilder(text.length() + 4).append('"');
 				StringTokenizer t = new StringTokenizer(text, delimiters, true);
-				
+
 				while (t.hasMoreTokens()) {
 					String token = t.nextToken();
 					if (token.length() == 1 && delimiters.indexOf(token.charAt(0)) != -1)
@@ -209,9 +260,30 @@ public class IntegrateLogReview extends AbstractAction {
 						string.append(token);
 				}
 
-				return (PsiLiteralExpression)
-						elementFactory.createExpressionFromText(string.append('"').toString(), context);
+				return (PsiLiteralExpression) elementFactory.
+						createExpressionFromText(string.append('"').toString(), context);
 			}
 		};
+	}
+
+	static void checkCanceled() {
+		// Using reflection here to support class change between IDEA 8 and 9
+		if (cancelCheckMethod != null) {
+			try {
+				cancelCheckMethod.invoke(ProgressManager.getInstance());
+			} catch (Exception e) {
+				// ignore.
+			}
+		}
+	}
+
+	static Method cancelCheckMethod;
+
+	static {
+		try {
+			cancelCheckMethod = ProgressManager.class.getMethod("checkCanceled");
+		} catch (NoSuchMethodException e) {
+			LOG.warn("Couldn't find method to check for cancel, integrations will no be stopable.");
+		}
 	}
 }
