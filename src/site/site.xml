@@ -36,9 +36,15 @@
 
 		<menu name="Overview">
 			<item name="About" href="index.html"/>
-			<item name="Release Notes" href="releaseNotes.html"/>
-			<item name="Download" href="https://sourceforge.net/projects/logsupport/files/"/>
-			<item name="SF Project Page" href="https://sourceforge.net/projects/tinyjee/"/>
+			<item name="Download" href="http://plugins.intellij.net/plugin/?idea&amp;id=4953"/>
+			<item name="Release Notes" href="http://plugins.intellij.net/plugin/?idea&amp;id=4953"/>
+			<item name="SF Project Page" href="http://sourceforge.net/projects/logsupport/"/>
+		</menu>
+
+		<menu name="Guides">
+			<item name="Quick Start Guide" href="quickStartGuide.html"/>
+			<item name="Log ID Guide" href="logIDGuide.html"/>
+			<item name="Log Review Guide" href="logReviewGuide.html"/>
 		</menu>
 
 		<menu ref="reports"/>
@@ -48,12 +54,6 @@
 		<alt>${project.name}</alt>
 		<src>/images/logo.jpg</src>
 	</bannerLeft>
-
-	<!--bannerRight>
-		<alt>Support This Project</alt>
-		<href>http://sourceforge.net/donate/index.php?group_id=289306</href>
-		<src>http://images.sourceforge.net/images/project-support.jpg</src>
-	</bannerRight-->
 
 	<skin>
 		<groupId>org.apache.maven.skins</groupId>
