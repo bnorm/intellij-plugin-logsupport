@@ -63,7 +63,7 @@
       <file leaf-file-name="LoggingClass.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/log4j/LoggingClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="8" selection-start="360" selection-end="360" vertical-scroll-proportion="0.3010279">
+            <state line="40" column="18" selection-start="1138" selection-end="1138" vertical-scroll-proportion="0.72540385">
               <folding />
             </state>
           </provider>
@@ -72,7 +72,7 @@
       <file leaf-file-name="LoggingClass.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="30" selection-start="1061" selection-end="1061" vertical-scroll-proportion="0.0">
+            <state line="13" column="0" selection-start="289" selection-end="289" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -90,7 +90,7 @@
       <file leaf-file-name="Bla.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="12" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
+            <state line="28" column="23" selection-start="630" selection-end="630" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -110,10 +110,12 @@
         <option value="$PROJECT_DIR$/.idea/logsupport/settings.xml" />
         <option value="$PROJECT_DIR$/report.xhtml" />
         <option value="$PROJECT_DIR$/review.html" />
-        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java" />
         <option value="$PROJECT_DIR$/log-review.xhtml" />
-        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java" />
         <option value="$PROJECT_DIR$/src/test/java/net/sf/logsupport/logback/LoggingClassTest.java" />
+        <option value="$PROJECT_DIR$/../../../../Sandbox/log-review.xhtml" />
+        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Empty.java" />
+        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java" />
+        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/log4j/LoggingClass.java" />
       </list>
     </option>
@@ -174,6 +176,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -193,9 +196,98 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test-sample" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test-sample" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test-sample" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test-sample" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="net" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="logsupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="logback" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test-sample" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test-sample" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="net" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="logsupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="log4j" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Favorites" />
     </panes>
   </component>
@@ -209,6 +301,7 @@
     <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="options.lastSelected" value="com.intellij.profile.codeInspection.ui.ProjectInspectionToolsConfigurable" />
+    <property name="last_opened_file_path" value="C:\Projects\Sandbox" />
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -425,14 +518,9 @@
         <state line="16" column="12" selection-start="599" selection-end="599" vertical-scroll-proportion="0.39941263" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/log-review.xhtml">
+    <entry file="file://$PROJECT_DIR$/../../../../Sandbox/log-review.xhtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="66" selection-start="2803" selection-end="2803" vertical-scroll-proportion="0.2578125" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="30" selection-start="1061" selection-end="1061" vertical-scroll-proportion="0.0" />
+        <state line="134" column="75" selection-start="4658" selection-end="4658" vertical-scroll-proportion="0.3359375" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/net/sf/logsupport/logback/LoggingClassTest.java">
@@ -440,14 +528,23 @@
         <state line="8" column="0" selection-start="147" selection-end="147" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="0" selection-start="289" selection-end="289" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="12" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0" />
+        <state line="28" column="23" selection-start="630" selection-end="630" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/log4j/LoggingClass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="8" selection-start="360" selection-end="360" vertical-scroll-proportion="0.3010279">
+        <state line="40" column="18" selection-start="1138" selection-end="1138" vertical-scroll-proportion="0.72540385">
           <folding />
         </state>
       </provider>

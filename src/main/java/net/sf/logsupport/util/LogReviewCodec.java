@@ -90,7 +90,7 @@ public class LogReviewCodec extends LogMessageUtil {
 		try {
 			DocumentBuilder builder = createDocumentBuilder();
 			source = builder.parse(logReview);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			throw new IOException(e);
 		}
 
@@ -125,6 +125,9 @@ public class LogReviewCodec extends LogMessageUtil {
 			}
 
 			if (logMessage != null) {
+
+				logMessage = logMessage.trim();
+
 				if (logId != null)
 					logMessage = logId + logMessage;
 				
@@ -134,7 +137,8 @@ public class LogReviewCodec extends LogMessageUtil {
 
 				if (matcher.find()) {
 					do {
-						messageArtifacts.add(logMessage.substring(idx, matcher.start()));
+						if (idx != matcher.start())
+							messageArtifacts.add(logMessage.substring(idx, matcher.start()));
 						if (matcher.group().equals(MARKER_CONSTANT_BREAK))
 							messageArtifacts.add(DELIMITED_ARTIFACT);
 						else if (matcher.group().equals(MARKER_CONSTANT_VALUE))
@@ -155,13 +159,9 @@ public class LogReviewCodec extends LogMessageUtil {
 		return results;
 	}
 
-	public void encode(List<PsiMethodCallExpression> expressionList) throws IOException {
-		if (expressionList == null || expressionList.isEmpty()) {
-			Messages.showInfoMessage(
-					"Did not find any log messages inside this project.",
-					"No log messages found.");
-			return;
-		}
+	public void encode(@NotNull List<PsiMethodCallExpression> expressionList) throws IOException {
+		if (expressionList.isEmpty())
+			return;		
 
 		Document template;
 		try {

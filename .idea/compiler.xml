@@ -18,6 +18,8 @@
       <entry name="?*.dtd" />
       <entry name="?*.tld" />
       <entry name="?*.ftl" />
+      <entry name="?*.xhtml" />
+      <entry name="?*.ent" />
     </wildcardResourcePatterns>
     <annotationProcessing enabled="false" useClasspath="true" />
   </component>

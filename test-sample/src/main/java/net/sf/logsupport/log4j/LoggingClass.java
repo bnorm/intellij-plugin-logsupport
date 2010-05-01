@@ -1,5 +1,6 @@
 package net.sf.logsupport.log4j;
 
+import java.io.File;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,5 +36,11 @@ public class LoggingClass {
         } catch (Exception e) {
             logger.log(Level.SEVERE, "#SuperLOG-0029e:sadasdasd", e);
         }
+    }
+
+    {
+        File myFile = null;
+
+        logger.log(Level.INFO, "#MyID-005dc:passed");
     }
 }

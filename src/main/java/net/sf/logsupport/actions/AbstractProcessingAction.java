@@ -35,7 +35,7 @@ import static net.sf.logsupport.util.VirtualFileUtil.getSelectedFiles;
 import static net.sf.logsupport.util.VirtualFileUtil.toSupportedFiles;
 
 /**
- * TODO: Create Description.
+ * Defines a base action for all dialog based actions that process a subset of files inside the project.
  *
  * @author Juergen_Kellerer, 2010-04-14
  * @version 1.0
@@ -53,8 +53,16 @@ public abstract class AbstractProcessingAction extends AbstractAction {
 		return toSupportedFiles(getSelectedFiles(project), true);
 	}
 
+	/**
+	 * Creates a dialog that is used to select the sources and process them afterwards.
+	 * @param project	the project.
+	 * @return a dialog that is used to select the sources and process them afterwards. 
+	 */
 	protected abstract AbstractProcessingDialog createDialog(Project project);
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void projectActionPerformed(AnActionEvent e, final Project project) {
 		final AbstractProcessingDialog dialog = createDialog(project);
 		dialog.show();
@@ -66,14 +74,13 @@ public abstract class AbstractProcessingAction extends AbstractAction {
 			try {
 				final List<PsiFile> processableFiles = documentManager.commitAndRunReadAction(readAction);
 
-				VirtualFileUtil.makeFilesWritable(project, processableFiles);
 				documentManager.commitAllDocuments();
-
 				manager.startBatchFilesProcessingMode();
 				try {
 					ProgressManager.getInstance().runProcessWithProgressSynchronously(new Runnable() {
 						public void run() {
-							new WriteCommandAction(project, dialog.getTitle(), null) {
+							new WriteCommandAction(project, dialog.getTitle(),
+									processableFiles.toArray(new PsiFile[processableFiles.size()])) {
 								protected void run(Result result) throws Throwable {
 									dialog.getWriteOperation(processableFiles).run();
 								}
