@@ -1,0 +1,52 @@
+	----
+	About
+	----
+	----
+	2010-04-30
+	----
+
+About ${project.name}
+
+	"<<Log Support>>" is a plugin for the excellent Java IDE,
+	{{{http://www.jetbrains.com/idea/} <<IntelliJ IDEA>>}}.
+	The purpose of this plugin is to make the usage of log frameworks as painless as printing
+	to <<<stdout>>> when used in a day to day business.
+	This is achieved by adding <<intentions>>, <<live templates>> and <<code inspections>>
+	that support the most important aspects of the configured log framework.
+
+	On top of the basic feature set, <enterprise class> features like <<log ID>> and
+	<<log review>> generation are available to help improving the overall quality of the
+	generated log. In particular the generation of <XHTML log review documents> can greatly
+	help to improve the quality as non-developers like "technical writers" get the ability
+	to take a look at <ALL> log messages that exist inside a project.
+
+[images/teaser.png]
+
+	<<Resources>>
+
+	* {{{http://plugins.intellij.net/plugin/?idea&amp;id=4953} <<Log Support - Plugin Page>> @ jetbrains.com}}
+	  (Release Notes, Detailed Features List, etc.)
+
+	* {{{http://www.jetbrains.com/idea/} <<IntelliJ IDEA>> @ jetbrains.com}}
+
+
+* The Motivation & Idea behind
+
+	The motivation behind writing this plugin was to ensure <<logging is considered from the
+	start>> and not at the end of the project when people start to remember that logging was
+	a requirement.
+	
+	IntelliJ IDEA offers a perfect platform to code very fast. When adding intelligent
+	live templates, logging becomes really painless to use and it <<is>> then used by
+	team members.
+
+	Besides this, there's also the situation that log output is not only generated for developers
+	but should satisfy the need for detailed information of support staff and administrators.
+	As developers are usually too focused on the project, there should a 3rd party that is
+	able to review the generated log and check the messages for plausibility.
+
+* Disclaimer
+
+	This plugin is released under the <<terms & conditions>> of the <<Apache 2.0 license>>.
+
+	The license can be found {{{license.html}here}} and on 	{{http://www.apache.org/licenses/LICENSE-2.0.html}}
