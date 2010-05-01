@@ -19,7 +19,9 @@ package net.sf.logsupport.util;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
+import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.util.PsiUtil;
+import com.intellij.util.IncorrectOperationException;
 import net.sf.logsupport.config.LogConfiguration;
 import net.sf.logsupport.config.LogFramework;
 
@@ -30,6 +32,8 @@ import net.sf.logsupport.config.LogFramework;
  * @version 1.0
  */
 public class LoggerFieldBuilder {
+	private static final com.intellij.openapi.diagnostic.Logger LOG = com.intellij.openapi.diagnostic.Logger.getInstance("#net.sf.logsupport.util.LoggerFieldBuilder");
+
 
 	private PsiClass classForPlace(PsiElement place) {
 		return place instanceof PsiClass ? (PsiClass) place : PsiUtil.getTopLevelClass(place);
@@ -104,26 +108,40 @@ public class LoggerFieldBuilder {
 				public void run() {
 					manager.commitDocument(document);
 
-					PsiClass cls = classForPlace(place);
-					PsiJavaToken brace = cls.getLBrace();
+					try {
+						PsiClass cls = classForPlace(place);
+						PsiJavaToken brace = cls.getLBrace();
 
-					LogPsiElementFactory factory = LogPsiUtil.getFactory(place.getContainingFile());
-					LogFramework framework = LogConfiguration.getInstance(
-							place.getContainingFile()).getDefaultLogFramework();
+						LogPsiElementFactory factory = LogPsiUtil.getFactory(place.getContainingFile());
+						LogFramework framework = LogConfiguration.getInstance(
+								place.getContainingFile()).getDefaultLogFramework();
 
-					// TODO: Use better formatting strategy.
+						// TODO: Use better formatting strategy.
 
-					if (framework.isInsertLoggerAtEndOfClass()) {
-						cls.addBefore(factory.createWhiteSpaceFromText("\n\t"), brace);
-						cls.addBefore(field, brace);
-						cls.addBefore(factory.createWhiteSpaceFromText("\n"), brace);
-					} else {
-						cls.addAfter(factory.createWhiteSpaceFromText("\n"), brace);
-						cls.addAfter(field, brace);
-						cls.addAfter(factory.createWhiteSpaceFromText("\n\t"), brace);
+						PsiElement addedField;
+						if (framework.isInsertLoggerAtEndOfClass()) {
+							cls.addBefore(factory.createWhiteSpaceFromText("\n\t"), brace);
+							addedField = cls.addBefore(field, brace);
+							cls.addBefore(factory.createWhiteSpaceFromText("\n"), brace);
+						} else {
+							cls.addAfter(factory.createWhiteSpaceFromText("\n"), brace);
+							addedField = cls.addAfter(field, brace);
+							cls.addAfter(factory.createWhiteSpaceFromText("\n\t"), brace);
+						}
+
+						shortenFQNames(addedField);
+					} finally {
+						manager.doPostponedOperationsAndUnblockDocument(document);
 					}
+				}
 
-					manager.doPostponedOperationsAndUnblockDocument(document);
+				void shortenFQNames(PsiElement elementToFormat) {
+					try {
+						JavaCodeStyleManager javaStyle = JavaCodeStyleManager.getInstance(project);
+						javaStyle.shortenClassReferences(elementToFormat);
+					} catch (IncorrectOperationException e) {
+						LOG.error(e);
+					}
 				}
 			};
 		}
