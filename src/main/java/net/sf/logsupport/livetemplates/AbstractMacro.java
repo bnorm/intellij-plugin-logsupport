@@ -161,7 +161,7 @@ public abstract class AbstractMacro implements com.intellij.codeInsight.template
 			}
 
 			log.warn("Failed resolving a log method using logger class '" +
-					loggerClass + "', using default method name.");
+					loggerClass + "', using default method name instead.");
 		}
 		return level.name();
 	}

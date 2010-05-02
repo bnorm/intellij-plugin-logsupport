@@ -51,6 +51,7 @@ public class LogPsiUtil {
 	// Fixing compatibility issues between interfaces in IDEA 8 & 9 by using reflection to call.
 	//
 	private static Method computeConstantHelperMethod;
+
 	static {
 		try {
 			computeConstantHelperMethod = PsiConstantEvaluationHelper.class.
@@ -502,7 +503,8 @@ public class LogPsiUtil {
 			try {
 				return computeConstantHelperMethod.invoke(helper, expression, throwExceptionOnOverflow);
 			} catch (Exception e) {
-				LOG.warn("Failed dynamically invoking computeConstantExpression(), using unsafe direct call.");
+				LOG.warn("Failed to invoke computeConstantExpression() via reflection, " +
+						"using unsafe direct call (may break in some IDEA versions).");
 			}
 
 		return helper.computeConstantExpression(expression, throwExceptionOnOverflow);
