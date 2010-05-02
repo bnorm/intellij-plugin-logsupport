@@ -103,7 +103,7 @@ public class LogLevelSelectionPanel extends JPanel implements ItemListener {
 	/**
 	 * Adds a <code>ChangeListener</code> to the model.
 	 *
-	 * @param l the listener to add
+	 * @param l the okEnabledListener to add
 	 */
 	public void addChangeListener(ChangeListener l) {
 		model.addChangeListener(l);
@@ -112,7 +112,7 @@ public class LogLevelSelectionPanel extends JPanel implements ItemListener {
 	/**
 	 * Removes a <code>ChangeListener</code> from the model.
 	 *
-	 * @param l the listener to remove
+	 * @param l the okEnabledListener to remove
 	 */
 	public void removeChangeListener(ChangeListener l) {
 		model.removeChangeListener(l);

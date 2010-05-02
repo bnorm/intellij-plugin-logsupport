@@ -16,6 +16,7 @@
 
 package net.sf.logsupport.ui;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
@@ -23,9 +24,11 @@ import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import net.sf.logsupport.ui.util.AbstractEventListener;
 import net.sf.logsupport.ui.util.Dialogs;
+import net.sf.logsupport.util.Codec;
 
 import javax.swing.*;
 import java.io.File;
+import java.net.URI;
 import java.util.EventObject;
 
 /**
@@ -36,18 +39,38 @@ import java.util.EventObject;
  */
 public class ReviewSelectionTextField extends TextFieldWithBrowseButton {
 
+	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.ui.ReviewSelectionTextField");
+
 	public static final Key<String> REVIEW_FILE = Key.create("LOG_SUPPORT_LOG_REVIEW_FILE");
-	public static final String DEFAULT_REVIEW_NAME = "log-review.xhtml";
+
+	private Codec targetCodec;
 
 	public ReviewSelectionTextField(final Project project, boolean isGeneratingReport) {
 
-		String title = "Select file to write the review to";
+		String title = isGeneratingReport ?
+				"Select file to write the review to" :
+				"Select file to integrate";
+
 		addBrowseFolderListener(title, title, project,
 				new FileChooserDescriptor(true, isGeneratingReport, false, false, false, false) {
 					@Override
 					public boolean isFileVisible(VirtualFile file, boolean showHiddenFiles) {
-						if (!file.isDirectory())
-							return String.valueOf(file.getExtension()).contains("html");
+						if (!file.isDirectory() && file.isInLocalFileSystem()) {
+							try {
+								File f = new File(file.getPath());
+								if (targetCodec != null)
+									return targetCodec.isSupported(f);
+
+								for (Codec codec : Codec.SELECTOR.codecs()) {
+									if (codec.isSupported(f))
+										return true;
+								}
+							} catch (Throwable e) {
+								LOG.warn("Failed to evaluate whether a file can be used for a log review.", e);
+								return false;
+							}
+						}
+						
 						return super.isFileVisible(file, showHiddenFiles);
 					}
 				});
@@ -58,13 +81,13 @@ public class ReviewSelectionTextField extends TextFieldWithBrowseButton {
 			public void eventOccurred(EventObject e) {
 				String path = getText();
 				project.putUserData(REVIEW_FILE, path);
-				
-				if (!path.endsWith(File.separator) && new File(path).isDirectory()) {
+
+				if (targetCodec != null && !path.endsWith(File.separator) && new File(path).isDirectory()) {
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							File path = new File(getText());
-							if (path.isDirectory())
-								setText(getText() + File.separatorChar + DEFAULT_REVIEW_NAME);
+							if (targetCodec != null && path.isDirectory())
+								setText(getText() + File.separatorChar + targetCodec.getDefaultFilename());
 						}
 					});
 				}
@@ -72,6 +95,14 @@ public class ReviewSelectionTextField extends TextFieldWithBrowseButton {
 		});
 
 		setText(project.getUserData(REVIEW_FILE));
+	}
+
+	public Codec getTargetCodec() {
+		return targetCodec;
+	}
+
+	public void setTargetCodec(Codec targetCodec) {
+		this.targetCodec = targetCodec;
 	}
 
 	public File getReviewFile() {

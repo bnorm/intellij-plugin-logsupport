@@ -19,18 +19,18 @@ public class LoggingClass {
 
             log.info("Probieren wirs mal mit " + a +
                     " und " + b + ".");
-            log.info("Probieren wirs mal mit " + a +
-                    " und " + b + " und " + a + b + " {}! ", "a");
+            log.info("Probieren wirs mal und eine Änderung!! mit " + a +
+                    " und " + b + " und " + a + b + " {}! .. Und hinten dran auch.", "a");
 
             log.info("#SuperLOG-004ba:Probieren wirs mal mit " + a +
                     " und " + b + ".");
             log.info("#SuperLOG-004c4:Probieren wirs mal mit " + a +
-                    " und " + b + " und " + a + b + " {}! ", "a");
+                    " und " + b + " und " + a + b + " {}!", "a");
 
             log.info("#SuperLOG-00398:Noch ein neuer");
 
             final int name = 1;
-            log.info("#SuperLOG-00398:Mein name is '{}'", name);
+            log.info("#SuperLOG-00398:Mein name ist '{}'", name);
 
             log.warn("#SuperLOG-00492:asdasdasd");
 

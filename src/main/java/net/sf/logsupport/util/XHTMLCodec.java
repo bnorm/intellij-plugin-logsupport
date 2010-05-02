@@ -48,41 +48,50 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static net.sf.logsupport.util.XmlUtil.createDocumentBuilder;
+
 /**
- * Writes and reads log reviews.
+ * Writes and reads log reviews using the XHTML format.
  * <p/>
  * Note: Parts of the code are derived from IntentionPowerPack.
  *
  * @author Juergen_Kellerer, 2010-04-18
  * @version 1.0
  */
-public class LogReviewCodec extends LogMessageUtil {
+public class XHTMLCodec extends LogMessageUtil implements Codec {
 
 	public static final String MARKER_CONSTANT_VALUE = "#" + VARIABLE_ARTIFACT + "#";
 	public static final String MARKER_CONSTANT_BREAK = "#" + DELIMITED_ARTIFACT + "#";
 	public static final Pattern SPLIT_PATTERN = Pattern.compile(
 			"(" + Pattern.quote(MARKER_CONSTANT_VALUE) + "|" + Pattern.quote(MARKER_CONSTANT_BREAK) + ")");
 
-	File logReview;
-
-	public LogReviewCodec(File logReview) {
-		this.logReview = logReview;
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getName() {
+		return "XHTML Document (*.xhtml)";
 	}
 
-	private DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
-		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		builder.setEntityResolver(new EntityResolver() {
-			public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
-				InputStream source = !systemId.startsWith("file:") ? null :
-						getClass().getResourceAsStream("/net/sf/logsupport/" + new File(URI.create(systemId)).getName());
-				return source == null ? new InputSource(new StringReader("")) : new InputSource(source);
-			}
-		});
-		return builder;
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getDefaultFilename() {
+		return "log-review.xhtml";
 	}
 
-	@NotNull 
-	public List<LogMessage> decode() throws IOException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isSupported(@NotNull File logReview) throws IOException {
+		String name = logReview.getName().toLowerCase();
+		return name.endsWith(".xhtml") || name.endsWith(".html");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@NotNull
+	public List<LogMessage> decode(@NotNull File logReview) throws IOException {
 
 		List<LogMessage> results = new ArrayList<LogMessage>();
 
@@ -159,17 +168,15 @@ public class LogReviewCodec extends LogMessageUtil {
 		return results;
 	}
 
-	public void encode(@NotNull List<PsiMethodCallExpression> expressionList) throws IOException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public void encode(@NotNull List<PsiMethodCallExpression> expressionList, @NotNull File logReview) throws IOException {
 		if (expressionList.isEmpty())
 			return;		
 
-		Document template;
-		try {
-			DocumentBuilder builder = createDocumentBuilder();
-			template = builder.parse(getClass().getResourceAsStream("/net/sf/logsupport/LogReview.template.xhtml"));
-		} catch (Exception e) {
-			throw new IOException(e);
-		}
+		final Document template = XmlUtil.parse(
+				getClass().getResourceAsStream("/net/sf/logsupport/LogReview.template.xhtml"));
 
 		String title = "Log Review for Project \"" + expressionList.get(0).getProject().getName() + '"';
 		template.getElementsByTagName("title").item(0).setTextContent(title);
@@ -237,12 +244,11 @@ public class LogReviewCodec extends LogMessageUtil {
 		}
 
 		// Write the document.
-		try {
-			Transformer t = TransformerFactory.newInstance().newTransformer();
-			t.setOutputProperty(OutputKeys.ENCODING, UTF8.name());
-			t.transform(new DOMSource(template), new StreamResult(logReview));
-		} catch (TransformerException e) {
-			throw new IOException(e);
-		}
+		XmlUtil.serialize(template, logReview);
+	}
+
+	@Override
+	public String toString() {
+		return getName();
 	}
 }

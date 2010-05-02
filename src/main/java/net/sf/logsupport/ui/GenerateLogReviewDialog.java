@@ -28,8 +28,8 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethodCallExpression;
 import net.sf.logsupport.config.LogLevel;
 import net.sf.logsupport.ui.util.AbstractEventListener;
+import net.sf.logsupport.util.Codec;
 import net.sf.logsupport.util.LogPsiUtil;
-import net.sf.logsupport.util.LogReviewCodec;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -85,6 +85,7 @@ public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
 	};
 
 	private final ReviewSelectionTextField outputFile;
+	private JComboBox outputFileFormatSelection;
 
 	private JPanel outputOptions;
 	private JPanel outputFileContainer;
@@ -93,6 +94,13 @@ public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
 	private JList outputSortOrder;
 
 	List<PsiMethodCallExpression> reviewableCalls = new LinkedList<PsiMethodCallExpression>();
+
+	AbstractEventListener okEnabledListener = new AbstractEventListener() {
+		@Override
+		public void eventOccurred(EventObject e) {
+			setOKActionEnabled(!selectionPanel.getSelectedLevels().isEmpty());
+		}
+	};
 
 	public GenerateLogReviewDialog(final Project project, List<VirtualFile> sources) {
 		super(project, sources);
@@ -105,6 +113,34 @@ public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
 		outputFile = new ReviewSelectionTextField(project, true);
 		outputFileContainer.add(BorderLayout.CENTER, outputFile);
 
+
+		// Configure the codecs.
+		for (Codec codec : Codec.SELECTOR.codecs())
+			outputFileFormatSelection.addItem(codec);
+
+		outputFileFormatSelection.addItemListener(new AbstractEventListener() {
+			@Override
+			public void eventOccurred(EventObject e) {
+				outputFile.setTargetCodec((Codec) outputFileFormatSelection.getSelectedItem());
+			}
+		});
+		outputFileFormatSelection.addItemListener(okEnabledListener);
+
+		File reviewFile = outputFile.getReviewFile();
+		if (reviewFile != null) {
+			for (Codec codec : Codec.SELECTOR.codecs()) {
+				try {
+					if (codec.isSupported(reviewFile))
+						outputFileFormatSelection.setSelectedItem(codec);
+				} catch (IOException e) {
+					// ignore.
+				}
+			}
+		} else if (outputFileFormatSelection.getItemCount() > 0)
+			outputFileFormatSelection.setSelectedIndex(0);
+
+
+		// Configure sorting
 		Comparator[] sortOrder = project.getUserData(SORT_ORDER);
 		if (sortOrder == null)
 			sortOrder = SORT_COMPARATORS;
@@ -130,15 +166,8 @@ public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
 		moveUpButton.setAction(new MoveSortOrderAction(true));
 		moveDownButton.setAction(new MoveSortOrderAction(false));
 
-		AbstractEventListener listener = new AbstractEventListener() {
-			@Override
-			public void eventOccurred(EventObject e) {
-				setOKActionEnabled(!selectionPanel.getSelectedLevels().isEmpty());
-			}
-		};
-
-		outputFile.getTextField().getDocument().addDocumentListener(listener);
-		listener.eventOccurred(null);
+		outputFile.getTextField().getDocument().addDocumentListener(okEnabledListener);
+		okEnabledListener.eventOccurred(null);
 	}
 
 	@Override
@@ -150,7 +179,18 @@ public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
 				isEnabled = parent != null && parent.isDirectory();
 			} else
 				isEnabled = path.isFile();
+
+			if (isEnabled) {
+				Codec selectedCodec = (Codec) outputFileFormatSelection.getSelectedItem();
+				try {
+					isEnabled = selectedCodec.isSupported(path);
+				} catch (IOException e) {
+					LOG.warn("Failed to validate whether the selected codec support writing to " + path, e);
+					isEnabled = false;
+				}
+			}
 		}
+
 		super.setOKActionEnabled(isEnabled);
 	}
 
@@ -232,7 +272,9 @@ public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
 
 				// Create the report.
 				try {
-					new LogReviewCodec(reviewFile).encode(reviewableCalls);
+					Codec codec = Codec.SELECTOR.select(reviewFile);
+					if (codec != null)
+						codec.encode(reviewableCalls, reviewFile);
 
 					// Open the file afterwards, using the system default viewer.
 					if (Desktop.isDesktopSupported() && reviewFile.exists())

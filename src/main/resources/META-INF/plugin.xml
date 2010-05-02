@@ -77,6 +77,12 @@
 
 	<change-notes><![CDATA[
 		<ul>
+			<li>1.1
+				<ol>
+					<li>Added support for log reviews in Open Document Spreadsheet (*.ods) format.</li>
+					<li>Improved documentation.</li>
+				</ol>
+			</li>
 			<li>1.0.2
 				<ol>
 					<li>Fixed bugs in the action "Integrate Log Review".</li>
@@ -98,7 +104,7 @@
 		</ul>
 	]]></change-notes>
 
-	<version>1.0.2</version>
+	<version>1.1</version>
 	<vendor>Juergen Kellerer</vendor>
 	<category>Code tools</category>
 

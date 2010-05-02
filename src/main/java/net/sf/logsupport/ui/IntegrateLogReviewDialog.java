@@ -19,11 +19,10 @@ package net.sf.logsupport.ui;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.uiDesigner.core.Spacer;
 import net.sf.logsupport.L10N;
 import net.sf.logsupport.ui.util.AbstractEventListener;
+import net.sf.logsupport.util.Codec;
 import net.sf.logsupport.util.LogMessageUtil;
-import net.sf.logsupport.util.LogReviewCodec;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -91,7 +90,7 @@ public class IntegrateLogReviewDialog extends DialogWrapper {
 		centerPanel.setBorder(BorderFactory.createTitledBorder(L10N.message("IntegrateLogReview.selectTitle")));
 
 		centerPanel.add(BorderLayout.NORTH, reviewFileLabel);
-		
+
 		setOKButtonText(L10N.message("IntegrateLogReview.command"));
 		init();
 	}
@@ -125,7 +124,11 @@ public class IntegrateLogReviewDialog extends DialogWrapper {
 			centerPanel.remove(contentInfoLabel);
 
 			try {
-				reviewedMessages = new LogReviewCodec(file).decode();
+				Codec codec = Codec.SELECTOR.select(file);
+				if (codec == null)
+					throw new IOException("Did not find a codec to decode the file '" + file + "'.");
+
+				reviewedMessages = codec.decode(file);
 				parsedFile = file;
 
 				contentInfoLabel.setText(L10N.message("IntegrateLogReview.contentInfo", reviewedMessages.size()));
