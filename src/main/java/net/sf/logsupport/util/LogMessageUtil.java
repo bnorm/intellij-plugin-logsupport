@@ -39,7 +39,7 @@ public class LogMessageUtil {
 	public static final String DELIMITED_ARTIFACT = "/";
 	public static final String VARIABLE_ARTIFACT = "?";
 
-	static final Charset UTF8 = Charset.forName("UTF8");
+	static final Charset UTF8 = Charset.forName("UTF-8");
 
 	/**
 	 * Converts the given list of log expression to an message map.

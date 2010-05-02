@@ -3,6 +3,7 @@
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
+  <component name="IdProvider" IDEtalkID="308F7A18BCAC21C0ED129E3788AF608C" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
@@ -33,6 +34,13 @@
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IC-93.94" project-jdk-type="IDEA JDK">
     <output url="file://$PROJECT_DIR$/output" />
   </component>
+  <component name="ResourceManagerContainer">
+    <option name="myResourceBundles">
+      <value>
+        <list size="0" />
+      </value>
+    </option>
+  </component>
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
       <map>
@@ -46,6 +54,18 @@
       </map>
     </option>
     <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
+  <component name="XSLT-Support.FileAssociationsManager">
+    <file url="file://$PROJECT_DIR$/src/main/resources/net/sf/logsupport/LogReview.template.ods.style.xsl">
+      <association url="file://$PROJECT_DIR$/src/main/resources/net/sf/logsupport/LogReview.template.xhtml" />
+    </file>
+    <file url="file://$PROJECT_DIR$/src/main/resources/net/sf/logsupport/LogReview.template.ods.content.xsl">
+      <association url="file://$PROJECT_DIR$/src/main/resources/net/sf/logsupport/LogReview.template.xhtml" />
+    </file>
+    <file url="file://$PROJECT_DIR$/src/main/resources/net/sf/logsupport/LogReview.import.ods.xsl">
+      <association url="file://$PROJECT_DIR$/test.xml" />
+    </file>
   </component>
 </project>
 

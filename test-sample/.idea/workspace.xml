@@ -60,19 +60,19 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="LoggingClass.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="LoggingClass.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/log4j/LoggingClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="18" selection-start="1138" selection-end="1138" vertical-scroll-proportion="0.72540385">
+            <state line="35" column="35" selection-start="1045" selection-end="1045" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoggingClass.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="LoggingClass.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="289" selection-end="289" vertical-scroll-proportion="0.0">
+            <state line="35" column="0" selection-start="1105" selection-end="1105" vertical-scroll-proportion="0.5506608">
               <folding />
             </state>
           </provider>
@@ -106,7 +106,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/.idea/logsupport/settings.xml" />
         <option value="$PROJECT_DIR$/report.xhtml" />
         <option value="$PROJECT_DIR$/review.html" />
@@ -114,9 +113,15 @@
         <option value="$PROJECT_DIR$/src/test/java/net/sf/logsupport/logback/LoggingClassTest.java" />
         <option value="$PROJECT_DIR$/../../../../Sandbox/log-review.xhtml" />
         <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Empty.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/log4j/LoggingClass.java" />
+        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/test.xml" />
+        <option value="$PROJECT_DIR$/../../../../Sandbox/temp/log-review/styles.xml" />
+        <option value="$PROJECT_DIR$/../../../../Sandbox/temp/log-review/content.xml" />
+        <option value="$PROJECT_DIR$/../../../../Sandbox/temp/content.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/content-good.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/content.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java" />
       </list>
     </option>
   </component>
@@ -176,8 +181,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Favorites" />
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -288,7 +293,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Favorites" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -301,7 +306,7 @@
     <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="options.lastSelected" value="com.intellij.profile.codeInspection.ui.ProjectInspectionToolsConfigurable" />
-    <property name="last_opened_file_path" value="C:\Projects\Sandbox" />
+    <property name="last_opened_file_path" value="C:\Projects\Sandbox\temp" />
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -523,28 +528,29 @@
         <state line="134" column="75" selection-start="4658" selection-end="4658" vertical-scroll-proportion="0.3359375" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../../../Sandbox/temp/log-review/styles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.5976505" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/log4j/LoggingClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="35" selection-start="1045" selection-end="1045" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/net/sf/logsupport/logback/LoggingClassTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="0" selection-start="147" selection-end="147" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="289" selection-end="289" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="23" selection-start="630" selection-end="630" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="28" column="23" selection-start="630" selection-end="630" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/log4j/LoggingClass.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="18" selection-start="1138" selection-end="1138" vertical-scroll-proportion="0.72540385">
+        <state line="35" column="0" selection-start="1105" selection-end="1105" vertical-scroll-proportion="0.5506608">
           <folding />
         </state>
       </provider>
