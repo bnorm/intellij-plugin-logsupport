@@ -134,7 +134,7 @@ public class IntegrateLogReviewDialog extends DialogWrapper {
 				contentInfoLabel.setText(L10N.message("IntegrateLogReview.contentInfo", reviewedMessages.size()));
 				centerPanel.add(BorderLayout.SOUTH, contentInfoLabel);
 			} catch (IOException e1) {
-				LOG.warn("Failed to read log review, on the attempt to prepare a log integration.", e1);
+				LOG.warn("Failed to read the log review on the attempt to prepare a log integration.", e1);
 				centerPanel.add(BorderLayout.SOUTH, invalidFileLabel);
 			}
 

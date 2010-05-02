@@ -66,11 +66,11 @@ public class ReviewSelectionTextField extends TextFieldWithBrowseButton {
 										return true;
 								}
 							} catch (Throwable e) {
-								LOG.warn("Failed to evaluate whether a file can be used for a log review.", e);
+								LOG.warn("Failed to evaluate whether the file can be used for a log review.", e);
 								return false;
 							}
 						}
-						
+
 						return super.isFileVisible(file, showHiddenFiles);
 					}
 				});

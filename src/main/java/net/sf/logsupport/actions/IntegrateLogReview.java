@@ -62,7 +62,7 @@ public class IntegrateLogReview extends AbstractAction {
 			final PsiManager manager = PsiManager.getInstance(project);
 			final Map<PsiFile, Map<LogMessage, List<LogMessage>>> mappedMessages = getMappedMessages(manager);
 
-			LOG.info("Identifying files that contain reviewed messages.");
+			LOG.info("Identifying files that contain messages that were changed in the log review process.");
 			final int pendingChangeCount = removeAllUnchangedMessages(mappedMessages, reviewedMessages);
 
 			if (mappedMessages.isEmpty()) {
