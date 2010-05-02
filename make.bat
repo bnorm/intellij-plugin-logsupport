@@ -1,4 +1,12 @@
 @echo off
+SETLOCAL
+SET JDK32=C:\Projects\DevEnv\jdk32
+
+IF EXIST %JDK32% (
+	echo.
+	echo Ensuring build is 32bit, using JDK %JDK32%
+	SET JAVA_HOME=%JDK32%
+)
 
 IF NOT EXIST "%ProgramFiles%\JetBrains" (
 	echo.
@@ -9,3 +17,5 @@ IF NOT EXIST "%ProgramFiles%\JetBrains" (
 
 @echo on
 mvn clean assembly:assembly site
+
+ENDLOCAL
