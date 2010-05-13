@@ -57,6 +57,7 @@ public class AddLogIdsDialog extends AbstractLogLevelAwareDialog {
 			protected void processExpression(PsiMethodCallExpression expression) {
 				PsiLiteralExpression le = findSupportedLiteralExpression(expression.getArgumentList());
 				addLogIdIntention.invoke(le);
+				markChanged();
 			}
 		};
 	}

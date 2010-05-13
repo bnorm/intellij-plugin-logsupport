@@ -74,6 +74,8 @@ public class AddOrReplaceLogIdsDialog extends AbstractLogLevelAwareDialog {
 					addLogIdIntention.invoke(le);
 				else
 					replaceLogIdIntention.invoke(le);
+
+				markChanged();
 			}
 		};
 	}

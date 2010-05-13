@@ -16,9 +16,11 @@
 
 package net.sf.logsupport.ui;
 
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethodCallExpression;
 import net.sf.logsupport.config.LogLevel;
@@ -87,6 +89,7 @@ public abstract class AbstractLogLevelAwareDialog extends AbstractProcessingDial
 	protected abstract class LogLevelAwareRunnable implements Runnable {
 
 		private final List<PsiFile> files;
+		private boolean changed;
 
 		protected LogLevelAwareRunnable(List<PsiFile> files) {
 			this.files = files;
@@ -102,11 +105,30 @@ public abstract class AbstractLogLevelAwareDialog extends AbstractProcessingDial
 		}
 
 		protected void processFile(PsiFile psiFile) {
+			changed = false;
 			for (PsiMethodCallExpression expression : LogPsiUtil.findSupportedLoggerCalls(psiFile)) {
 				if (!isLoggerCallInSelectedLevel(expression))
 					continue;
 				processExpression(expression);
-			}			
+			}
+
+			// Committing the changes
+			if (isChanged()) {
+				PsiDocumentManager manager = PsiDocumentManager.getInstance(psiFile.getProject());
+				Document doc = psiFile.getViewProvider().getDocument();
+				if (doc == null)
+					manager.commitAllDocuments();
+				else
+					manager.commitDocument(doc);
+			}
+		}
+
+		protected void markChanged() {
+			changed = true;
+		}
+
+		protected boolean isChanged() {
+			return changed;
 		}
 
 		protected abstract void processExpression(PsiMethodCallExpression expression);

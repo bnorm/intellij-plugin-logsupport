@@ -57,6 +57,7 @@ public class RemoveLogIdsDialog extends AbstractLogLevelAwareDialog {
 			protected void processExpression(PsiMethodCallExpression expression) {
 				PsiLiteralExpression le = findSupportedLiteralExpression(expression.getArgumentList());
 				removeLogIdIntention.invoke(le);
+				markChanged();
 			}
 		};
 	}

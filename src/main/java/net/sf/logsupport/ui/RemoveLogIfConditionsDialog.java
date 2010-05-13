@@ -71,26 +71,25 @@ public class RemoveLogIfConditionsDialog extends AbstractLogLevelAwareDialog {
 		return new LogLevelAwareRunnable(files) {
 
 			private final RemoveLogIfConditionIntention intention = new RemoveLogIfConditionIntention();
-			private boolean changed;
 
 			@Override
 			protected void processExpression(PsiMethodCallExpression expression) {
 				if (expression != null && intention.isAvailable(expression)) {
 					intention.doInvoke(expression);
-					changed = true;
+					markChanged();
 				}
 			}
 
 			@Override
 			protected void processFile(PsiFile psiFile) {
-				changed = false;
 				super.processFile(psiFile);
 
 				// We need to apply code formatting when changes occurred.
-				if (changed) {
-					ReformatCodeProcessor processor =
+				if (isChanged()) {
+					// THIS DOESN'T WORK (and it doesn't seem to be necessary either...)
+					/*ReformatCodeProcessor processor =
 							new ReformatCodeProcessor(psiFile.getProject(), psiFile, psiFile.getTextRange());
-					processor.runWithoutProgress();
+					processor.runWithoutProgress();*/
 				}
 			}
 		};
