@@ -60,7 +60,7 @@ public abstract class AbstractLogIntention extends AbstractIntentionAction {
 	}
 
 	public void invoke(PsiMethodCallExpression expression) {
-		if (expression != null && isAvailable(expression))
+		if (expression != null && expression.isWritable() && isAvailable(expression))
 			doInvoke(expression);
 	}
 

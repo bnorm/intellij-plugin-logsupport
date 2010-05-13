@@ -66,7 +66,7 @@ public class IntegrateLogReview extends AbstractAction {
 			final int pendingChangeCount = removeAllUnchangedMessages(mappedMessages, reviewedMessages);
 
 			if (mappedMessages.isEmpty()) {
-				LOG.info("Not applying any reviewed message, operation was either cancelled or " +
+				LOG.info("Not applying any reviewed message, operation was either canceled or " +
 						"review did not contain any changes.");
 				return;
 			}
@@ -283,7 +283,7 @@ public class IntegrateLogReview extends AbstractAction {
 		try {
 			cancelCheckMethod = ProgressManager.class.getMethod("checkCanceled");
 		} catch (NoSuchMethodException e) {
-			LOG.warn("Couldn't find method to check for cancel, integrations will no be stopable.");
+			LOG.warn("Couldn't find method to check for cancel, integrations will no be stoppable.");
 		}
 	}
 }
