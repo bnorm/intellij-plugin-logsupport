@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ChangeListManager" verified="true">
+  <component name="ChangeListManager">
     <list default="true" readonly="true" id="cf2e8f47-36c5-410e-b495-2125a630d554" name="Default" comment="" />
     <ignored path="Log Framework Tests.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -69,10 +69,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoggingClass.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="LoggingClass.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="0" selection-start="1105" selection-end="1105" vertical-scroll-proportion="0.5506608">
+            <state line="46" column="50" selection-start="1415" selection-end="1415" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FacesInitializer.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/FacesInitializer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="46" column="9" selection-start="1698" selection-end="1698" vertical-scroll-proportion="0.525">
               <folding />
             </state>
           </provider>
@@ -106,8 +115,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/.idea/logsupport/settings.xml" />
-        <option value="$PROJECT_DIR$/report.xhtml" />
         <option value="$PROJECT_DIR$/review.html" />
         <option value="$PROJECT_DIR$/log-review.xhtml" />
         <option value="$PROJECT_DIR$/src/test/java/net/sf/logsupport/logback/LoggingClassTest.java" />
@@ -122,6 +129,8 @@
         <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/content-good.xml" />
         <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/content.xml" />
         <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java" />
+        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/RealCode.java" />
+        <option value="$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/FacesInitializer.java" />
       </list>
     </option>
   </component>
@@ -183,6 +192,7 @@
     <panes>
       <pane id="Favorites" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -293,7 +303,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -441,7 +450,7 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
-  <component name="SvnConfiguration">
+  <component name="SvnConfiguration" maxAnnotateRevisions="500">
     <option name="USER" value="" />
     <option name="PASSWORD" value="" />
     <option name="LAST_MERGED_REVISION" />
@@ -490,6 +499,8 @@
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
     <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
     <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="true" />
+    <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="LAST_COMMIT_MESSAGE" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
@@ -538,6 +549,11 @@
         <state line="35" column="35" selection-start="1045" selection-end="1045" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="50" selection-start="1415" selection-end="1415" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/net/sf/logsupport/logback/LoggingClassTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="0" selection-start="147" selection-end="147" vertical-scroll-proportion="0.0" />
@@ -548,9 +564,9 @@
         <state line="28" column="23" selection-start="630" selection-end="630" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/LoggingClass.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/FacesInitializer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="0" selection-start="1105" selection-end="1105" vertical-scroll-proportion="0.5506608">
+        <state line="46" column="9" selection-start="1698" selection-end="1698" vertical-scroll-proportion="0.525">
           <folding />
         </state>
       </provider>
