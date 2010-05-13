@@ -60,9 +60,9 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 			if (expectedStatement == null)
 				return null;
 
-			int levels = 5;
+			int levels = 50;
 			PsiElement element = expression;
-			while (levels-- > 0) {
+			while (levels-- > 0 && element != null && !(element instanceof PsiMethod)) {
 				element = element.getParent();
 				if (element instanceof PsiIfStatement) {
 					PsiExpression e1 = ((PsiIfStatement) element).getCondition();
