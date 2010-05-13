@@ -81,6 +81,8 @@
 				<ol>
 					<li>Added support for log reviews in Open Document Spreadsheet (*.ods) format.</li>
 					<li>Improved documentation.</li>
+					<li>Fixed serious code corruption bug in the recursive addition and removal
+					of 'if' conditions.</li>
 				</ol>
 			</li>
 			<li>1.0.2

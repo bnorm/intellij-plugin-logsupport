@@ -20,6 +20,7 @@ import com.intellij.codeInsight.actions.ReformatCodeProcessor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethodCallExpression;
 import net.sf.logsupport.config.LogLevel;
@@ -68,26 +69,25 @@ public class AddLogIfConditionsDialog extends AbstractLogLevelAwareDialog {
 		return new LogLevelAwareRunnable(files) {
 
 			private final AddLogIfConditionIntention intention = new AddLogIfConditionIntention();
-			private boolean changed;
+
 
 			@Override
 			protected void processExpression(PsiMethodCallExpression expression) {
 				if (expression != null && intention.isAvailable(expression)) {
 					intention.doInvoke(expression);
-					changed = true;
+					markChanged();
 				}
 			}
 
 			@Override
 			protected void processFile(PsiFile psiFile) {
-				changed = false;
 				super.processFile(psiFile);
 
-				// We need to apply code formatting when changes occurred.
-				if (changed) {
-					ReformatCodeProcessor processor =
+				if (isChanged()) {
+					// THIS DOESN'T WORK (and it doesn't seem to be necessary either...)
+					/*ReformatCodeProcessor processor =
 							new ReformatCodeProcessor(psiFile.getProject(), psiFile, psiFile.getTextRange());
-					processor.runWithoutProgress();
+					processor.runWithoutProgress();*/
 				}
 			}
 		};
