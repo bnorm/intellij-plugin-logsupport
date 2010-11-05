@@ -69,7 +69,7 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 			// Check whether we need to add a if condition or add a log id.
 			PsiMethodCallExpression expression = LogPsiUtil.findSupportedMethodCallExpression(editor, file);
 			if (expression != null)
-				ifConditionIntention.invoke(expression);			
+				ifConditionIntention.invoke(expression);
 
 			// Process pending runnables
 			Runnable runnable = file.getUserData(PENDING_RUNNABLE);
@@ -97,7 +97,21 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 	 * {@inheritDoc}
 	 */
 	public boolean isEnabled(Template template) {
-		return String.valueOf(template.getId()).startsWith("logsupport-");
+		String id;
+		try {
+			id = String.valueOf(template.getId());
+		} catch (IncompatibleClassChangeError e) {
+			try {
+				Class<?> cls = template.getClass();
+				id = String.valueOf(cls.getMethod("getId").invoke(template));
+			} catch (Exception ee) {				
+				log.error("Failed to retrieve the template id of '" + template +
+						"', disabling template post-processor here.", e);
+				return false;
+			}
+		}
+
+		return id.startsWith("logsupport-");
 	}
 
 	/**
