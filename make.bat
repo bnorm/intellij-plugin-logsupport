@@ -16,6 +16,6 @@ IF NOT EXIST "%ProgramFiles%\JetBrains" (
 )
 
 @echo on
-mvn clean assembly:assembly site
+mvn clean package site
 
 ENDLOCAL
