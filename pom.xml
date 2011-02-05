@@ -37,7 +37,7 @@
 
 	<properties>
 		<idea.name>IntelliJ IDEA</idea.name>
-		<idea.version>9</idea.version>
+		<idea.version>8</idea.version>
 		<!--idea.version>Community Edition 9</idea.version-->
 		<idea.home>/opt/non-free/idea${idea.version}</idea.home>
 	</properties>
