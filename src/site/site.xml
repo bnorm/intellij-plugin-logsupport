@@ -56,8 +56,9 @@
 
 		<menu name="Resources">
 			<item name="SF Project Page" href="http://sourceforge.net/projects/logsupport/"/>
-			<item name="Built with Hudson" href="http://www.tinyjee.org/hudson/job/Log%20Support%20-%20IDEA%20Plugin%20(Trunk)/"/>
-			<item name="QA'ed by Sonar" href="http://www.tinyjee.org/sonar/"/>
+			<item name="Latest Snapshot (Hudson)"
+				  href="http://www.tinyjee.org/hudson/job/Log%20Support%20-%20IDEA%20Plugin%20(Trunk)/lastSuccessfulBuild/"/>
+			<item name="QA Report (Sonar)" href="http://www.tinyjee.org/sonar/dashboard/index/net.sf.logsupport:idea-plugin"/>
 		</menu>
 
 		<menu ref="reports"/>
