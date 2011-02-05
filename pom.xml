@@ -36,6 +36,9 @@
 	</description>
 
 	<properties>
+		<svn.tag>trunk</svn.tag>
+		<hudson.tag>Trunk</hudson.tag>
+
 		<idea.name>IntelliJ IDEA</idea.name>
 		<idea.version>8</idea.version>
 		<!--idea.version>Community Edition 9</idea.version-->
@@ -91,10 +94,14 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://logsupport.svn.sourceforge.net/svnroot/logsupport/trunk</connection>
-		<tag>HEAD</tag>
-		<url>http://logsupport.svn.sourceforge.net/viewvc/logsupport/trunk/</url>
+		<connection>scm:svn:https://logsupport.svn.sourceforge.net/svnroot/logsupport/${svn.tag}</connection>
+		<url>http://logsupport.svn.sourceforge.net/viewvc/logsupport/${svn.tag}/</url>
 	</scm>
+
+	<ciManagement>
+		<system>hudson</system>
+		<url>http://www.tinyjee.org/hudson/job/Log%20Support%20-%20IDEA%20Plugin%20(${hudson.tag})/</url>
+	</ciManagement>
 
 	<build>
 		<finalName>logsupport-plugin</finalName>
