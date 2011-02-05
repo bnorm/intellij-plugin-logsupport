@@ -28,6 +28,14 @@
 			<meta name="keywords" content="log, framework, intellij, idea, plugin, 
 				log4j, logback, slf4j, java.util.logging, logger, logfactory,
 				commons-logging"/>
+			<script type="text/javascript" src="http://piwik.tinyjee.org/piwik.js"></script>
+			<script type="text/javascript">
+				try {
+				var piwikTracker = Piwik.getTracker("http://piwik.tinyjee.org/piwik.php", 5);
+				piwikTracker.trackPageView();
+				piwikTracker.enableLinkTracking();
+				} catch( err ) {}
+			</script>
 		</head>
 
 		<breadcrumbs>
@@ -38,13 +46,18 @@
 			<item name="About" href="index.html"/>
 			<item name="Download" href="http://plugins.intellij.net/plugin/?idea&amp;id=4953"/>
 			<item name="Release Notes" href="http://plugins.intellij.net/plugin/?idea&amp;id=4953"/>
-			<item name="SF Project Page" href="http://sourceforge.net/projects/logsupport/"/>
 		</menu>
 
 		<menu name="Guides">
 			<item name="Quick Start Guide" href="quickStartGuide.html"/>
 			<item name="Log ID Guide" href="logIDGuide.html"/>
 			<item name="Log Review Guide" href="logReviewGuide.html"/>
+		</menu>
+
+		<menu name="Resources">
+			<item name="SF Project Page" href="http://sourceforge.net/projects/logsupport/"/>
+			<item name="Built with Hudson" href="http://www.tinyjee.org/hudson/job/Log%20Support%20-%20IDEA%20Plugin%20(Trunk)/"/>
+			<item name="QA'ed by Sonar" href="http://www.tinyjee.org/sonar/"/>
 		</menu>
 
 		<menu ref="reports"/>

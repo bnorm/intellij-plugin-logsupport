@@ -5,6 +5,7 @@
     <scope name="LogBack Scope" pattern="src[Log Framework Tests]:net.sf.logsupport.logback..*" />
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
+  <component name="IdProvider" IDEtalkID="2C5A6605A5C5863FBAB626FE36189FD5" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
@@ -54,5 +55,6 @@
   <component name="SvnBranchConfigurationManager">
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>
 

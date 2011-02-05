@@ -25,13 +25,13 @@
 
 	<groupId>net.sf.logsupport</groupId>
 	<artifactId>idea-plugin</artifactId>
-	<version>1.1</version>
-	
+	<version>1.1-SNAPSHOT</version>
+
 	<inceptionYear>2010</inceptionYear>
 	<url>https://logsupport.sf.net/</url>
 	<name>Log Support - IntelliJ IDEA Plugin</name>
 	<description>
-		A plugin that simplifies the usage of various log frameworks 
+		A plugin that simplifies the usage of various log frameworks
 		in IntelliJ IDEA
 	</description>
 
@@ -78,7 +78,7 @@
 	<scm>
 		<connection>scm:svn:https://logsupport.svn.sourceforge.net/svnroot/logsupport/trunk</connection>
 		<tag>HEAD</tag>
-		<url>http://logsupport.svn.sourceforge.net/viewvc/logsupport/trunk/</url>		
+		<url>http://logsupport.svn.sourceforge.net/viewvc/logsupport/trunk/</url>
 	</scm>
 
 	<build>
@@ -94,18 +94,19 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2-beta-5</version>
+				<version>2.2</version>
 				<configuration>
 					<descriptors>
 						<descriptor>assembly.xml</descriptor>
 						<descriptor>source-assembly.xml</descriptor>
 					</descriptors>
+					<attach>true</attach>
 				</configuration>
 				<executions>
 					<execution>
 						<phase>package</phase>
 						<goals>
-							<goal>assembly</goal>
+							<goal>single</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -155,6 +156,30 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<configLocation>
+						http://www.tinyjee.org/sonar/profiles/export?format=checkstyle&amp;language=java&amp;name=Java%2520-%2520Relaxed%2520Rules
+					</configLocation>
+				</configuration>
+			</plugin>
+
+			<!--plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<failOnError>false</failOnError>
+					<xmlOutput>true</xmlOutput>
+					<includeFilterFile>
+						http://www.tinyjee.org/sonar/profiles/export?format=findbugs&amp;language=java&amp;name=Java%2520-%2520Relaxed%2520Rules
+					</includeFilterFile>
+				</configuration>
+			</plugin-->
 		</plugins>
 	</reporting>
 
