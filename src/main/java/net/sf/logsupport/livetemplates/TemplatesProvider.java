@@ -29,7 +29,17 @@ public class TemplatesProvider implements DefaultLiveTemplatesProvider {
 
 	private static final String[] TEMPLATES = {"/liveTemplates/logsupport"};
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public String[] getDefaultLiveTemplateFiles() {
 		return TEMPLATES.clone();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public String[] getHiddenLiveTemplateFiles() {
+		return new String[0];
 	}
 }

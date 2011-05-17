@@ -119,4 +119,11 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 	 */
 	public void setEnabled(Template template, boolean b) {
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isVisible(Template template) {
+		return false;
+	}
 }

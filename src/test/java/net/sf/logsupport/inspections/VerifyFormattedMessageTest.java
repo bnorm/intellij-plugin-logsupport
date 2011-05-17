@@ -16,7 +16,6 @@
 
 package net.sf.logsupport.inspections;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -27,7 +26,6 @@ import static org.junit.Assert.*;
  * @author Juergen_Kellerer, 2010-04-28
  * @version 1.0
  */
-@Ignore("requires fixing in maven build") 
 public class VerifyFormattedMessageTest {
 
 	VerifyFormattedMessage inspection = new VerifyFormattedMessage();

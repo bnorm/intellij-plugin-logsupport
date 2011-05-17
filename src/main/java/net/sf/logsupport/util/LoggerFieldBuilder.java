@@ -110,7 +110,7 @@ public class LoggerFieldBuilder {
 
 					try {
 						PsiClass cls = classForPlace(place);
-						PsiJavaToken brace = cls.getLBrace();
+						PsiElement brace = cls.getLBrace();
 
 						LogPsiElementFactory factory = LogPsiUtil.getFactory(place.getContainingFile());
 						LogFramework framework = LogConfiguration.getInstance(

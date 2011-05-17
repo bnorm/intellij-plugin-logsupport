@@ -17,6 +17,7 @@
 package net.sf.logsupport.inspections;
 
 import com.intellij.codeInspection.InspectionManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.*;
 import net.sf.logsupport.config.LogFramework;
 import net.sf.logsupport.util.LogPsiUtil;
@@ -33,6 +34,8 @@ import java.util.List;
  * @version 1.0
  */
 public abstract class AbstractFormattedMessageInspection extends AbstractInspection {
+
+	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.inspections.AbstractFormattedMessageInspection");
 
 	@NotNull
 	List<Object> getLogCallArgumentDefaults(PsiMethodCallExpression expression, boolean includeThrowables) {
@@ -90,26 +93,31 @@ public abstract class AbstractFormattedMessageInspection extends AbstractInspect
 	Object createDefaultValueFor(PsiExpression expression) {
 		PsiType type = expression.getType();
 		if (type != null) {
-			if (isTypeAssignableTo(type, "java.util.Date"))
-				return new Date();
-			if (isTypeAssignableTo(type, "java.lang.Throwable"))
-				return new RuntimeException();
-			if (type.isAssignableFrom(PsiType.DOUBLE))
-				return 2.2D;
-			if (type.isAssignableFrom(PsiType.FLOAT))
-				return 2.2f;
-			if (type.isAssignableFrom(PsiType.LONG))
-				return 2L;
-			if (type.isAssignableFrom(PsiType.INT))
-				return 2;
-			if (type.isAssignableFrom(PsiType.SHORT))
-				return (short) 2;
-			if (type.isAssignableFrom(PsiType.CHAR))
-				return 'c';
-			if (type.isAssignableFrom(PsiType.BYTE))
-				return (byte) 2;
-			if (type.isAssignableFrom(PsiType.BOOLEAN))
-				return true;
+			try {
+				if (isTypeAssignableTo(type, "java.util.Date"))
+					return new Date();
+				if (isTypeAssignableTo(type, "java.lang.Throwable"))
+					return new RuntimeException();
+				if (type.isAssignableFrom(PsiType.DOUBLE))
+					return 2.2D;
+				if (type.isAssignableFrom(PsiType.FLOAT))
+					return 2.2f;
+				if (type.isAssignableFrom(PsiType.LONG))
+					return 2L;
+				if (type.isAssignableFrom(PsiType.INT))
+					return 2;
+				if (type.isAssignableFrom(PsiType.SHORT))
+					return (short) 2;
+				if (type.isAssignableFrom(PsiType.CHAR))
+					return 'c';
+				if (type.isAssignableFrom(PsiType.BYTE))
+					return (byte) 2;
+				if (type.isAssignableFrom(PsiType.BOOLEAN))
+					return true;
+			} catch (Throwable e) {
+				LOG.error("Failed to determine a value type for " + expression +
+						", will return a string as default value.", e);
+			}
 		}
 
 		return "s";
