@@ -21,6 +21,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.*;
 import net.sf.logsupport.config.LogFramework;
 import net.sf.logsupport.util.LogPsiUtil;
+import net.sf.logsupport.util.ReflectionUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -98,21 +99,21 @@ public abstract class AbstractFormattedMessageInspection extends AbstractInspect
 					return new Date();
 				if (isTypeAssignableTo(type, "java.lang.Throwable"))
 					return new RuntimeException();
-				if (type.isAssignableFrom(PsiType.DOUBLE))
+				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "DOUBLE")))
 					return 2.2D;
-				if (type.isAssignableFrom(PsiType.FLOAT))
+				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "FLOAT")))
 					return 2.2f;
-				if (type.isAssignableFrom(PsiType.LONG))
+				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "LONG")))
 					return 2L;
-				if (type.isAssignableFrom(PsiType.INT))
+				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "INT")))
 					return 2;
-				if (type.isAssignableFrom(PsiType.SHORT))
+				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "SHORT")))
 					return (short) 2;
-				if (type.isAssignableFrom(PsiType.CHAR))
+				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "CHAR")))
 					return 'c';
-				if (type.isAssignableFrom(PsiType.BYTE))
+				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "BYTE")))
 					return (byte) 2;
-				if (type.isAssignableFrom(PsiType.BOOLEAN))
+				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "BOOLEAN")))
 					return true;
 			} catch (Throwable e) {
 				LOG.error("Failed to determine a value type for " + expression +

@@ -2,6 +2,7 @@ package net.sf.logsupport.util;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -12,6 +13,38 @@ import java.lang.reflect.Method;
  * @author Juergen_Kellerer, 2011-05-17
  */
 public class ReflectionUtil {
+
+	/**
+	 * Returns the field value using reflection.
+	 *
+	 * @param instance  the instance to get the field from.
+	 * @param fieldName the name of the field.
+	 * @param <T>       the type of the value.
+	 * @return the value of the field.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T getField(Object instance, String fieldName) {
+		return (T) getField(instance.getClass(), instance, fieldName);
+	}
+
+	/**
+	 * Returns the field value using reflection.
+	 *
+	 * @param cls	   the class to get the field from.
+	 * @param instance  the instance to get the field from (use 'null' to access static fields).
+	 * @param fieldName the name of the field.
+	 * @param <T>       the type of the value.
+	 * @return the value of the field.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T getField(Class cls, @Nullable Object instance, String fieldName) {
+		try {
+			Field field = cls.getField(fieldName);
+			return (T) field.get(instance);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	/**
 	 * Invokes the given method with optional params and returns the result.
@@ -51,8 +84,6 @@ public class ReflectionUtil {
 
 		try {
 			Method method = instance.getClass().getMethod(methodName, (Class<Object>[]) paramTypes);
-			if (!method.isAccessible())
-				method.setAccessible(true);
 			return (T) method.invoke(instance, (Object[]) params);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
