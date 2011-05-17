@@ -18,6 +18,7 @@ package net.sf.logsupport.inspections;
 
 import com.intellij.codeInspection.InspectionManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.psi.*;
 import net.sf.logsupport.config.LogFramework;
 import net.sf.logsupport.util.LogPsiUtil;
@@ -125,6 +126,8 @@ public abstract class AbstractFormattedMessageInspection extends AbstractInspect
 					return (byte) 2;
 				if (type.isAssignableFrom(BOOLEAN))
 					return true;
+			} catch (ProcessCanceledException e) {
+				throw e;
 			} catch (Throwable e) {
 				LOG.error("Failed to determine a value type for " + expression +
 						", will return a string as default value.", e);
