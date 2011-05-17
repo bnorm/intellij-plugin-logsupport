@@ -110,7 +110,7 @@ public class LoggerFieldBuilder {
 
 					try {
 						PsiClass cls = classForPlace(place);
-						PsiElement brace = cls.getLBrace();
+						PsiElement brace = ReflectionUtil.invoke(cls, "getLBrace"); // IF changed in IDEA 9/10
 
 						LogPsiElementFactory factory = LogPsiUtil.getFactory(place.getContainingFile());
 						LogFramework framework = LogConfiguration.getInstance(

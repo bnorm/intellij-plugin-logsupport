@@ -75,6 +75,7 @@ public class ResolveLoggerInstance extends AbstractMacro {
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unchecked")
 	public LookupElement[] calculateLookupItems(@NotNull Expression[] expressions, ExpressionContext context) {
 		PsiFile file = getPsiFile(context);
 		LogConfiguration configuration = LogConfiguration.getInstance(file);
