@@ -38,6 +38,15 @@ public abstract class AbstractFormattedMessageInspection extends AbstractInspect
 
 	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.inspections.AbstractFormattedMessageInspection");
 
+	private static final PsiType DOUBLE = ReflectionUtil.getField(PsiType.class, null, "DOUBLE");
+	private static final PsiType FLOAT = ReflectionUtil.getField(PsiType.class, null, "FLOAT");
+	private static final PsiType LONG = ReflectionUtil.getField(PsiType.class, null, "LONG");
+	private static final PsiType INT = ReflectionUtil.getField(PsiType.class, null, "INT");
+	private static final PsiType SHORT = ReflectionUtil.getField(PsiType.class, null, "SHORT");
+	private static final PsiType CHAR = ReflectionUtil.getField(PsiType.class, null, "CHAR");
+	private static final PsiType BYTE = ReflectionUtil.getField(PsiType.class, null, "BYTE");
+	private static final PsiType BOOLEAN = ReflectionUtil.getField(PsiType.class, null, "BOOLEAN");
+
 	@NotNull
 	List<Object> getLogCallArgumentDefaults(PsiMethodCallExpression expression, boolean includeThrowables) {
 		List<Object> results = new ArrayList<Object>();
@@ -68,7 +77,8 @@ public abstract class AbstractFormattedMessageInspection extends AbstractInspect
 						} else if (argument instanceof PsiReferenceExpression) {
 							// TODO:
 							System.out.println("Argument Type: " + argument.getType());
-							System.out.println("Argument Type: " + argument.getType().getCanonicalText());
+							if (argument.getType() != null)
+								System.out.println("Argument Type: " + argument.getType().getCanonicalText());
 							System.out.println("Argument Class: " + argument.getClass().getSimpleName());
 							System.out.println("");
 						}
@@ -99,21 +109,21 @@ public abstract class AbstractFormattedMessageInspection extends AbstractInspect
 					return new Date();
 				if (isTypeAssignableTo(type, "java.lang.Throwable"))
 					return new RuntimeException();
-				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "DOUBLE")))
+				if (type.isAssignableFrom(DOUBLE))
 					return 2.2D;
-				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "FLOAT")))
+				if (type.isAssignableFrom(FLOAT))
 					return 2.2f;
-				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "LONG")))
+				if (type.isAssignableFrom(LONG))
 					return 2L;
-				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "INT")))
+				if (type.isAssignableFrom(INT))
 					return 2;
-				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "SHORT")))
+				if (type.isAssignableFrom(SHORT))
 					return (short) 2;
-				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "CHAR")))
+				if (type.isAssignableFrom(CHAR))
 					return 'c';
-				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "BYTE")))
+				if (type.isAssignableFrom(BYTE))
 					return (byte) 2;
-				if (type.isAssignableFrom(ReflectionUtil.<PsiType>getField(PsiType.class, null, "BOOLEAN")))
+				if (type.isAssignableFrom(BOOLEAN))
 					return true;
 			} catch (Throwable e) {
 				LOG.error("Failed to determine a value type for " + expression +
