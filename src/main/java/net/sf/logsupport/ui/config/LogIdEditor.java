@@ -25,7 +25,6 @@ import net.sf.logsupport.ui.util.AbstractEventListener;
 import net.sf.logsupport.ui.util.BindFailed;
 import net.sf.logsupport.ui.util.BindFailedException;
 import net.sf.logsupport.ui.util.JComponentBinder;
-import sun.security.krb5.internal.LoginOptions;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
