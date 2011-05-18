@@ -49,7 +49,7 @@ public class RemoveLogIdsDialog extends AbstractLogLevelAwareDialog {
 	@NotNull
 	@Override
 	public Runnable getWriteOperation(@NotNull List<PsiFile> files) {
-		return new LogLevelAwareRunnable(files) {
+		return new AbstractLogLevelAwareRunnable(files) {
 
 			private final RemoveLogIdIntention removeLogIdIntention = new RemoveLogIdIntention();
 

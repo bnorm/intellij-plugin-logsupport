@@ -162,7 +162,7 @@ public class TargetedLogConfigurationPanel extends AbstractSortableTableEditor<T
 					}
 				},
 
-				new SequenceColumn(L10N.message("TargetedLogConfigurationPanel.from")) {
+				new AbstractSequenceColumn(L10N.message("TargetedLogConfigurationPanel.from")) {
 
 					@Override
 					protected int intValueOf(TargetedLogConfiguration o) {
@@ -175,7 +175,7 @@ public class TargetedLogConfigurationPanel extends AbstractSortableTableEditor<T
 					}
 				},
 
-				new SequenceColumn(L10N.message("TargetedLogConfigurationPanel.to")) {
+				new AbstractSequenceColumn(L10N.message("TargetedLogConfigurationPanel.to")) {
 
 					@Override
 					protected int intValueOf(TargetedLogConfiguration o) {
@@ -188,7 +188,7 @@ public class TargetedLogConfigurationPanel extends AbstractSortableTableEditor<T
 					}
 				},
 
-				new SequenceColumn(L10N.message("TargetedLogConfigurationPanel.increment")) {
+				new AbstractSequenceColumn(L10N.message("TargetedLogConfigurationPanel.increment")) {
 
 					@Override
 					protected int intValueOf(TargetedLogConfiguration o) {
@@ -236,14 +236,14 @@ public class TargetedLogConfigurationPanel extends AbstractSortableTableEditor<T
 		return mainPanel;
 	}
 
-	private static abstract class SequenceColumn extends
+	private static abstract class AbstractSequenceColumn extends
 			AbstractFormattedEditableColumn<TargetedLogConfiguration, Long> {
 
 		final TableCellRenderer renderer;
 
 		private TargetedLogConfiguration currentRow;
 
-		private SequenceColumn(String name) {
+		private AbstractSequenceColumn(String name) {
 			super(name, NumberFormat.getIntegerInstance());
 
 			final TableCellRenderer parentRenderer = super.getRenderer(null);

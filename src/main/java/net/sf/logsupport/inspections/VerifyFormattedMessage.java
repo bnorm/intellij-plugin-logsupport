@@ -119,7 +119,7 @@ public class VerifyFormattedMessage extends AbstractFormattedMessageInspection {
 	String evaluateCustom(String logMessage, String placeholderPattern, Object... args) {
 		logMessage = ' ' + logMessage + ' ';
 		String[] elements = logMessage.split(placeholderPattern);
-		int placeHolderCount = elements == null ? 0 : elements.length - 1;
+		int placeHolderCount = elements.length - 1;
 		if (placeHolderCount != args.length)
 			return createInvalidArgumentCountMessage(placeHolderCount, args.length);
 		return null;

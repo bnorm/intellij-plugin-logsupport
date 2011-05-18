@@ -22,6 +22,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.RangeMarker;
+import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiDocumentManager;
@@ -76,6 +77,8 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 			if (runnable != null) {
 				try {
 					runnable.run();
+				} catch (ProcessCanceledException e) {
+					throw e;
 				} catch (Throwable t) {
 					log.error(t);
 				} finally {

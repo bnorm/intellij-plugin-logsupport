@@ -17,7 +17,6 @@
 package net.sf.logsupport.livetemplates;
 
 import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.lookup.LookupItem;
 import com.intellij.codeInsight.template.Expression;
 import com.intellij.codeInsight.template.ExpressionContext;
 import com.intellij.codeInsight.template.JavaPsiElementResult;
@@ -38,14 +37,22 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Resolves
+ * Macro that resolves the instance of the logger to be used with the log call.
  *
  * @author Juergen_Kellerer, 2010-04-03
  * @version 1.0
  */
 public class ResolveLoggerInstance extends AbstractMacro {
 
-	static String LAST_CREATED_LOGGER_CLASS;
+	private static volatile String lastCreatedLoggerInstance;
+
+	public static String getLastCreatedLoggerInstance() {
+		return lastCreatedLoggerInstance;
+	}
+
+	public static void setLastCreatedLoggerInstance(String lastCreatedLoggerInstance) {
+		ResolveLoggerInstance.lastCreatedLoggerInstance = lastCreatedLoggerInstance;
+	}
 
 	public ResolveLoggerInstance() {
 		super("resolveLoggerInstance");
@@ -128,7 +135,7 @@ public class ResolveLoggerInstance extends AbstractMacro {
 			if (elementsInScope.isEmpty()) {
 				PsiField field = createField(file, place);
 				if (field != null) {
-					LAST_CREATED_LOGGER_CLASS = field.getType().getCanonicalText();
+					setLastCreatedLoggerInstance(field.getType().getCanonicalText());
 					elementsInScope.add(field);
 				}
 			}

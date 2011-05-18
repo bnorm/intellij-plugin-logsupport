@@ -30,7 +30,7 @@ import java.util.Set;
  * @author Juergen_Kellerer, 2010-04-04
  * @version 1.0
  */
-public abstract class LogConfiguration {
+public abstract class LogConfiguration { //NOSONAR
 	/**
 	 * Returns the log configuration instance on the specified PsiFile.
 	 *

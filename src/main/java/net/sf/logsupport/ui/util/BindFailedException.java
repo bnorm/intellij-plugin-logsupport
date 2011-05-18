@@ -35,11 +35,11 @@ public class BindFailedException extends Exception implements Iterable<BindFaile
 	}
 
 	public BindFailedException(BindFailed[] causes) {
-		this.causes = causes;
+		this.causes = causes.clone();
 	}
 
 	public BindFailed[] getCauses() {
-		return causes;
+		return causes.clone();
 	}
 
 	public Iterator<BindFailed> iterator() {

@@ -7,8 +7,7 @@
 
 About ${project.name}
 
-	"<<Log Support>>" is a plugin for the excellent Java IDE,
-	{{{http://www.jetbrains.com/idea/} <<IntelliJ IDEA>>}}.
+	"<<Log Support>>" is a plugin for the Java IDE, {{{http://www.jetbrains.com/idea/} <<IntelliJ IDEA>>}}.
 	The purpose of this plugin is to make the usage of log frameworks as painless as printing
 	to <<<stdout>>> when used in a day to day business.
 	This is achieved by adding <<intentions>>, <<live templates>> and <<code inspections>>

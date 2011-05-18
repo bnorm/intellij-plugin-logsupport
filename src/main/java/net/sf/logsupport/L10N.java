@@ -22,6 +22,7 @@ import org.jetbrains.annotations.PropertyKey;
 
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.util.ResourceBundle;
 
 /**
@@ -35,7 +36,7 @@ public class L10N {
 	@NonNls
 	private static final String BUNDLE = "net.sf.logsupport.L10N";
 	
-	private static Reference<ResourceBundle> bundle;
+	private static Reference<ResourceBundle> bundle = new WeakReference<ResourceBundle>(null);
 
 	private L10N() {
 	}
@@ -49,11 +50,7 @@ public class L10N {
 	}
 
 	private static ResourceBundle getBundle() {
-		ResourceBundle bundle = null;
-
-		if (L10N.bundle != null)
-			bundle = L10N.bundle.get();
-
+		ResourceBundle bundle = L10N.bundle.get();
 		if (bundle == null) {
 			bundle = ResourceBundle.getBundle(BUNDLE);
 			L10N.bundle = new SoftReference<ResourceBundle>(bundle);

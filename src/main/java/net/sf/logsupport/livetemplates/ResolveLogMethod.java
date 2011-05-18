@@ -51,7 +51,7 @@ public class ResolveLogMethod extends AbstractMacro {
 		if (expressions.length == 2) {
 			String loggerClass = resolveVariableType(expressions[0], context);
 			if (loggerClass == null)
-				loggerClass = ResolveLoggerInstance.LAST_CREATED_LOGGER_CLASS;
+				loggerClass = ResolveLoggerInstance.getLastCreatedLoggerInstance();
 
 			String methodExpression = resolveLogMethodExpression(
 					loggerClass, parseLogLevel(expressions[1], context));

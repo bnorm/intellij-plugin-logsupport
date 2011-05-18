@@ -20,7 +20,6 @@ import com.intellij.codeInsight.actions.ReformatCodeProcessor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethodCallExpression;
 import net.sf.logsupport.config.LogLevel;
@@ -66,7 +65,7 @@ public class AddLogIfConditionsDialog extends AbstractLogLevelAwareDialog {
 	@NotNull
 	@Override
 	public Runnable getWriteOperation(@NotNull List<PsiFile> files) {
-		return new LogLevelAwareRunnable(files) {
+		return new AbstractLogLevelAwareRunnable(files) {
 
 			private final AddLogIfConditionIntention intention = new AddLogIfConditionIntention();
 

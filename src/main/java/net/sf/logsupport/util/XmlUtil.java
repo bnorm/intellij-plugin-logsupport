@@ -38,7 +38,9 @@ public class XmlUtil {
 		builder.setEntityResolver(new EntityResolver() {
 			public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
 				InputStream source = !systemId.startsWith("file:") ? null :
-						getClass().getResourceAsStream("/net/sf/logsupport/" + new File(URI.create(systemId)).getName());
+						getClass().getResourceAsStream("/net/sf/logsupport/" +
+								new File(URI.create(systemId)).getName());
+
 				return source == null ? new InputSource(new StringReader("")) : new InputSource(source);
 			}
 		});

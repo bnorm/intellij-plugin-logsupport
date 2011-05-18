@@ -20,9 +20,7 @@ import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInsight.daemon.GroupNames;
 import com.intellij.codeInspection.BaseJavaLocalInspectionTool;
 import com.intellij.codeInspection.InspectionManager;
-import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.JavaElementVisitor;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiMethodCallExpression;
@@ -72,12 +70,12 @@ public abstract class AbstractInspection extends BaseJavaLocalInspectionTool {
 	}
 
 	/**
-	 *
 	 * Implement this to report problems at log method call level.
 	 *
 	 * @param expression The log method call to check.
 	 * @param manager	InspectionManager to ask for ProblemDescriptor's from.
-	 * @param isOnTheFly true if called during on the fly editor highlighting. Called from Inspect Code action otherwise.
+	 * @param isOnTheFly true if called during on the fly editor highlighting.
+	 *                   Called from Inspect Code action otherwise.
 	 * @return <code>null</code> if no problems found or the problem message.
 	 */
 	@Nullable

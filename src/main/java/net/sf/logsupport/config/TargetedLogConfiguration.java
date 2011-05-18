@@ -171,7 +171,9 @@ public class TargetedLogConfiguration extends DefaultLogConfiguration {
 		TargetedLogConfiguration that = (TargetedLogConfiguration) o;
 
 		if (defaults != null ? !defaults.equals(that.defaults) : that.defaults != null) return false;
-		return !(targetScopeName != null ? !targetScopeName.equals(that.targetScopeName) : that.targetScopeName != null);
+		return !(targetScopeName != null ?
+				!targetScopeName.equals(that.targetScopeName) :
+				that.targetScopeName != null);
 	}
 
 	@Override

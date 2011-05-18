@@ -16,6 +16,7 @@
 
 package net.sf.logsupport.util;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
@@ -32,8 +33,8 @@ import net.sf.logsupport.config.LogFramework;
  * @version 1.0
  */
 public class LoggerFieldBuilder {
-	private static final com.intellij.openapi.diagnostic.Logger LOG = com.intellij.openapi.diagnostic.Logger.getInstance("#net.sf.logsupport.util.LoggerFieldBuilder");
 
+	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.util.LoggerFieldBuilder");
 
 	private PsiClass classForPlace(PsiElement place) {
 		return place instanceof PsiClass ? (PsiClass) place : PsiUtil.getTopLevelClass(place);

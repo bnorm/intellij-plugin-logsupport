@@ -77,12 +77,11 @@
 
 	<change-notes><![CDATA[
 		<ul>
-			<li>1.1
+			<li>1.0.3
 				<ol>
-					<li>Added support for log reviews in Open Document Spreadsheet (*.ods) format.</li>
-					<li>Improved documentation.</li>
-					<li>Fixed serious code corruption bug in the recursive addition and removal
-					of 'if' conditions.</li>
+					<li>Added experimental support for log reviews in Open Document Spreadsheet (*.ods) format.</li>
+					<li>Fixed code corruption bug in the recursive addition and removal of 'if' conditions.</li>
+					<li>Fixed a couple of compatibility issues with IDEA >= 10.0.2</li>
 				</ol>
 			</li>
 			<li>1.0.2
@@ -106,7 +105,7 @@
 		</ul>
 	]]></change-notes>
 
-	<version>1.1</version>
+	<version>1.0.3</version>
 	<vendor>Juergen Kellerer</vendor>
 	<category>Code tools</category>
 
