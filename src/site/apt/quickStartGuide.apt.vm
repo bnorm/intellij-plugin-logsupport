@@ -7,4 +7,40 @@
 
 Quick Start Guide
 
-	Under construction.
+
+* Installation
+
+	* <<Option A>> (recommended): Install the plugin using the plugin manager inside the IDE.
+
+	* <<Option B>>: To use a snapshot release download the "-dist.zip" from
+	  {{{http://www.tinyjee.org/hudson/job/Log%20Support%20-%20IDEA%20Plugin%20(Trunk)/lastSuccessfulBuild/}builds}}
+	  and replace the folder "~/.IntelliJIdeaX/config/plugins/logsupport-plugin" with the contents of this zip.
+
+* Usage inside a Project
+
+	* Open "<<File / Settings>>" and navigate to "<<Project Settings / Log Support>>" to enable project wide support\
+	  for a configured log framework through the live templates <logt>, <logd>, <logi>, <logw> and <loge>.
+
+[images/project-settings.png]
+
+	<<Notes:>>
+
+		* <Log Support - Section> "<<Project Defaults>>" allows to:
+
+		 	* Set the default framework that should be used when no other framework is reachable in the
+		 	  current scope and also no overrides were configured.
+		 	  (The usage of existing logger instances of other frameworks can be omitted by ticking
+		 	  "Do not use other ..")
+
+		 	* Toggle whether log IDs should be created and added to the log messages.
+
+		 	[]
+
+		* <Log Support - Section> "<<Scoped Overrides>>" allows to override several defaults based on
+		  defined scopes. Overriding can be useful to assign certain ID ranges by package or module
+		  and allow the use of more than one log framework within a project (e.g. within Tests).
+
+		[]
+
+	[]
+
