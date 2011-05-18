@@ -125,9 +125,13 @@ public class LogFramework {
 		if (name != null ? !name.equals(framework.name) : framework.name != null) return false;
 		if (loggerClass != null ? !loggerClass.equals(framework.loggerClass) : framework.loggerClass != null)
 			return false;
-		if (loggerFactoryMethod != null ? !loggerFactoryMethod.equals(framework.loggerFactoryMethod) : framework.loggerFactoryMethod != null)
+		if (loggerFactoryMethod != null ?
+				!loggerFactoryMethod.equals(framework.loggerFactoryMethod) :
+				framework.loggerFactoryMethod != null)
 			return false;
-		if (defaultLoggerFieldName != null ? !defaultLoggerFieldName.equals(framework.defaultLoggerFieldName) : framework.defaultLoggerFieldName != null)
+		if (defaultLoggerFieldName != null ?
+				!defaultLoggerFieldName.equals(framework.defaultLoggerFieldName) :
+				framework.defaultLoggerFieldName != null)
 			return false;
 		if (!loggerFieldAccessModifier.equals(framework.loggerFieldAccessModifier)) return false;
 		if (insertLoggerAtEndOfClass != framework.insertLoggerAtEndOfClass) return false;
@@ -135,7 +139,9 @@ public class LogFramework {
 		if (useStaticLogger != framework.useStaticLogger) return false;
 		if (logMessagesCanUsePlaceholders != framework.logMessagesCanUsePlaceholders) return false;
 		if (logMessageFormatType != framework.logMessageFormatType) return false;
-		if (placeholderCustomFormat != null ? !placeholderCustomFormat.equals(framework.placeholderCustomFormat) : framework.placeholderCustomFormat != null)
+		if (placeholderCustomFormat != null ?
+				!placeholderCustomFormat.equals(framework.placeholderCustomFormat) :
+				framework.placeholderCustomFormat != null)
 			return false;
 		if (placeholdersCanBeUsedWithThrowables != framework.placeholdersCanBeUsedWithThrowables) return false;
 		if (!logMethod.equals(framework.logMethod)) return false;

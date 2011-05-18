@@ -42,8 +42,6 @@ import javax.swing.*;
 public class LogSupportComponent extends AbstractDelegatingConfigurable
 		implements ApplicationComponent, Configurable, PersistentStateComponent<ApplicationConfiguration> {
 
-	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.LogSupportComponent");
-
 	final static Icon ID_ICON = new ImageIcon(LogSupportComponent.class.getResource("/icons/logsupport-16.png"));
 
 	private Configurable configurable;

@@ -49,8 +49,6 @@ import java.util.*;
  */
 public class VirtualFileUtil {
 
-	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.util.VirtualFileUtil");
-
 	final static List<FileType> SUPPORTED_TYPES = Arrays.asList((FileType) StdFileTypes.JAVA);
 
 	/**

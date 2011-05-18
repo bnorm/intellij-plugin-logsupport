@@ -65,13 +65,13 @@ public class LogPsiUtil {
 		}
 	}
 
-	private static Language GROOVY;
+	private static Language groovy;
 
 	static {
 		try {
 			for (Language language : Language.getRegisteredLanguages()) {
 				if ("groovy".equals(language.getID()))
-					GROOVY = language;
+					groovy = language;
 			}
 		} catch (Throwable t) {
 			// ignore
@@ -85,7 +85,7 @@ public class LogPsiUtil {
 	 * @return An instance of element factory for the given project.
 	 */
 	public static LogPsiElementFactory getFactory(final @NotNull PsiFile file) {
-		if (GROOVY != null && file.getLanguage().is(GROOVY)) {
+		if (groovy != null && file.getLanguage().is(groovy)) {
 			return new LogPsiElementFactory() {
 				org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory factory =
 						org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory.getInstance(file.getProject());

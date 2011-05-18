@@ -252,6 +252,6 @@ public class LogMessageUtil {
 		}
 	}
 
-	LogMessageUtil() {
+	private LogMessageUtil() {
 	}
 }

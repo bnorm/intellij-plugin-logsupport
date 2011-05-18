@@ -45,7 +45,7 @@ public abstract class AbstractMasterDetailsPanel<E> extends MasterDetailsCompone
 	protected final LogSupportComponent logSupport;
 	protected final LogSupportProjectComponent projectComponent;
 
-	private E lastNewElement;
+	private volatile E lastNewElement;
 
 	protected AbstractMasterDetailsPanel(@NotNull LogSupportComponent logSupport,
 										 LogSupportProjectComponent projectComponent) {

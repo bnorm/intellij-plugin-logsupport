@@ -16,6 +16,7 @@
 
 package net.sf.logsupport.ui.config;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.util.ui.UIUtil;
 import net.sf.logsupport.config.LogId;
@@ -24,6 +25,7 @@ import net.sf.logsupport.ui.util.AbstractEventListener;
 import net.sf.logsupport.ui.util.BindFailed;
 import net.sf.logsupport.ui.util.BindFailedException;
 import net.sf.logsupport.ui.util.JComponentBinder;
+import sun.security.krb5.internal.LoginOptions;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
@@ -41,26 +43,28 @@ import java.util.List;
  */
 public class LogIdEditor implements Editor {
 
-	private JPanel editorPanel;
+	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.ui.config.LogIdEditor");
 
-	private JTextField prefix;
-	private JTextField trailer;
-	private JLabel prefixErrorLabel;
-	private JComboBox formatType;
+	private JPanel editorPanel; //NOSONAR - field is binding
 
-	private JPanel customFormatPanel;
-	private JTextField formatPattern;
-	private JTextField matcherPattern;
-	private JLabel matcherPatternErrorLabel;
+	private JTextField prefix; //NOSONAR - field is binding
+	private JTextField trailer; //NOSONAR - field is binding
+	private JLabel prefixErrorLabel; //NOSONAR - field is binding
+	private JComboBox formatType; //NOSONAR - field is binding
 
-	private JSpinner minValue;
-	private JSpinner maxValue;
+	private JPanel customFormatPanel; //NOSONAR - field is binding
+	private JTextField formatPattern; //NOSONAR - field is binding
+	private JTextField matcherPattern; //NOSONAR - field is binding
+	private JLabel matcherPatternErrorLabel; //NOSONAR - field is binding
+
+	private JSpinner minValue; //NOSONAR - field is binding
+	private JSpinner maxValue; //NOSONAR - field is binding
 
 	private JLabel previewOutput;
 
 	private final JComponentBinder<LogId> binder;
 	private final LogId editableElement;
-	private final ProjectConfiguration projectConfiguration;
+	private final ProjectConfiguration projectConfiguration; //NOSONAR - reserved
 
 	private final PreviewUpdater previewUpdater = new PreviewUpdater();
 
@@ -140,7 +144,7 @@ public class LogIdEditor implements Editor {
 		try {
 			binder.reset(editableElement);
 		} catch (BindFailedException e) {
-			e.printStackTrace();
+			LOG.error(e);
 		}
 
 		previewUpdater.eventOccurred(null);

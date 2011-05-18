@@ -86,12 +86,12 @@ public abstract class AbstractLogLevelAwareDialog extends AbstractProcessingDial
 		return level != null && selectionPanel.isLevelSelected(level);
 	}
 
-	protected abstract class LogLevelAwareRunnable implements Runnable {
+	protected abstract class AbstractLogLevelAwareRunnable implements Runnable {
 
 		private final List<PsiFile> files;
 		private boolean changed;
 
-		protected LogLevelAwareRunnable(List<PsiFile> files) {
+		protected AbstractLogLevelAwareRunnable(List<PsiFile> files) {
 			this.files = files;
 		}
 

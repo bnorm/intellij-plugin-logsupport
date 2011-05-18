@@ -49,7 +49,7 @@ public class ProjectLogConfigurations implements Cloneable {
 			setTargetedLogConfigurations(other.getTargetedLogConfigurations());
 			init(other.project);
 		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}
 	}
 

@@ -16,6 +16,7 @@
 
 package net.sf.logsupport.ui.config;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.util.ui.UIUtil;
 import net.sf.logsupport.L10N;
@@ -43,31 +44,33 @@ import static net.sf.logsupport.config.LogFramework.MessageFormatType;
  */
 public class LogFrameworkEditor implements Editor {
 
+	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.ui.config.LogFrameworkEditor");
+
 	private final LogFramework source;
 
-	private JPanel editorPanel;
-	private JTabbedPane tabbedPane;
+	private JPanel editorPanel; //NOSONAR - field is binding
+	private JTabbedPane tabbedPane; //NOSONAR - field is binding
 
-	private JTextField defaultLoggerFieldName;
-	private JComboBox fieldCreatePosition;
-	private JComboBox loggerFieldAccessModifier;
-	private JCheckBox useStaticLogger;
-	private JCheckBox useFinalLogger;
+	private JTextField defaultLoggerFieldName; //NOSONAR - field is binding
+	private JComboBox fieldCreatePosition; //NOSONAR - field is binding
+	private JComboBox loggerFieldAccessModifier; //NOSONAR - field is binding
+	private JCheckBox useStaticLogger; //NOSONAR - field is binding
+	private JCheckBox useFinalLogger; //NOSONAR - field is binding
 
-	private JComboBox loggerClass;
-	private JButton resetToDefaultsButton;
+	private JComboBox loggerClass; //NOSONAR - field is binding
+	private JButton resetToDefaultsButton; //NOSONAR - field is binding
 
-	private JTextField loggerFactoryMethod;
+	private JTextField loggerFactoryMethod; //NOSONAR - field is binding
 
-	private JPanel methodMappingPanel;
+	private JPanel methodMappingPanel; //NOSONAR - field is binding
 	private ArrayList<LevelMethodMapping> methodMappings = new ArrayList<LevelMethodMapping>(LogLevel.values().length);
 
-	private JCheckBox logMessagesCanUsePlaceholders;
-	private JPanel placeholdersDetailsPanel;
-	private JComboBox placeholderFormatSelection;
-	private JTextField placeholderCustomFormat;
-	private JCheckBox placeholdersCanBeUsedWithThrowables;
-	private JTextPane textPane1;
+	private JCheckBox logMessagesCanUsePlaceholders; //NOSONAR - field is binding
+	private JPanel placeholdersDetailsPanel; //NOSONAR - field is binding
+	private JComboBox placeholderFormatSelection; //NOSONAR - field is binding
+	private JTextField placeholderCustomFormat; //NOSONAR - field is binding
+	private JCheckBox placeholdersCanBeUsedWithThrowables; //NOSONAR - field is binding
+	private JTextPane textPane1; //NOSONAR - field is binding
 
 	private JComponentBinder<LogFramework> componentBinder;
 
@@ -136,7 +139,7 @@ public class LogFrameworkEditor implements Editor {
 		try {
 			componentBinder.reset(source);
 		} catch (BindFailedException e) {
-			e.printStackTrace();
+			LOG.error(e);
 		}
 
 		for (LevelMethodMapping mapping : methodMappings)
@@ -149,7 +152,7 @@ public class LogFrameworkEditor implements Editor {
 		try {
 			componentBinder.apply(source);
 		} catch (BindFailedException e) {
-			e.printStackTrace();
+			LOG.error(e);
 		}
 
 		for (LevelMethodMapping mapping : methodMappings)

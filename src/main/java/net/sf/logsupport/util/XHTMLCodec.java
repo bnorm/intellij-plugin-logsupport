@@ -16,6 +16,7 @@
 
 package net.sf.logsupport.util;
 
+import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiMethodCallExpression;
 import net.sf.logsupport.ui.util.Dialogs;
@@ -99,6 +100,8 @@ public class XHTMLCodec extends LogMessageUtil implements Codec {
 		try {
 			DocumentBuilder builder = createDocumentBuilder();
 			source = builder.parse(logReview);
+		} catch (ProcessCanceledException e) {
+			throw e;
 		} catch (Throwable e) {
 			throw new IOException(e);
 		}
@@ -171,7 +174,8 @@ public class XHTMLCodec extends LogMessageUtil implements Codec {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void encode(@NotNull List<PsiMethodCallExpression> expressionList, @NotNull File logReview) throws IOException {
+	public void encode(@NotNull List<PsiMethodCallExpression> expressionList,
+					   @NotNull File logReview) throws IOException {
 		if (expressionList.isEmpty())
 			return;		
 

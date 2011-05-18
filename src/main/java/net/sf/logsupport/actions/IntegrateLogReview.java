@@ -36,6 +36,7 @@ import net.sf.logsupport.util.VirtualFileUtil;
 import java.lang.reflect.Method;
 import java.util.*;
 
+import static net.sf.logsupport.L10N.message;
 import static net.sf.logsupport.util.LogMessageUtil.*;
 
 /**
@@ -71,7 +72,7 @@ public class IntegrateLogReview extends AbstractAction {
 				return;
 			}
 
-			if (!Dialogs.confirmOverwrite(L10N.message("IntegrateLogReview.integrateConfirmation",
+			if (!Dialogs.confirmOverwrite(message("IntegrateLogReview.integrateConfirmation",
 					pendingChangeCount, mappedMessages.size()))) {
 
 				LOG.info(String.format("Aborted the integration of %d messages in %d files.",
@@ -87,7 +88,7 @@ public class IntegrateLogReview extends AbstractAction {
 
 					manager.startBatchFilesProcessingMode();
 					try {
-						final String title = L10N.message("IntegrateLogReview.integrateApplyJobTitle", pendingChangeCount);
+						final String title = message("IntegrateLogReview.integrateApplyJobTitle", pendingChangeCount);
 
 						Set<PsiFile> processableFiles = mappedMessages.keySet();
 						new WriteCommandAction(project, title,

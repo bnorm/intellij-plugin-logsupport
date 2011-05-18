@@ -32,7 +32,7 @@ import java.util.Set;
  */
 public class DefaultLogConfiguration extends LogConfiguration implements Cloneable {
 
-	public static int DEFAULT_LOG_ID_INCREMENT = 10;
+	public static final int DEFAULT_LOG_ID_INCREMENT = 10;
 
 	private Set<LogLevel> logIdLevels;
 	private Set<LogLevel> conditionalLogLevels;
@@ -268,7 +268,9 @@ public class DefaultLogConfiguration extends LogConfiguration implements Cloneab
 		if (conditionFormat != that.conditionFormat) return false;
 		if (!getConditionalLogLevels().equals(that.getConditionalLogLevels())) return false;
 		if (!getLogIdLevels().equals(that.getLogIdLevels())) return false;
-		if (defaultFrameworkName != null ? !defaultFrameworkName.equals(that.defaultFrameworkName) : that.defaultFrameworkName != null)
+		if (defaultFrameworkName != null ?
+				!defaultFrameworkName.equals(that.defaultFrameworkName) :
+				that.defaultFrameworkName != null)
 			return false;
 		if (logIdName != null ? !logIdName.equals(that.logIdName) : that.logIdName != null) return false;
 

@@ -50,13 +50,11 @@ public class JComponentBinder<E> {
 	}
 
 	@NotNull
-	Binder[] binders;
-	private E dataBean;
-	
+	AbstractBinder[] binders;
+
 	public JComponentBinder(Object componentBean, E dataBean, String... names) {
-		this.dataBean = dataBean;
 		List<String> includedNames = Arrays.asList(names);
-		List<Binder> binders = new ArrayList<Binder>();
+		List<AbstractBinder> binders = new ArrayList<AbstractBinder>();
 
 		for (Field field : componentBean.getClass().getDeclaredFields()) {
 			if (!JComponent.class.isAssignableFrom(field.getType()))
@@ -84,13 +82,13 @@ public class JComponentBinder<E> {
 				binders.add(createBinder(component, getter, setter));
 		}
 
-		this.binders = binders.toArray(new Binder[binders.size()]);
+		this.binders = binders.toArray(new AbstractBinder[binders.size()]);
 	}
 
 	public void apply(E dataBean) throws BindFailedException {
 		List<BindFailed> failures = new ArrayList<BindFailed>();
 
-		for (Binder binder : binders)
+		for (AbstractBinder binder : binders)
 			if (binder.getComponent().isEnabled())
 				try {
 					binder.apply(dataBean);
@@ -105,7 +103,7 @@ public class JComponentBinder<E> {
 	public void reset(E dataBean) throws BindFailedException {
 		List<BindFailed> failures = new ArrayList<BindFailed>();
 
-		for (Binder binder : binders)
+		for (AbstractBinder binder : binders)
 			try {
 				binder.reset(dataBean);
 			} catch (RuntimeException e) {
@@ -117,23 +115,23 @@ public class JComponentBinder<E> {
 	}
 
 	public void setEnabled(boolean enabled) {
-		for (Binder binder : binders)
+		for (AbstractBinder binder : binders)
 			binder.getComponent().setEnabled(enabled);
 	}
 
 	@NotNull
 	public List<JComponent> getBoundComponents() {
 		List<JComponent> components = new ArrayList<JComponent>(binders.length);
-		for (Binder binder : binders)
+		for (AbstractBinder binder : binders)
 			components.add(binder.getComponent());
 		return components;
 	}
 
-	private static abstract class Binder {
+	private static abstract class AbstractBinder {
 
 		JComponent component;
 
-		protected Binder(JComponent component) {
+		protected AbstractBinder(JComponent component) {
 			this.component = component;
 		}
 
@@ -146,9 +144,9 @@ public class JComponentBinder<E> {
 		}
 	}
 
-	private static Binder createBinder(JComponent component, final Method getter, final Method setter) {
+	private static AbstractBinder createBinder(JComponent component, final Method getter, final Method setter) {
 		if (component instanceof JTextComponent) {
-			return new Binder(component) {
+			return new AbstractBinder(component) {
 				public void apply(Object dataBean) {
 					String txt = ((JTextComponent) component).getText();
 					if (txt != null) {
@@ -174,7 +172,7 @@ public class JComponentBinder<E> {
 				}
 			};
 		} else if (component instanceof JToggleButton) {
-			return new Binder(component) {
+			return new AbstractBinder(component) {
 				public void apply(Object dataBean) {
 					try {
 						setter.invoke(dataBean, ((JToggleButton) component).isSelected());
@@ -192,7 +190,7 @@ public class JComponentBinder<E> {
 				}
 			};
 		} else if (component instanceof JComboBox) {
-			return new Binder(component) {
+			return new AbstractBinder(component) {
 				public void apply(Object dataBean) {
 					try {
 						setter.invoke(dataBean, ((JComboBox) component).getSelectedItem());
@@ -210,7 +208,7 @@ public class JComponentBinder<E> {
 				}
 			};
 		} else if (component instanceof JSpinner) {
-			return new Binder(component) {
+			return new AbstractBinder(component) {
 				@Override
 				void apply(Object dataBean) {
 					try {

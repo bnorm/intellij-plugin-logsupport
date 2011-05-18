@@ -37,7 +37,8 @@ import java.util.List;
  */
 public abstract class AbstractFormattedMessageInspection extends AbstractInspection {
 
-	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.inspections.AbstractFormattedMessageInspection");
+	private static final Logger LOG = Logger.getInstance(
+			"#net.sf.logsupport.inspections.AbstractFormattedMessageInspection");
 
 	private static final PsiType DOUBLE = ReflectionUtil.getField(PsiType.class, null, "DOUBLE");
 	private static final PsiType FLOAT = ReflectionUtil.getField(PsiType.class, null, "FLOAT");
