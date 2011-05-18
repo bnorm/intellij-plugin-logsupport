@@ -41,7 +41,7 @@ About ${project.name}
 
 	Besides this, there's also the situation that log output is not only generated for developers
 	but should satisfy the need for detailed information of support staff and administrators.
-	As developers are usually too focused on the project, there should a 3rd party that is
+	As developers are usually too focused on the project, there should be a 3rd party that is
 	able to review the generated log and check the messages for plausibility.
 
 * Disclaimer
