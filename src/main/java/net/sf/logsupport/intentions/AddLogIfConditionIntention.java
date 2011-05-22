@@ -19,7 +19,7 @@ public class AddLogIfConditionIntention extends AbstractLogConditionIntention {
 	@Override
 	public boolean isAvailable(PsiMethodCallExpression expression) {
 		return findSurroundingCondition(expression) == null &&
-				createPlainIfCondition(expression, false) != null;
+				createPlainIfCondition(expression, false, false) != null;
 	}
 
 	/**
