@@ -56,10 +56,12 @@ public class ResolveLogMethod extends AbstractMacro {
 			String methodExpression = resolveLogMethodExpression(
 					loggerClass, parseLogLevel(expressions[1], context));
 
-			if (!methodExpression.contains("("))
-				methodExpression += "(";
+			if (methodExpression != null) {
+				if (!methodExpression.contains("("))
+					methodExpression += "(";
 
-			method = new TextResult(methodExpression);
+				method = new TextResult(methodExpression);
+			}
 		}
 
 		return method;
