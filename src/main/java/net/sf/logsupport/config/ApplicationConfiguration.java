@@ -20,6 +20,8 @@ import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import net.sf.logsupport.LogSupportComponent;
 import net.sf.logsupport.config.defaults.LogFrameworkDefaultsList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,7 @@ public class ApplicationConfiguration {
 
 	private List<LogFramework> frameworks;
 
+	@Nullable
 	public LogFramework getFramework(String name) {
 		name = String.valueOf(name);
 		for (LogFramework framework : getFrameworks()) {
@@ -53,6 +56,7 @@ public class ApplicationConfiguration {
 		return null;
 	}
 
+	@NotNull
 	public List<LogFramework> getFrameworks() {
 		if (frameworks == null)
 			frameworks = new ArrayList<LogFramework>();
