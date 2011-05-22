@@ -67,11 +67,6 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 							Document document, RangeMarker rangeMarker, Editor editor) {
 		PsiFile file = PsiDocumentManager.getInstance(project).getPsiFile(document);
 		if (file != null) {
-			// Check whether we need to add a if condition or add a log id.
-			PsiMethodCallExpression expression = LogPsiUtil.findSupportedMethodCallExpression(editor, file);
-			if (expression != null)
-				ifConditionIntention.invoke(expression);
-
 			// Process pending runnables
 			Runnable runnable = file.getUserData(PENDING_RUNNABLE);
 			if (runnable != null) {
@@ -85,6 +80,11 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 					file.putUserData(PENDING_RUNNABLE, null);
 				}
 			}
+
+			// Check whether we need to add a if condition or add a log id.
+			PsiMethodCallExpression expression = LogPsiUtil.findSupportedMethodCallExpression(editor, file);
+			if (expression != null)
+				ifConditionIntention.invoke(expression);
 		}
 	}
 
