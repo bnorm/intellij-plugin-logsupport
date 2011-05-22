@@ -1,18 +1,23 @@
 package net.sf.logsupport.logback;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by IntelliJ IDEA.
  *
  * @author Juergen_Kellerer 14.04.2010
  */
-public class Bla {
+public class Bla extends Super {
+    //private static MyLogger myLogger;
 
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(Bla.class);
-    private static MyLogger myLogger;
-
+    private static final Logger log = LoggerFactory.getLogger(Bla.class);
     private static final boolean DEBUG_ENABLED = log.isDebugEnabled();
+
+    static {
+        if (DEBUG_ENABLED)
+            log.debug("sad");
+    }
 
     {
         boolean b = DEBUG_ENABLED;
@@ -28,10 +33,11 @@ public class Bla {
     }
 
     {
-        
-
         if (DEBUG_ENABLED)
             log.debug("");
+
+        if (DEBUG_ENABLED)
+            log.debug("#SuperLOG-00618:sadasd");
 
         if (log.isDebugEnabled())
             myLogger.debug("#SuperLOG-005e6:");

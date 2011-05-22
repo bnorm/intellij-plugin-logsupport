@@ -16,8 +16,8 @@
 
 package net.sf.logsupport.intentions;
 
+import com.intellij.codeInsight.template.macro.MacroUtil;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.resolve.ResolveVariableUtil;
 import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.sf.logsupport.config.ConditionFormat;
@@ -26,8 +26,8 @@ import net.sf.logsupport.config.LogFramework;
 import net.sf.logsupport.config.LogLevel;
 import net.sf.logsupport.util.LogPsiElementFactory;
 import net.sf.logsupport.util.LogPsiUtil;
+import org.jetbrains.annotations.Nullable;
 
-import javax.resource.spi.EISSystemException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,29 +53,32 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 		}
 	};
 
+	/**
+	 * Finds the surrounding if condition that covers the conditional logger call.
+	 *
+	 * @param expression the log method call expression.
+	 * @return the surrounding if condition that covers the conditional logger call, or 'null' if not found.
+	 */
+	@Nullable
 	public static PsiIfStatement findSurroundingCondition(PsiMethodCallExpression expression) {
 		LogFramework framework = LogPsiUtil.getLogFramework(expression);
 		LogLevel level = framework == null ? null : LogPsiUtil.findLogLevel(expression);
 
 		if (framework != null && level != null) {
-			PsiIfStatement expectedStatement = createPlainIfCondition(expression, true);
-			PsiExpression expectedCondition = expectedStatement == null ? null : expectedStatement.getCondition();
-			if (expectedStatement == null || !(expectedCondition instanceof PsiMethodCallExpression))
+			final PsiMethodCallExpression expectedCondition = createExpectedConditionFor(expression);
+			if (expectedCondition == null)
 				return null;
-
-			final PsiMethodCallExpression expectedExpression = (PsiMethodCallExpression) expectedCondition;
 
 			int searchLevels = 65;
 			PsiElement element = expression;
 			while (searchLevels-- > 0 && element != null && !(element instanceof PsiMethod)) {
 				element = element.getParent();
 				if (element instanceof PsiIfStatement) {
-					PsiExpression e1 = ((PsiIfStatement) element).getCondition();
-					if (e1 instanceof PsiReferenceExpression)
-						e1 = LogPsiUtil.resolveVariableInitializer((PsiReferenceExpression) e1);
+					PsiExpression condition = ((PsiIfStatement) element).getCondition();
+					if (condition instanceof PsiReferenceExpression)
+						condition = LogPsiUtil.resolveVariableInitializer((PsiReferenceExpression) condition);
 
-					if (e1 instanceof PsiMethodCallExpression &&
-							LogPsiUtil.isEquivalentTo((PsiMethodCallExpression) e1, expectedExpression)) {
+					if (isValidCondition(expectedCondition, condition)) {
 						return (PsiIfStatement) element;
 					}
 				}
@@ -85,8 +88,33 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 		return null;
 	}
 
+	@Nullable
+	private static PsiMethodCallExpression createExpectedConditionFor(PsiMethodCallExpression expression) {
+		PsiIfStatement expectedStatement = createPlainIfCondition(expression, true, false);
+		PsiExpression expectedCondition = expectedStatement == null ? null : expectedStatement.getCondition();
+		if (!(expectedCondition instanceof PsiMethodCallExpression))
+			return null;
+		return (PsiMethodCallExpression) expectedCondition;
+	}
+
+	private static boolean isValidCondition(PsiMethodCallExpression expectedCondition, PsiExpression condition) {
+		return condition instanceof PsiMethodCallExpression &&
+				LogPsiUtil.isEquivalentTo((PsiMethodCallExpression) condition, expectedCondition);
+	}
+
+	/**
+	 * Creates a plain if statement that may be used to surround a logger call.
+	 *
+	 * @param expression			 the logger call expression to wrap.
+	 * @param ignoreDisabledLevels   whether non-conditional levels are not considered.
+	 * @param preferCustomConditions whether custom conditions (e.g. constants) are preferred over
+	 *                               direct calls to the log framework.
+	 * @return a plain if statement or 'null' if no framework is configured or the level could not be extracted.
+	 */
+	@Nullable
 	public static PsiIfStatement createPlainIfCondition(PsiMethodCallExpression expression,
-														boolean ignoreDisabledLevels) {
+														boolean ignoreDisabledLevels,
+														boolean preferCustomConditions) {
 		LogFramework framework = LogPsiUtil.getLogFramework(expression);
 		LogLevel level = framework == null ? null : LogPsiUtil.findLogLevel(expression);
 
@@ -100,15 +128,40 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 					(ignoreDisabledLevels || config.getConditionalLogLevels().contains(level)) &&
 					qualifier != null && conditionalMethod != null && !conditionalMethod.isEmpty()) {
 
-				if (!conditionalMethod.contains("("))
-					conditionalMethod += "()";
+				final PsiElement context = expression.getContext();
 
-				if (!qualifier.getText().isEmpty())
-					conditionalMethod = qualifier.getText() + '.' + conditionalMethod;
+				boolean useCustomCondition = false;
+				if (preferCustomConditions) {
+					PsiVariable[] variables = MacroUtil.getVariablesVisibleAt(context, "");
+					if (variables.length > 0) {
+						final PsiMethodCallExpression expectedCondition = createExpectedConditionFor(expression);
+						if (expectedCondition != null) {
+							for (PsiVariable variable : variables) {
+								PsiExpression condition = LogPsiUtil.resolveVariableInitializer(variable);
+								if (isValidCondition(expectedCondition, condition)) {
+									PsiIdentifier nameIdentifier = variable.getNameIdentifier();
+									if (nameIdentifier != null) {
+										useCustomCondition = true;
+										conditionalMethod = nameIdentifier.getText();
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				if (!useCustomCondition) {
+					if (!conditionalMethod.contains("("))
+						conditionalMethod += "()";
+
+					if (!qualifier.getText().isEmpty())
+						conditionalMethod = qualifier.getText() + '.' + conditionalMethod;
+				}
 
 				String template = conditionTemplates.get(config.getConditionFormat());
 				return (PsiIfStatement) factory.createStatementFromText(
-						String.format(template, conditionalMethod), expression.getContext());
+						String.format(template, conditionalMethod), context);
 			}
 		}
 
@@ -116,7 +169,7 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 	}
 
 	public static PsiIfStatement createIfCondition(PsiMethodCallExpression expression) {
-		PsiIfStatement statement = createPlainIfCondition(expression, false);
+		PsiIfStatement statement = createPlainIfCondition(expression, false, true);
 
 		if (statement != null) {
 			PsiStatement then = statement.getThenBranch();

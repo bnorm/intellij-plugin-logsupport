@@ -478,8 +478,21 @@ public class LogPsiUtil {
 	public static PsiExpression resolveVariableInitializer(PsiReferenceExpression referenceExpression) {
 		PsiReference reference = referenceExpression.getReference();
 		PsiElement variable = reference == null ? null : reference.resolve();
-		if (variable != null && variable instanceof PsiVariable) {
-			PsiExpression initializer = ((PsiVariable) variable).getInitializer();
+		if (variable instanceof PsiVariable)
+			return resolveVariableInitializer((PsiVariable) variable);
+		return null;
+	}
+
+	/**
+	 * Resolves the variable initializer behind the given variable reference expression.
+	 *
+	 * @param variable the reference expression to resolve.
+	 * @return the variable initializer of the variable behind the resolved reference.
+	 */
+	@Nullable
+	public static PsiExpression resolveVariableInitializer(PsiVariable variable) {
+		if (variable != null) {
+			PsiExpression initializer = variable.getInitializer();
 			if (initializer instanceof PsiReferenceExpression)
 				return resolveVariableInitializer((PsiReferenceExpression) initializer);
 			else
