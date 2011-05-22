@@ -9,15 +9,10 @@ import org.slf4j.LoggerFactory;
  * @author Juergen_Kellerer 14.04.2010
  */
 public class Bla extends Super {
+
     //private static MyLogger myLogger;
 
-    private static final Logger log = LoggerFactory.getLogger(Bla.class);
     private static final boolean DEBUG_ENABLED = log.isDebugEnabled();
-
-    static {
-        if (DEBUG_ENABLED)
-            log.debug("sad");
-    }
 
     {
         boolean b = DEBUG_ENABLED;
@@ -41,6 +36,9 @@ public class Bla extends Super {
 
         if (log.isDebugEnabled())
             myLogger.debug("#SuperLOG-005e6:");
+    }
+
+    private static void test() {
     }
 
     static abstract class MyLogger implements Logger {
