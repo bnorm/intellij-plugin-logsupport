@@ -77,6 +77,14 @@
 
 	<change-notes><![CDATA[
 		<ul>
+			<li>1.0.4
+				<ol>
+					<li>Added 3305936: Support if condition that was stored in a variable.</li>
+					<li>Fixed 3305978: Logger is not detected if the instance is a subclass.</li>
+					<li>Fixed 3305945: Fails when surrounding class is interface.</li>
+					<li>Fixed 3305942: No 'if' wrapping for newly added logger.</li>
+				</ol>
+			</li>
 			<li>1.0.3
 				<ol>
 					<li>Added experimental support for log reviews in Open Document Spreadsheet (*.ods) format.</li>
@@ -105,7 +113,7 @@
 		</ul>
 	]]></change-notes>
 
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<vendor>Juergen Kellerer</vendor>
 	<category>Code tools</category>
 
