@@ -420,6 +420,26 @@ public class LogPsiUtil {
 	}
 
 	/**
+	 * Resolves the variable initializer behind the given variable reference expression.
+	 *
+	 * @param referenceExpression the reference expression to resolve.
+	 * @return the variable initializer of the variable behind the resolved reference.
+	 */
+	@Nullable
+	public static PsiExpression resolveVariableInitializer(PsiReferenceExpression referenceExpression) {
+		PsiReference reference = referenceExpression.getReference();
+		PsiElement variable = reference == null ? null : reference.resolve();
+		if (variable != null && variable instanceof PsiVariable) {
+			PsiExpression initializer = ((PsiVariable) variable).getInitializer();
+			if (initializer instanceof PsiReferenceExpression)
+				return resolveVariableInitializer((PsiReferenceExpression) initializer);
+			else
+				return initializer;
+		}
+		return null;
+	}
+
+	/**
 	 * Creates an iterable iterating all parents of the given element.
 	 *
 	 * @param element The element to use for iterating the parent tree.

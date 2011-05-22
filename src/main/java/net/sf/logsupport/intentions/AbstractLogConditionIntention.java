@@ -17,6 +17,7 @@
 package net.sf.logsupport.intentions;
 
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.resolve.ResolveVariableUtil;
 import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.sf.logsupport.config.ConditionFormat;
@@ -26,6 +27,7 @@ import net.sf.logsupport.config.LogLevel;
 import net.sf.logsupport.util.LogPsiElementFactory;
 import net.sf.logsupport.util.LogPsiUtil;
 
+import javax.resource.spi.EISSystemException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,18 +59,23 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 
 		if (framework != null && level != null) {
 			PsiIfStatement expectedStatement = createPlainIfCondition(expression, true);
-			if (expectedStatement == null)
+			PsiExpression expectedCondition = expectedStatement == null ? null : expectedStatement.getCondition();
+			if (expectedStatement == null || !(expectedCondition instanceof PsiMethodCallExpression))
 				return null;
 
-			int levels = 50;
+			final PsiMethodCallExpression expectedExpression = (PsiMethodCallExpression) expectedCondition;
+
+			int searchLevels = 65;
 			PsiElement element = expression;
-			while (levels-- > 0 && element != null && !(element instanceof PsiMethod)) {
+			while (searchLevels-- > 0 && element != null && !(element instanceof PsiMethod)) {
 				element = element.getParent();
 				if (element instanceof PsiIfStatement) {
 					PsiExpression e1 = ((PsiIfStatement) element).getCondition();
-					PsiExpression e2 = expectedStatement.getCondition();
-					if (e1 instanceof PsiMethodCallExpression && e2 instanceof PsiMethodCallExpression &&
-							LogPsiUtil.isEquivalentTo((PsiMethodCallExpression) e1, (PsiMethodCallExpression) e2)) {
+					if (e1 instanceof PsiReferenceExpression)
+						e1 = LogPsiUtil.resolveVariableInitializer((PsiReferenceExpression) e1);
+
+					if (e1 instanceof PsiMethodCallExpression &&
+							LogPsiUtil.isEquivalentTo((PsiMethodCallExpression) e1, expectedExpression)) {
 						return (PsiIfStatement) element;
 					}
 				}
