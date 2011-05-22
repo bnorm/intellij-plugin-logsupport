@@ -74,6 +74,9 @@ public abstract class AbstractProcessingAction extends AbstractAction {
 			try {
 				final List<PsiFile> processableFiles = documentManager.commitAndRunReadAction(readAction);
 
+				// Note: The runnable must be created here, as it may use a modal dialog to ask for input.
+				final Runnable writeOperation = dialog.getWriteOperation(processableFiles);
+
 				documentManager.commitAllDocuments();
 				manager.startBatchFilesProcessingMode();
 				try {
@@ -82,7 +85,7 @@ public abstract class AbstractProcessingAction extends AbstractAction {
 							new WriteCommandAction(project, dialog.getTitle(),
 									processableFiles.toArray(new PsiFile[processableFiles.size()])) {
 								protected void run(Result result) throws Throwable {
-									dialog.getWriteOperation(processableFiles).run();
+									writeOperation.run();
 								}
 							}.execute();
 						}
