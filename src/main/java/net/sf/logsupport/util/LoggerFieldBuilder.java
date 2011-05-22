@@ -65,10 +65,13 @@ public class LoggerFieldBuilder {
 					factory.createTypeFromText(framework.getLoggerClass(), place.getContext()), place.getContext());
 
 			if (field != null) {
-				PsiModifierList modifierList = field.getModifierList();
-				if (modifierList != null) {
-					for (@Modifier String modifier : framework.getDefaultLoggerFieldModifiers())
-						modifierList.setModifierProperty(modifier, true);
+				// Note: When cls is an interface, the field is forced to be static, final & public.
+				if (!cls.isInterface()) {
+					PsiModifierList modifierList = field.getModifierList();
+					if (modifierList != null) {
+						for (@Modifier String modifier : framework.getDefaultLoggerFieldModifiers())
+							modifierList.setModifierProperty(modifier, true);
+					}
 				}
 
 				field.setInitializer((PsiExpression) factory.createExpressionFromText(
