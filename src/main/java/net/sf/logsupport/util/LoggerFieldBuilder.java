@@ -117,17 +117,16 @@ public class LoggerFieldBuilder {
 						LogFramework framework = LogConfiguration.getInstance(
 								place.getContainingFile()).getDefaultLogFramework();
 
-						// TODO: Use better formatting strategy.
-
 						PsiElement addedField;
 						if (framework.isInsertLoggerAtEndOfClass()) {
-							cls.addBefore(factory.createWhiteSpaceFromText("\n\t"), brace);
-							addedField = cls.addBefore(field, brace);
-							cls.addBefore(factory.createWhiteSpaceFromText("\n"), brace);
+							addedField = addFieldBeforeAnchor(factory, cls, field, brace);
 						} else {
-							cls.addAfter(factory.createWhiteSpaceFromText("\n"), brace);
-							addedField = cls.addAfter(field, brace);
-							cls.addAfter(factory.createWhiteSpaceFromText("\n\t"), brace);
+							PsiField[] allFields = cls.getFields();
+							if (allFields.length == 0) {
+								addedField = cls.addAfter(field, brace);
+								cls.addAfter(factory.createWhiteSpaceFromText("\n\n\t"), brace);
+							} else
+								addedField = addFieldBeforeAnchor(factory, cls, field, allFields[0]);
 						}
 
 						shortenFQNames(addedField);
@@ -148,5 +147,15 @@ public class LoggerFieldBuilder {
 		}
 
 		return null;
+	}
+
+	private static PsiElement addFieldBeforeAnchor(LogPsiElementFactory factory,
+												   PsiClass cls, PsiField field, PsiElement anchor) {
+		PsiElement addedField;
+		cls.addBefore(factory.createWhiteSpaceFromText("\n\t"), anchor);
+		addedField = cls.addBefore(field, anchor);
+		cls.addBefore(factory.createWhiteSpaceFromText("\n"), anchor);
+
+		return addedField;
 	}
 }
