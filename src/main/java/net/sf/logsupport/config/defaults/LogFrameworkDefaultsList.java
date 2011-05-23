@@ -18,9 +18,7 @@ package net.sf.logsupport.config.defaults;
 
 import net.sf.logsupport.config.LogFramework;
 
-import java.util.AbstractList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Lists the default settings for common log frameworks.
@@ -32,6 +30,8 @@ public class LogFrameworkDefaultsList extends AbstractList<LogFramework> {
 
 	private List<LogFramework> defaultLogFrameworks = Arrays.asList(
 			(LogFramework) new SLF4JLogFramework(),
+			(LogFramework) new JBossLogFrameworkF(),
+			(LogFramework) new JBossLogFrameworkV(),
 			(LogFramework) new LOG4J12LogFramework(),
 			(LogFramework) new JULLogFramework(),
 			(LogFramework) new CommonsLogFramework(),
@@ -70,6 +70,33 @@ public class LogFrameworkDefaultsList extends AbstractList<LogFramework> {
 				return true;
 			}
 		return false;
+	}
+
+	/**
+	 * Returns all newly added defaults that do not yet exist inside the configuration.
+	 *
+	 * @param existing a list of existing log frameworks.
+	 * @return all newly added defaults that do not yet exist inside the configuration.
+	 */
+	public List<LogFramework> getMissingDefaults(Collection<LogFramework> existing) {
+		final List<LogFramework> missing = new ArrayList<LogFramework>();
+
+		search:
+		for (LogFramework defaultLogFramework : defaultLogFrameworks) {
+			for (LogFramework framework : existing) {
+				if (defaultLogFramework.getLoggerClass().equals(framework.getLoggerClass())
+						&& defaultLogFramework.getLogMethod().equals(framework.getLogMethod())) {
+					continue search;
+				}
+
+				if (defaultLogFramework.getName().equalsIgnoreCase(framework.getName()))
+					continue search;
+			}
+
+			missing.add(defaultLogFramework);
+		}
+
+		return missing;
 	}
 
 	/**

@@ -77,6 +77,11 @@
 
 	<change-notes><![CDATA[
 		<ul>
+			<li>1.0.6
+				<ol>
+					<li>Added initial support for JBoss logging.</li>
+				</ol>
+			</li>
 			<li>1.0.5
 				<ol>
 					<li>Fixed 3306029: UI blocks if creating a log review and the rev. file exists.</li>
@@ -118,7 +123,7 @@
 		</ul>
 	]]></change-notes>
 
-	<version>1.0.5</version>
+	<version>1.0.6</version>
 	<vendor>Juergen Kellerer</vendor>
 	<category>Code tools</category>
 

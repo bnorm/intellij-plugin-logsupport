@@ -15,10 +15,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" name="Default" comment="" />
-    <ignored path="$USER_HOME_GRIFFON$/" />
     <ignored path="$USER_HOME_GRAILS$/" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="Log Framework Tests.iws" />
+    <ignored path="$USER_HOME_GRIFFON$/" />
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CreatePatchCommitExecutor">
@@ -70,19 +70,19 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Bla.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Bla.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="4" selection-start="868" selection-end="868" vertical-scroll-proportion="0.0">
+            <state line="22" column="8" selection-start="505" selection-end="505" vertical-scroll-proportion="0.3273196">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IfTest.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="IfTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/IfTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="43" selection-start="421" selection-end="421" vertical-scroll-proportion="0.3724227">
+            <state line="18" column="43" selection-start="421" selection-end="421" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -307,7 +307,7 @@
     <property name="options.splitter.main.proportions" value="0.23916666" />
     <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="preferences.pluginManager" />
+    <property name="options.lastSelected" value="net.sf.logsupport.LogSupportComponent" />
     <property name="last_opened_file_path" value="C:\Projects\Sandbox\temp" />
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
@@ -318,10 +318,10 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
-    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -716,9 +716,9 @@
         <state line="437" column="44" selection-start="21492" selection-end="21492" vertical-scroll-proportion="0.64102566" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/IfTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="4" selection-start="868" selection-end="868" vertical-scroll-proportion="0.0">
+        <state line="18" column="43" selection-start="421" selection-end="421" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -737,9 +737,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/IfTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="43" selection-start="421" selection-end="421" vertical-scroll-proportion="0.3724227">
+        <state line="22" column="8" selection-start="505" selection-end="505" vertical-scroll-proportion="0.3273196">
           <folding />
         </state>
       </provider>
