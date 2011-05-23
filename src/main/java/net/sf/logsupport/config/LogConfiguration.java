@@ -83,21 +83,30 @@ public abstract class LogConfiguration { //NOSONAR
 	 * Returns the log framework for the given class if supported.
 	 *
 	 * @param loggerClassName The classname of the logger.
+	 * @param methodName the method that was called.
 	 * @return the log framework for the given class if supported or 'null'
 	 *         if the logger is not backed by a supported framework.
 	 */
-	public LogFramework getSupportedFrameworkForLoggerClass(String loggerClassName) {
+	public LogFramework getSupportedFrameworkForLoggerClass(String loggerClassName, String methodName) {
 		if (!isEnabled())
 			return null;
 		else if (isForceUsingDefaultLogFramework()) {
 			LogFramework framework = getDefaultLogFramework();
 			return framework.getLoggerClass().equals(loggerClassName) ? framework : null;
 		} else {
+			LogFramework match = null;
 			for (LogFramework f : ApplicationConfiguration.getInstance().getFrameworks())
-				if (f.getLoggerClass().equals(loggerClassName))
-					return f;
+				if (f.getLoggerClass().equals(loggerClassName)) {
+					match = f;
+
+					for (String methodFragment : f.getLogMethod().values()) {
+						if (methodFragment.contains(methodName))
+							return f;
+					}
+				}
+
+			return match;
 		}
-		return null;
 	}
 
 	/**

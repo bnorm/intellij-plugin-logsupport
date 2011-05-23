@@ -12,6 +12,7 @@ public class Bla extends Super {
 
     //private static MyLogger myLogger;
 
+    private static final Logger log = LoggerFactory.getLogger(Bla.class);
     private static final boolean DEBUG_ENABLED = log.isDebugEnabled();
 
     {

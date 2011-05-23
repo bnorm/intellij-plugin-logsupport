@@ -69,5 +69,10 @@ public class ApplicationConfiguration {
 
 	public void setFrameworks(List<LogFramework> frameworks) {
 		this.frameworks = frameworks;
+
+		if (frameworks != null) {
+			for (LogFramework framework : logFrameworkDefaults.getMissingDefaults(frameworks))
+				frameworks.add(framework.copy());
+		}
 	}
 }

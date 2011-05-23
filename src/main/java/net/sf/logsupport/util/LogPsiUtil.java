@@ -217,14 +217,16 @@ public class LogPsiUtil {
 	@Nullable
 	public static LogFramework getLogFramework(PsiMethodCallExpression expression) {
 		PsiExpression qualifier = expression.getMethodExpression().getQualifierExpression();
-		if (qualifier == null)
+		if (qualifier == null || !canBeLoggerCall(expression))
 			return null;
 
-		PsiType type = qualifier.getType();
+		final PsiFile file = expression.getContainingFile();
+		final PsiType type = findSupportedLoggerType(file, qualifier.getType());
 		if (type != null) {
 			String loggerClass = type.getCanonicalText();
-			LogConfiguration configuration = LogConfiguration.getInstance(expression.getContainingFile());
-			return configuration.getSupportedFrameworkForLoggerClass(loggerClass);
+			LogConfiguration configuration = LogConfiguration.getInstance(file);
+			String methodName = expression.getMethodExpression().getReferenceName();
+			return configuration.getSupportedFrameworkForLoggerClass(loggerClass, methodName);
 		}
 
 		return null;
@@ -276,6 +278,30 @@ public class LogPsiUtil {
 		return calls;
 	}
 
+	private static boolean canBeLoggerCall(PsiMethodCallExpression callExpression) {
+		boolean canBeLogMethod = true;
+
+		// Apply a string filter to check only those method calls that are relevant.
+		// This method is called for every method call expression in a file and should be quick.
+		final PsiReferenceExpression ref = callExpression.getMethodExpression();
+		final PsiElement lastChild = ref.getLastChild();
+		final String logMethodName = lastChild == null ? null : lastChild.getText();
+		if (logMethodName != null) {
+			List<LogFramework> frameworks = ApplicationConfiguration.getInstance().getFrameworks();
+			if (!frameworks.isEmpty()) {
+				canBeLogMethod = false;
+				for (LogFramework framework : frameworks) {
+					for (String methodFragment : framework.getLogMethod().values()) {
+						if (canBeLogMethod = methodFragment.contains(logMethodName))
+							break;
+					}
+				}
+			}
+		}
+
+		return canBeLogMethod;
+	}
+
 	/**
 	 * Returns true if the given method call expression represents a supported call to a log method.
 	 *
@@ -284,31 +310,10 @@ public class LogPsiUtil {
 	 */
 	public static boolean isSupportedLoggerCall(PsiMethodCallExpression callExpression) {
 		final PsiReferenceExpression ref = callExpression.getMethodExpression();
-		if (ref.isQualified()) {
-			boolean canBeLogMethod = true;
-
-			// Apply a string filter to check only those method calls that are relevant.
-			// This method is called for every method call expression in a file and should be quick.
-			PsiElement lastChild = ref.getLastChild();
-			final String logMethodName = lastChild == null ? null : lastChild.getText();
-			if (logMethodName != null) {
-				List<LogFramework> frameworks = ApplicationConfiguration.getInstance().getFrameworks();
-				if (!frameworks.isEmpty()) {
-					canBeLogMethod = false;
-					for (LogFramework framework : frameworks) {
-						for (String methodFragment : framework.getLogMethod().values()) {
-							if (canBeLogMethod = methodFragment.contains(logMethodName))
-								break;
-						}
-					}
-				}
-			}
-
-			if (canBeLogMethod) {
-				final PsiExpression qualifierExpression = ref.getQualifierExpression();
-				return qualifierExpression != null && canBeLogMethod &&
-						isSupportedLoggerCall(qualifierExpression.getContainingFile(), qualifierExpression.getType());
-			}
+		if (ref.isQualified() && canBeLoggerCall(callExpression)) {
+			final PsiExpression qualifierExpression = ref.getQualifierExpression();
+			return qualifierExpression != null &&
+					isSupportedLoggerCall(qualifierExpression.getContainingFile(), qualifierExpression.getType());
 		}
 
 		return false;
@@ -322,13 +327,24 @@ public class LogPsiUtil {
 	 * @return	'true' if the logger class can be supported.
 	 */
 	public static boolean isSupportedLoggerCall(@NotNull PsiFile file, PsiType loggerType) {
+		return findSupportedLoggerType(file, loggerType) != null;
+	}
+
+	/**
+	 * Returns the target type of a supported logger class.
+	 *
+	 * @param file	   The file instance containing the logger.
+	 * @param loggerType The type of the logger that received the logger call.
+	 * @return the target type of the logger or 'null' if the given type is not supported.
+	 */
+	public static PsiType findSupportedLoggerType(PsiFile file, PsiType loggerType) {
 		if (loggerType != null) {
 			List<PsiType> types = Arrays.asList(loggerType);
 			while (!types.isEmpty()) {
 				for (PsiType type : types) {
 					String loggerClass = type.getCanonicalText();
 					if (isSupportedLoggerClass(file, loggerClass))
-						return true;
+						return type;
 				}
 
 				List<PsiType> superTypes = new ArrayList<PsiType>(types.size() * 2);
@@ -341,7 +357,7 @@ public class LogPsiUtil {
 			}
 		}
 
-		return false;
+		return null;
 	}
 
 	/**
