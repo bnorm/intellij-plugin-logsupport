@@ -264,6 +264,7 @@ public class DefaultLogConfiguration extends LogConfiguration implements Cloneab
 		if (logIdIncrement != that.logIdIncrement) return false;
 		if (logIdToValue != that.logIdToValue) return false;
 		if (logIdFromValue != that.logIdFromValue) return false;
+		if (forceUsingDefaultLogFramework != that.forceUsingDefaultLogFramework) return false;
 		if (customizedSequence != that.customizedSequence) return false;
 		if (conditionFormat != that.conditionFormat) return false;
 		if (!getConditionalLogLevels().equals(that.getConditionalLogLevels())) return false;
@@ -286,6 +287,7 @@ public class DefaultLogConfiguration extends LogConfiguration implements Cloneab
 		result = 31 * result + logIdIncrement;
 		result = 31 * result + logIdFromValue;
 		result = 31 * result + logIdToValue;
+		result = 31 * result + (forceUsingDefaultLogFramework ? 1 : 0);
 		result = 31 * result + (customizedSequence ? 1 : 0);
 		result = 31 * result + (defaultFrameworkName != null ? defaultFrameworkName.hashCode() : 0);
 		return result;

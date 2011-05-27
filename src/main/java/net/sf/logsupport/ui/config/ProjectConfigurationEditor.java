@@ -43,7 +43,7 @@ public class ProjectConfigurationEditor implements Editor {
 
 	private JPanel editorPanel; //NOSONAR - field is binding
 	private JComboBox defaultFrameworkName; //NOSONAR - field is binding
-	private JCheckBox doNotUseConfiguredCheckBox; //NOSONAR - field is binding
+	private JCheckBox forceUsingDefaultLogFramework; //NOSONAR - field is binding
 
 	private JComboBox logIdName; //NOSONAR - field is binding
 
