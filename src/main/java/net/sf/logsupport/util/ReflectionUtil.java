@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * Small utility that simplifies the usage of reflection.
@@ -83,11 +84,52 @@ public class ReflectionUtil {
 		}
 
 		try {
-			Method method = instance.getClass().getMethod(methodName, (Class<Object>[]) paramTypes);
-			return (T) method.invoke(instance, (Object[]) params);
+			boolean instanceIsClass = instance instanceof Class;
+			Class<?> cls = instanceIsClass ? (Class) instance : instance.getClass();
+			Method method = findMethod(cls, methodName, (Class<Object>[]) paramTypes);
+			if (instanceIsClass)
+				return (T) method.invoke(null, (Object[]) params);
+			else
+				return (T) method.invoke(instance, (Object[]) params);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	static Map<List<Object>, Method> methods = new HashMap<List<Object>, Method>();
+
+	private static synchronized Method findMethod(Class<?> cls, String methodName, Class... paramTypes) {
+		final List<Object> key = new ArrayList<Object>();
+		key.add(cls);
+		key.add(methodName);
+		for (Class type : paramTypes) key.add(type);
+
+		Method method = methods.get(key);
+		if (method == null) {
+			search:
+			for (Method m : cls.getMethods()) {
+				if (!m.getName().equals(methodName))
+					continue;
+
+				Class<?>[] mParamTypes = m.getParameterTypes();
+				if (mParamTypes.length != paramTypes.length)
+					continue;
+
+				for (int i = 0; i < mParamTypes.length; i++)
+					if (!mParamTypes[i].isAssignableFrom(paramTypes[i]))
+						continue search;
+
+				method = m;
+				break;
+			}
+
+			if (method == null)
+				throw new NoSuchMethodError(cls.getName() + "." + methodName + "(" + Arrays.asList(paramTypes) + ")");
+
+			methods.put(key, method);
+		}
+
+		return method;
 	}
 
 	private ReflectionUtil() {
