@@ -16,11 +16,12 @@
 
 package net.sf.logsupport.livetemplates;
 
+import com.intellij.codeInsight.completion.PrefixMatcher;
 import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.template.Expression;
-import com.intellij.codeInsight.template.ExpressionContext;
-import com.intellij.codeInsight.template.JavaPsiElementResult;
-import com.intellij.codeInsight.template.Result;
+import com.intellij.codeInsight.lookup.LookupItem;
+import com.intellij.codeInsight.lookup.LookupItemUtil;
+import com.intellij.codeInsight.template.*;
+import com.intellij.codeInsight.template.impl.JavaTemplateLookupSelectionHandler;
 import com.intellij.codeInsight.template.impl.JavaTemplateUtil;
 import com.intellij.codeInsight.template.macro.MacroUtil;
 import com.intellij.openapi.util.TextRange;
@@ -29,10 +30,12 @@ import net.sf.logsupport.config.LogConfiguration;
 import net.sf.logsupport.util.LogPsiElementFactory;
 import net.sf.logsupport.util.LogPsiUtil;
 import net.sf.logsupport.util.LoggerFieldBuilder;
+import net.sf.logsupport.util.ReflectionUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -91,10 +94,11 @@ public class ResolveLoggerInstance extends AbstractMacro {
 		if (variables == null || variables.length < 2)
 			return null;
 
-		// No generics and manual array creation to support builds in IDEA 8 and 9
+		// No generics, manual array creation, and reflection to support builds in IDEA 8 and 9 and 10.x
+
 		Set set = new LinkedHashSet();
 		for (PsiElement variable : variables)
-			JavaTemplateUtil.addElementLookupItem(set, variable);
+			ReflectionUtil.invoke(JavaTemplateUtil.class, "addElementLookupItem", set, variable);
 
 		int i = 0;
 		LookupElement[] elements = new LookupElement[set.size()];
