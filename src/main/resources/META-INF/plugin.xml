@@ -77,6 +77,12 @@
 
 	<change-notes><![CDATA[
 		<ul>
+			<li>1.0.7
+				<ol>
+					<li>Fixed 3308351: Logging fails in IDEA 10.5 if multiple loggers exist.</li>
+					<li>Fixed 3308322: Cannot enable the option "Do not use configured instances..".</li>
+				</ol>
+			</li>
 			<li>1.0.6
 				<ol>
 					<li>Added initial support for JBoss logging.</li>
@@ -123,7 +129,7 @@
 		</ul>
 	]]></change-notes>
 
-	<version>1.0.6</version>
+	<version>1.0.7</version>
 	<vendor>Juergen Kellerer</vendor>
 	<category>Code tools</category>
 
