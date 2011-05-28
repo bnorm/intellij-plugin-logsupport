@@ -29,22 +29,18 @@
 	<fileSets>
 		<fileSet>
 			<directory>.idea</directory>
-			<useDefaultExcludes>true</useDefaultExcludes>
 			<filtered>false</filtered>
 		</fileSet>
 		<fileSet>
 			<directory>src</directory>
-			<useDefaultExcludes>true</useDefaultExcludes>
 			<filtered>false</filtered>
 		</fileSet>
 		<fileSet>
 			<directory>test-sample</directory>
-			<useDefaultExcludes>true</useDefaultExcludes>
 			<filtered>false</filtered>
 		</fileSet>
 		<fileSet>
 			<directory>.</directory>
-			<useDefaultExcludes>true</useDefaultExcludes>
 			<includes>
 				<include>*.xml</include>
 				<include>*.iml</include>
