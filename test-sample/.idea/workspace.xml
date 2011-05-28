@@ -17,8 +17,8 @@
     <list default="true" readonly="true" name="Default" comment="" />
     <ignored path="$USER_HOME_GRAILS$/" />
     <ignored path=".idea/workspace.xml" />
-    <ignored path="Log Framework Tests.iws" />
     <ignored path="$USER_HOME_GRIFFON$/" />
+    <ignored path="Log Framework Tests.iws" />
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CreatePatchCommitExecutor">
@@ -73,7 +73,7 @@
       <file leaf-file-name="Bla.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="8" selection-start="505" selection-end="505" vertical-scroll-proportion="0.3273196">
+            <state line="39" column="0" selection-start="908" selection-end="908" vertical-scroll-proportion="0.4523196">
               <folding />
             </state>
           </provider>
@@ -307,7 +307,7 @@
     <property name="options.splitter.main.proportions" value="0.23916666" />
     <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="net.sf.logsupport.LogSupportComponent" />
+    <property name="options.lastSelected" value="editing.templates" />
     <property name="last_opened_file_path" value="C:\Projects\Sandbox\temp" />
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
@@ -739,7 +739,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="8" selection-start="505" selection-end="505" vertical-scroll-proportion="0.3273196">
+        <state line="39" column="0" selection-start="908" selection-end="908" vertical-scroll-proportion="0.4523196">
           <folding />
         </state>
       </provider>

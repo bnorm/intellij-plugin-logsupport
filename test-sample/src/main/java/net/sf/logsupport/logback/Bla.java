@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Bla extends Super {
 
-    //private static MyLogger myLogger;
+    private static MyLogger myLogger;
 
     private static final Logger log = LoggerFactory.getLogger(Bla.class);
     private static final boolean DEBUG_ENABLED = log.isDebugEnabled();
@@ -20,7 +20,8 @@ public class Bla extends Super {
         if (b)
             log.debug("#SuperLOG-004b0:kkk");
 
-        log.info("#SuperLOG-00370:asdasd");
+        Object[] argArray = {b};
+        log.info("#SuperLOG-00370:asdasd, {}", argArray);
         if (DEBUG_ENABLED)
             log.debug("#SuperLOG-0037a:asdsad");
 
@@ -35,7 +36,16 @@ public class Bla extends Super {
         if (DEBUG_ENABLED)
             log.debug("#SuperLOG-00618:sadasd");
 
-        if (log.isDebugEnabled())
+        try {
+            if (myLogger.isDebugEnabled())
+                myLogger.debug("asdsd");
+            myLogger.error("#SuperLOG-006b8:asdasd");
+        } catch (Exception e) {
+            myLogger.error("#SuperLOG-006cc:asda", e);
+            myLogger.error("#SuperLOG-006c2:asdasdas", e);
+        }
+
+        if (myLogger.isDebugEnabled())
             myLogger.debug("#SuperLOG-005e6:");
     }
 
