@@ -13,7 +13,7 @@
             </option>
             <option name="defaultFrameworkName" value="java-util-logging" />
             <option name="logIdName" value="Hex ID" />
-            <option name="logIdSequenceValue" value="1590" />
+            <option name="logIdSequenceValue" value="1750" />
           </DefaultLogConfiguration>
         </option>
         <option name="targetedLogConfigurations">
@@ -26,7 +26,7 @@
                 </set>
               </option>
               <option name="defaultFrameworkName" value="Intellij-IDEA" />
-              <option name="logIdSequenceValue" value="1590" />
+              <option name="logIdSequenceValue" value="1750" />
               <option name="targetScopeName" value="Tests" />
             </TargetedLogConfiguration>
             <TargetedLogConfiguration>
@@ -49,7 +49,7 @@
                 </set>
               </option>
               <option name="defaultFrameworkName" value="slf4j" />
-              <option name="logIdSequenceValue" value="1590" />
+              <option name="logIdSequenceValue" value="1750" />
               <option name="targetScopeName" value="LogBack Scope" />
             </TargetedLogConfiguration>
           </list>
