@@ -62,6 +62,7 @@ public class LogPsiUtil {
 				computeConstantHelperMethod = PsiConstantEvaluationHelper.class.
 						getMethod("computeConstantExpression", PsiElement.class, Boolean.TYPE);
 			} catch (NoSuchMethodException e1) {
+				LOG.error("Failed to find helper method that can compute constant expressions. ", e1);
 			}
 		}
 	}
@@ -290,10 +291,12 @@ public class LogPsiUtil {
 			List<LogFramework> frameworks = ApplicationConfiguration.getInstance().getFrameworks();
 			if (!frameworks.isEmpty()) {
 				canBeLogMethod = false;
+
+				search:
 				for (LogFramework framework : frameworks) {
 					for (String methodFragment : framework.getLogMethod().values()) {
 						if (canBeLogMethod = methodFragment.contains(logMethodName))
-							break;
+							break search;
 					}
 				}
 			}
