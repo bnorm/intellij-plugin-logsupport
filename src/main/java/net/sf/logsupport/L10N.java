@@ -36,7 +36,7 @@ public class L10N {
 	@NonNls
 	private static final String BUNDLE = "net.sf.logsupport.L10N";
 	
-	private static Reference<ResourceBundle> bundle = new WeakReference<ResourceBundle>(null);
+	private static Reference<ResourceBundle> bundleReference = new WeakReference<ResourceBundle>(null);
 
 	private L10N() {
 	}
@@ -50,10 +50,10 @@ public class L10N {
 	}
 
 	private static ResourceBundle getBundle() {
-		ResourceBundle bundle = L10N.bundle.get();
+		ResourceBundle bundle = L10N.bundleReference.get();
 		if (bundle == null) {
 			bundle = ResourceBundle.getBundle(BUNDLE);
-			L10N.bundle = new SoftReference<ResourceBundle>(bundle);
+			bundleReference = new SoftReference<ResourceBundle>(bundle);
 		}
 
 		return bundle;

@@ -16,27 +16,18 @@
 
 package net.sf.logsupport.livetemplates;
 
-import com.intellij.codeInsight.completion.PrefixMatcher;
 import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.lookup.LookupItem;
-import com.intellij.codeInsight.lookup.LookupItemUtil;
-import com.intellij.codeInsight.template.*;
-import com.intellij.codeInsight.template.impl.JavaTemplateLookupSelectionHandler;
-import com.intellij.codeInsight.template.impl.JavaTemplateUtil;
-import com.intellij.codeInsight.template.macro.MacroUtil;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
+import com.intellij.codeInsight.template.Expression;
+import com.intellij.codeInsight.template.ExpressionContext;
+import com.intellij.codeInsight.template.JavaPsiElementResult;
+import com.intellij.codeInsight.template.Result;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiFile;
 import net.sf.logsupport.config.LogConfiguration;
-import net.sf.logsupport.util.LogPsiElementFactory;
-import net.sf.logsupport.util.LogPsiUtil;
 import net.sf.logsupport.util.LoggerFieldBuilder;
-import net.sf.logsupport.util.ReflectionUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -45,7 +36,7 @@ import java.util.Set;
  * @author Juergen_Kellerer, 2010-04-03
  * @version 1.0
  */
-public class ResolveLoggerInstance extends AbstractMacro {
+public class ResolveLoggerInstance extends AbstractResolveMacro {
 
 	private static volatile String lastCreatedLoggerInstance;
 
@@ -75,7 +66,7 @@ public class ResolveLoggerInstance extends AbstractMacro {
 		PsiFile file = getPsiFile(context);
 		LogConfiguration configuration = LogConfiguration.getInstance(file);
 
-		PsiElement[] variables = getVariables(configuration.getSupportedLoggerClasses(), file, context);
+		PsiElement[] variables = resolveVariables(configuration.getSupportedLoggerClasses(), file, context);
 		if (variables != null && variables.length > 0)
 			return new JavaPsiElementResult(variables[0]);
 
@@ -90,64 +81,26 @@ public class ResolveLoggerInstance extends AbstractMacro {
 		PsiFile file = getPsiFile(context);
 		LogConfiguration configuration = LogConfiguration.getInstance(file);
 
-		PsiElement[] variables = getVariables(configuration.getSupportedLoggerClasses(), file, context);
-		if (variables == null || variables.length < 2)
-			return null;
+		PsiElement[] variables = resolveVariables(configuration.getSupportedLoggerClasses(), file, context);
+		if (variables != null && variables.length >= 2)
+			return convertToLookupItems(variables);
 
-		// No generics, manual array creation, and reflection to support builds in IDEA 8 and 9 and 10.x
-
-		Set set = new LinkedHashSet();
-		for (PsiElement variable : variables)
-			ReflectionUtil.invoke(JavaTemplateUtil.class, "addElementLookupItem", set, variable);
-
-		int i = 0;
-		LookupElement[] elements = new LookupElement[set.size()];
-		for (Object o : set) elements[i++] = (LookupElement) o;
-		return elements;
+		return null;
 	}
 
-	@Nullable
-	PsiElement[] getVariables(Set<String> stringTypes, PsiFile file, ExpressionContext context) {
-		try {
+	@Override
+	protected PsiElement[] resolveVariables(Set<String> stringTypes, PsiFile file, ExpressionContext context) {
+		PsiElement[] variables = super.resolveVariables(stringTypes, file, context);
+		if (variables != null && variables.length == 0) {
 			PsiElement place = getPlace(file, context);
-
-			// Resolving the types
-			Set<PsiType> types = new LinkedHashSet<PsiType>(stringTypes.size());
-			LogPsiElementFactory factory = LogPsiUtil.getFactory(file);
-			for (String type : stringTypes)
-				types.add(factory.createTypeFromText(type, place.getContext()));
-
-
-			ArrayList<PsiElement> elementsInScope = new ArrayList<PsiElement>();
-			PsiVariable[] variables = MacroUtil.getVariablesVisibleAt(place, "");
-
-			for (PsiVariable var : variables) {
-				if (var instanceof PsiLocalVariable) {
-					TextRange range = var.getNameIdentifier().getTextRange();
-					if (range != null && range.contains(context.getStartOffset())) {
-						continue;
-					}
-				}
-
-				for (PsiType type : types)
-					if (type == null || type.isAssignableFrom(var.getType())) {
-						elementsInScope.add(var);
-						break;
-					}
+			PsiField field = createField(file, place);
+			if (field != null) {
+				setLastCreatedLoggerInstance(field.getType().getCanonicalText());
+				variables = new PsiElement[]{field};
 			}
-
-			if (elementsInScope.isEmpty()) {
-				PsiField field = createField(file, place);
-				if (field != null) {
-					setLastCreatedLoggerInstance(field.getType().getCanonicalText());
-					elementsInScope.add(field);
-				}
-			}
-
-			return elementsInScope.toArray(new PsiElement[elementsInScope.size()]);
-		} catch (NullPointerException e) {
-			return null;
 		}
+
+		return variables;
 	}
 
 	PsiField createField(PsiFile file, PsiElement place) {

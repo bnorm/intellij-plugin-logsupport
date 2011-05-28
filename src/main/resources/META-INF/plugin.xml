@@ -77,6 +77,13 @@
 
 	<change-notes><![CDATA[
 		<ul>
+			<li>1.0.8
+				<ol>
+					<li>Fixed 3308797: Log calls are not always detected correctly.</li>
+					<li>Improvement: Throwables are optionally added when using any of the live templates and
+					exceptions are in the scope (this used to be hardcoded in <i>loge</i>).</li>
+				</ol>
+			</li>
 			<li>1.0.7
 				<ol>
 					<li>Fixed 3308351: Logging fails in IDEA 10.5 if multiple loggers exist.</li>
@@ -129,7 +136,7 @@
 		</ul>
 	]]></change-notes>
 
-	<version>1.0.7</version>
+	<version>1.0.8</version>
 	<vendor>Juergen Kellerer</vendor>
 	<category>Code tools</category>
 
@@ -196,6 +203,7 @@
 	</actions>
 
 	<extensions defaultExtensionNs="com.intellij">
+		<liveTemplateMacro implementation="net.sf.logsupport.livetemplates.ResolveOptionalVariableOfType"/>
 		<liveTemplateMacro implementation="net.sf.logsupport.livetemplates.ResolveLoggerInstance"/>
 		<liveTemplateMacro implementation="net.sf.logsupport.livetemplates.ResolveLogMethod"/>
 		<liveTemplateMacro implementation="net.sf.logsupport.livetemplates.CreateNextLogId"/>

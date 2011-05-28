@@ -25,12 +25,11 @@ import com.intellij.openapi.editor.RangeMarker;
 import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethodCallExpression;
+import com.intellij.psi.*;
 import net.sf.logsupport.L10N;
 import net.sf.logsupport.intentions.AddLogIfConditionIntention;
 import net.sf.logsupport.util.LogPsiUtil;
+import net.sf.logsupport.util.ReflectionUtil;
 import org.jetbrains.annotations.Nls;
 
 /**
@@ -45,6 +44,14 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 
 	public static final Key<Runnable> PENDING_RUNNABLE = Key.create("LOG_SUPPORT_PENDING_RUNNABLE");
 
+	/**
+	 * Schedules a runnable to be executed in the post processing step.
+	 *
+	 * @param file	 the file to run the runnable with.
+	 * @param runnable the runnable to schedule.
+	 * @param replace  whether the runnable should be added to the chain
+	 *                 or replace the chain of existing runnables.
+	 */
 	public static void schedule(PsiFile file, final Runnable runnable, boolean replace) {
 		final Runnable existing = file.getUserData(PENDING_RUNNABLE);
 		if (!replace && existing != null) {
@@ -58,7 +65,7 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 			file.putUserData(PENDING_RUNNABLE, runnable);
 	}
 
-	AddLogIfConditionIntention ifConditionIntention = new AddLogIfConditionIntention();
+	private final AddLogIfConditionIntention ifConditionIntention = new AddLogIfConditionIntention();
 
 	/**
 	 * {@inheritDoc}
@@ -83,9 +90,39 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 
 			// Check whether we need to add a if condition or add a log id.
 			PsiMethodCallExpression expression = LogPsiUtil.findSupportedMethodCallExpression(editor, file);
-			if (expression != null)
-				ifConditionIntention.invoke(expression);
+			if (expression != null) {
+				try {
+					removeNonExistingTypes(expression);
+
+					// Must be last!
+					addIfConditionIfRequired(expression);
+				} catch (RuntimeException e) {
+					log.error("Failed to apply post processing to log call.", e);
+				}
+			}
 		}
+	}
+
+	/**
+	 * Removes entries from the argument list that are not defined in the current scope.
+	 *
+	 * @param expression the log method call expression.
+	 */
+	private void removeNonExistingTypes(PsiMethodCallExpression expression) {
+		PsiExpressionList argumentList = expression.getArgumentList();
+		for (PsiExpression psiExpression : argumentList.getExpressions()) {
+			if (psiExpression.getType() == null)
+				psiExpression.delete();
+		}
+	}
+
+	/**
+	 * Adds an if condition if required.
+	 *
+	 * @param expression the log method call expression.
+	 */
+	private void addIfConditionIfRequired(PsiMethodCallExpression expression) {
+		ifConditionIntention.invoke(expression);
 	}
 
 	/**
@@ -102,16 +139,11 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 	public boolean isEnabled(Template template) {
 		String id;
 		try {
-			id = String.valueOf(template.getId());
-		} catch (IncompatibleClassChangeError e) {
-			try {
-				Class<?> cls = template.getClass();
-				id = String.valueOf(cls.getMethod("getId").invoke(template));
-			} catch (Exception ee) {				
-				log.error("Failed to retrieve the template id of '" + template +
-						"', disabling template post-processor here.", e);
-				return false;
-			}
+			id = String.valueOf(ReflectionUtil.invoke(template, "getId"));
+		} catch (Exception e) {
+			log.error("Failed to retrieve the template id of '" + template +
+					"', disabling template post-processor here.", e);
+			return false;
 		}
 
 		return id.startsWith("logsupport-");
@@ -127,6 +159,7 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 	 * {@inheritDoc}
 	 */
 	public boolean isVisible(Template template) {
+		// Note: This method is defined from IDEA9 and allows hiding the post processor.
 		return false;
 	}
 }

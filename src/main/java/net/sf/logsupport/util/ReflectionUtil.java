@@ -25,7 +25,10 @@ public class ReflectionUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getField(Object instance, String fieldName) {
-		return (T) getField(instance.getClass(), instance, fieldName);
+		if (instance instanceof Class)
+			return (T) getField((Class) instance, null, fieldName);
+		else
+			return (T) getField(instance.getClass(), instance, fieldName);
 	}
 
 	/**
