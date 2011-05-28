@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static net.sf.logsupport.util.LogPsiUtil.resolveVariableInitializer;
+
 /**
  * Is the common base class for formatted message related inspections.
  *
@@ -40,14 +42,14 @@ public abstract class AbstractFormattedMessageInspection extends AbstractInspect
 	private static final Logger LOG = Logger.getInstance(
 			"#net.sf.logsupport.inspections.AbstractFormattedMessageInspection");
 
-	private static final PsiType DOUBLE = ReflectionUtil.getField(PsiType.class, null, "DOUBLE");
-	private static final PsiType FLOAT = ReflectionUtil.getField(PsiType.class, null, "FLOAT");
-	private static final PsiType LONG = ReflectionUtil.getField(PsiType.class, null, "LONG");
-	private static final PsiType INT = ReflectionUtil.getField(PsiType.class, null, "INT");
-	private static final PsiType SHORT = ReflectionUtil.getField(PsiType.class, null, "SHORT");
-	private static final PsiType CHAR = ReflectionUtil.getField(PsiType.class, null, "CHAR");
-	private static final PsiType BYTE = ReflectionUtil.getField(PsiType.class, null, "BYTE");
-	private static final PsiType BOOLEAN = ReflectionUtil.getField(PsiType.class, null, "BOOLEAN");
+	private static final PsiType DOUBLE = ReflectionUtil.getField(PsiType.class, "DOUBLE");
+	private static final PsiType FLOAT = ReflectionUtil.getField(PsiType.class, "FLOAT");
+	private static final PsiType LONG = ReflectionUtil.getField(PsiType.class, "LONG");
+	private static final PsiType INT = ReflectionUtil.getField(PsiType.class, "INT");
+	private static final PsiType SHORT = ReflectionUtil.getField(PsiType.class, "SHORT");
+	private static final PsiType CHAR = ReflectionUtil.getField(PsiType.class, "CHAR");
+	private static final PsiType BYTE = ReflectionUtil.getField(PsiType.class, "BYTE");
+	private static final PsiType BOOLEAN = ReflectionUtil.getField(PsiType.class, "BOOLEAN");
 
 	@NotNull
 	List<Object> getLogCallArgumentDefaults(PsiMethodCallExpression expression, boolean includeThrowables) {
@@ -69,20 +71,19 @@ public abstract class AbstractFormattedMessageInspection extends AbstractInspect
 					collect = argument == hookExpression;
 				} else {
 					if (argument.getType() instanceof PsiArrayType) {
+						PsiArrayInitializerExpression initializer = null;
 						if (argument instanceof PsiNewExpression) {
 							PsiNewExpression ne = (PsiNewExpression) argument;
-							PsiArrayInitializerExpression initializer = ne.getArrayInitializer();
-							if (initializer != null) {
-								for (PsiExpression e : initializer.getInitializers())
-									results.add(createDefaultValueFor(e));
-							}
+							initializer = ne.getArrayInitializer();
 						} else if (argument instanceof PsiReferenceExpression) {
-							// TODO:
-							System.out.println("Argument Type: " + argument.getType());
-							if (argument.getType() != null)
-								System.out.println("Argument Type: " + argument.getType().getCanonicalText());
-							System.out.println("Argument Class: " + argument.getClass().getSimpleName());
-							System.out.println("");
+							PsiExpression pe = resolveVariableInitializer((PsiReferenceExpression) argument);
+							if (pe instanceof PsiArrayInitializerExpression)
+								initializer = (PsiArrayInitializerExpression) pe;
+						}
+
+						if (initializer != null) {
+							for (PsiExpression e : initializer.getInitializers())
+								results.add(createDefaultValueFor(e));
 						}
 					} else {
 						results.add(createDefaultValueFor(argument));

@@ -21,16 +21,17 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
-import net.sf.logsupport.L10N;
 import net.sf.logsupport.ui.IntegrateLogReviewDialog;
 import net.sf.logsupport.ui.util.Dialogs;
 import net.sf.logsupport.util.LogPsiElementFactory;
 import net.sf.logsupport.util.LogPsiUtil;
+import net.sf.logsupport.util.ReflectionUtil;
 import net.sf.logsupport.util.VirtualFileUtil;
 
 import java.lang.reflect.Method;
@@ -82,27 +83,27 @@ public class IntegrateLogReview extends AbstractAction {
 
 			final ProgressManager pm = ProgressManager.getInstance();
 			pm.runProcessWithProgressSynchronously(new Runnable() {
-				public void run() {
-					final ProgressIndicator indicator = pm.getProgressIndicator();
-					indicator.setIndeterminate(true);
+						public void run() {
+							final ProgressIndicator indicator = pm.getProgressIndicator();
+							indicator.setIndeterminate(true);
 
-					manager.startBatchFilesProcessingMode();
-					try {
-						final String title = message("IntegrateLogReview.integrateApplyJobTitle", pendingChangeCount);
+							manager.startBatchFilesProcessingMode();
+							try {
+								final String title = message("IntegrateLogReview.integrateApplyJobTitle", pendingChangeCount);
 
-						Set<PsiFile> processableFiles = mappedMessages.keySet();
-						new WriteCommandAction(project, title,
-								processableFiles.toArray(new PsiFile[processableFiles.size()])) {
-							protected void run(Result result) throws Throwable {
-								indicator.setText(title);
-								getWriteOperation(mappedMessages, reviewedMessages, indicator).run();
+								Set<PsiFile> processableFiles = mappedMessages.keySet();
+								new WriteCommandAction(project, title,
+										processableFiles.toArray(new PsiFile[processableFiles.size()])) {
+									protected void run(Result result) throws Throwable {
+										indicator.setText(title);
+										getWriteOperation(mappedMessages, reviewedMessages, indicator).run();
+									}
+								}.execute();
+							} finally {
+								manager.finishBatchFilesProcessingMode();
 							}
-						}.execute();
-					} finally {
-						manager.finishBatchFilesProcessingMode();
-					}
-				}
-			}, dialog.getTitle(), true, project);
+						}
+					}, dialog.getTitle(), true, project);
 		}
 	}
 
@@ -151,7 +152,7 @@ public class IntegrateLogReview extends AbstractAction {
 		int pendingChangeCount = 0;
 
 		reduceLoop:
-		for (Iterator<Map<LogMessage, List<LogMessage>>> i = mappedMessages.values().iterator(); i.hasNext();) {
+		for (Iterator<Map<LogMessage, List<LogMessage>>> i = mappedMessages.values().iterator(); i.hasNext(); ) {
 			checkCanceled();
 
 			Map<LogMessage, List<LogMessage>> fileMessages = i.next();
@@ -268,23 +269,13 @@ public class IntegrateLogReview extends AbstractAction {
 	}
 
 	static void checkCanceled() {
-		// Using reflection here to support class change between IDEA 8 and 9
-		if (cancelCheckMethod != null) {
-			try {
-				cancelCheckMethod.invoke(ProgressManager.getInstance());
-			} catch (Exception e) {
-				// ignore.
-			}
-		}
-	}
-
-	static Method cancelCheckMethod;
-
-	static {
 		try {
-			cancelCheckMethod = ProgressManager.class.getMethod("checkCanceled");
-		} catch (NoSuchMethodException e) {
-			LOG.warn("Couldn't find method to check for cancel, integrations will no be stoppable.");
+			ReflectionUtil.invoke(ProgressManager.getInstance(), "checkCanceled");
+		} catch (RuntimeException e) {
+			if (e.getCause() instanceof ProcessCanceledException)
+				throw (ProcessCanceledException) e.getCause();
+			else
+				LOG.warn("Failed checking whether the log review integration was cancelled.", e);
 		}
 	}
 }
