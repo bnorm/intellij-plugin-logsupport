@@ -15,8 +15,7 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -24,7 +23,7 @@
 
 	<groupId>net.sf.logsupport</groupId>
 	<artifactId>idea-plugin</artifactId>
-	<version>1.0.8-SNAPSHOT</version>
+	<version>1.0.8</version>
 
 	<inceptionYear>2010</inceptionYear>
 	<url>https://logsupport.sf.net/</url>
@@ -121,8 +120,8 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://logsupport.svn.sourceforge.net/svnroot/logsupport/trunk</connection>
-		<url>http://logsupport.svn.sourceforge.net/viewvc/logsupport/trunk/</url>
+		<connection>scm:svn:https://logsupport.svn.sourceforge.net/svnroot/logsupport/tags/idea-plugin-1.0.8</connection>
+		<url>http://logsupport.svn.sourceforge.net/viewvc/logsupport/tags/idea-plugin-1.0.8</url>
 	</scm>
 
 	<ciManagement>
@@ -168,16 +167,13 @@
 						<configuration>
 							<tasks>
 								<path id="compile.classpath">
-									<fileset dir="${idea.home}/lib" includes="*.jar"/>
-									<fileset dir="${idea.home}/plugins/Groovy/lib" includes="*.jar"/>
+									<fileset dir="${idea.home}/lib" includes="*.jar" />
+									<fileset dir="${idea.home}/plugins/Groovy/lib" includes="*.jar" />
 								</path>
 
-								<taskdef name="javac2" classname="com.intellij.ant.Javac2"
-										 classpathref="compile.classpath"/>
+								<taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="compile.classpath" />
 
-								<javac2 srcdir="${project.build.sourceDirectory}"
-										destdir="${project.build.outputDirectory}" source="1.5" target="1.5"
-										includes="**/*.form" classpathref="compile.classpath"/>
+								<javac2 srcdir="${project.build.sourceDirectory}" destdir="${project.build.outputDirectory}" source="1.5" target="1.5" includes="**/*.form" classpathref="compile.classpath" />
 							</tasks>
 						</configuration>
 						<goals>
