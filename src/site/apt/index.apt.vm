@@ -23,7 +23,7 @@ About ${project.name}
 
 	<<Resources>>
 
-	* {{{http://plugins.intellij.net/plugin/?idea&amp;id=4953} <<Log Support - Plugin Page>> @ jetbrains.com}}
+	* {{{http://plugins.intellij.net/plugin/?idea&id=4953} <<Log Support - Plugin Page>> @ jetbrains.com}}
 	  (Release Notes, Detailed Features List, etc.)
 
 	* {{{http://www.jetbrains.com/idea/} <<IntelliJ IDEA>> @ jetbrains.com}}
