@@ -19,6 +19,7 @@ package net.sf.logsupport.config;
 import com.intellij.psi.PsiFile;
 import net.sf.logsupport.util.NumericLogIdGenerator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -31,12 +32,14 @@ import java.util.Set;
  * @version 1.0
  */
 public abstract class LogConfiguration { //NOSONAR
+
 	/**
 	 * Returns the log configuration instance on the specified PsiFile.
 	 *
 	 * @param file The file to resolve the log configuration for.
 	 * @return the log configuration instance on the specified PsiFile.
 	 */
+	@NotNull
 	public static LogConfiguration getInstance(PsiFile file) {
 		return ProjectConfiguration.getInstance(file.getProject()).getLogConfiguration(file);
 	}
@@ -63,36 +66,37 @@ public abstract class LogConfiguration { //NOSONAR
 	 *
 	 * @return A set of logger names that are usable for logging.
 	 */
+	@NotNull
 	public Set<String> getSupportedLoggerClasses() {
-		if (!isEnabled())
-			return Collections.emptySet();
-		else if (isForceUsingDefaultLogFramework())
-			return Collections.singleton(getDefaultLogFramework().getLoggerClass());
-		else {
-			Set<String> classes = new LinkedHashSet<String>();
-			classes.add(getDefaultLogFramework().getLoggerClass());
+		Set<String> classes;
+		LogFramework defaultLogFramework = getDefaultLogFramework();
+		if (isForceUsingDefaultLogFramework()) {
+			classes = defaultLogFramework == null ? Collections.<String>emptySet() :
+					Collections.singleton(defaultLogFramework.getLoggerClass());
+		} else {
+			classes = new LinkedHashSet<String>();
+			if (defaultLogFramework != null)
+				classes.add(defaultLogFramework.getLoggerClass());
 
 			for (LogFramework f : ApplicationConfiguration.getInstance().getFrameworks())
 				classes.add(f.getLoggerClass());
-
-			return classes;
 		}
+
+		return classes;
 	}
 
 	/**
 	 * Returns the log framework for the given class if supported.
 	 *
 	 * @param loggerClassName The classname of the logger.
-	 * @param methodName the method that was called.
+	 * @param methodName	  the method that was called.
 	 * @return the log framework for the given class if supported or 'null'
 	 *         if the logger is not backed by a supported framework.
 	 */
 	public LogFramework getSupportedFrameworkForLoggerClass(String loggerClassName, String methodName) {
-		if (!isEnabled())
-			return null;
-		else if (isForceUsingDefaultLogFramework()) {
+		if (isForceUsingDefaultLogFramework()) {
 			LogFramework framework = getDefaultLogFramework();
-			return framework.getLoggerClass().equals(loggerClassName) ? framework : null;
+			return framework != null && framework.getLoggerClass().equals(loggerClassName) ? framework : null;
 		} else {
 			LogFramework match = null;
 			for (LogFramework f : ApplicationConfiguration.getInstance().getFrameworks())
@@ -132,6 +136,7 @@ public abstract class LogConfiguration { //NOSONAR
 	 *
 	 * @return the default log framework to use.
 	 */
+	@Nullable
 	public LogFramework getDefaultLogFramework() {
 		return defaultLogFramework;
 	}
@@ -150,6 +155,7 @@ public abstract class LogConfiguration { //NOSONAR
 	 *
 	 * @return the log-id generator used to generate log-ids.
 	 */
+	@Nullable
 	public NumericLogIdGenerator getLogIdGenerator() {
 		return logIdGenerator;
 	}

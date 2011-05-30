@@ -27,10 +27,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.*;
 import net.sf.logsupport.L10N;
+import net.sf.logsupport.config.LogConfiguration;
 import net.sf.logsupport.intentions.AddLogIfConditionIntention;
 import net.sf.logsupport.util.LogPsiUtil;
 import net.sf.logsupport.util.ReflectionUtil;
 import org.jetbrains.annotations.Nls;
+
+import static net.sf.logsupport.util.LogPsiUtil.canBeLoggerCall;
+import static net.sf.logsupport.util.NotificationUtil.notifyWarning;
 
 /**
  * Post-Processes the logsupport templates, when needed to satisfy the correct timing.
@@ -98,6 +102,13 @@ public class TemplatePostProcessor implements TemplateOptionalProcessor {
 					addIfConditionIfRequired(expression);
 				} catch (RuntimeException e) {
 					log.error("Failed to apply post processing to log call.", e);
+				}
+			} else {
+				LogConfiguration config = LogConfiguration.getInstance(file);
+				expression = LogPsiUtil.findMethodCallExpressionAtCaret(editor, file);
+
+				if (expression != null && canBeLoggerCall(expression) && !config.isEnabled()) {
+					notifyWarning(L10N.message("Notifications.NoDefaultLogFrameworkConfigured"), project);
 				}
 			}
 		}

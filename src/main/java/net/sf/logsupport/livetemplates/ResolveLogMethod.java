@@ -23,7 +23,7 @@ import com.intellij.codeInsight.template.TextResult;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Creates the next log ID and returns it if logIds are enabled.
+ * Resolves the log method to use based on the given log level.
  *
  * @author Juergen_Kellerer, 2010-04-04
  * @version 1.0

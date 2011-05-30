@@ -17,10 +17,7 @@
 package net.sf.logsupport.livetemplates;
 
 import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.template.Expression;
-import com.intellij.codeInsight.template.ExpressionContext;
-import com.intellij.codeInsight.template.JavaPsiElementResult;
-import com.intellij.codeInsight.template.Result;
+import com.intellij.codeInsight.template.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
@@ -64,13 +61,13 @@ public class ResolveLoggerInstance extends AbstractResolveMacro {
 	 */
 	public Result calculateResult(@NotNull Expression[] expressions, ExpressionContext context) {
 		PsiFile file = getPsiFile(context);
-		LogConfiguration configuration = LogConfiguration.getInstance(file);
+		LogConfiguration config = LogConfiguration.getInstance(file);
 
-		PsiElement[] variables = resolveVariables(configuration.getSupportedLoggerClasses(), file, context);
+		PsiElement[] variables = resolveVariables(config.getSupportedLoggerClasses(), file, context);
 		if (variables != null && variables.length > 0)
 			return new JavaPsiElementResult(variables[0]);
 
-		return null;
+		return new TextResult(getDefaultValue());
 	}
 
 	/**
@@ -79,9 +76,9 @@ public class ResolveLoggerInstance extends AbstractResolveMacro {
 	@SuppressWarnings("unchecked")
 	public LookupElement[] calculateLookupItems(@NotNull Expression[] expressions, ExpressionContext context) {
 		PsiFile file = getPsiFile(context);
-		LogConfiguration configuration = LogConfiguration.getInstance(file);
+		LogConfiguration config = LogConfiguration.getInstance(file);
 
-		PsiElement[] variables = resolveVariables(configuration.getSupportedLoggerClasses(), file, context);
+		PsiElement[] variables = resolveVariables(config.getSupportedLoggerClasses(), file, context);
 		if (variables != null && variables.length >= 2)
 			return convertToLookupItems(variables);
 

@@ -25,6 +25,7 @@ import com.intellij.psi.search.scope.packageSet.NamedScopesHolder;
 import com.intellij.psi.search.scope.packageSet.PackageSet;
 import net.sf.logsupport.util.NumericLogIdGenerator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.*;
@@ -74,7 +75,7 @@ public class TargetedLogConfiguration extends DefaultLogConfiguration {
 		this.defaults = defaults;
 	}
 
-	public boolean isTargetForFile(PsiFile file) {
+	public boolean isTargetForFile(@NotNull PsiFile file) {
 		NamedScopeManager manager = NamedScopeManager.getInstance(file.getProject());
 		NamedScope scope = scopeReference == null ? null : scopeReference.get();
 
@@ -101,7 +102,7 @@ public class TargetedLogConfiguration extends DefaultLogConfiguration {
 		scopeReference = null;
 	}
 
-	@NotNull
+	@Nullable
 	@Override
 	public LogFramework getDefaultLogFramework() {
 		if (USE_DEFAULTS_NAME.equals(getDefaultFrameworkName()) && defaults != null)

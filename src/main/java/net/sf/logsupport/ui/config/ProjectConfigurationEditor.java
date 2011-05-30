@@ -72,10 +72,15 @@ public class ProjectConfigurationEditor implements Editor {
 
 		this.editableElement = editableElement;
 
+		final String disabled = "<html><i>" + L10N.message("ProjectConfigurationEditor.disabled") + "</i></html>";
+
+		defaultFrameworkName.addItem(disabled);
+		defaultFrameworkName.setSelectedItem(disabled);
 		for (LogFramework framework : ApplicationConfiguration.getInstance().getFrameworks())
 			defaultFrameworkName.addItem(framework.getName());
 
-		logIdName.addItem("<html><i>" + L10N.message("ProjectConfigurationEditor.disabled") + "</i></html>");
+		logIdName.addItem(disabled);
+		logIdName.setSelectedItem(disabled);
 		for (LogId logId : ProjectConfiguration.getInstance(project).getLogIds())
 			logIdName.addItem(logId.getName());
 

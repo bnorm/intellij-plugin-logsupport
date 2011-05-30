@@ -19,6 +19,8 @@ package net.sf.logsupport.config;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import net.sf.logsupport.LogSupportProjectComponent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,20 +42,22 @@ public class ProjectConfiguration {
 
 	protected Project project;
 
-	public void init(Project project) {
+	public void init(@NotNull Project project) {
 		this.project = project;
 		// Distribute the call..
 		setLogConfigurations(getLogConfigurations());
 	}
 
+	@Nullable
 	public LogId getLogId(String name) {
 		for (LogId logId : getLogIds()) {
-			if (name == logId.getName() || (name != null && name.equals(logId.getName())))
+			if (name != null && name.equals(logId.getName()))
 				return logId;
 		}
 		return null;
 	}
 
+	@NotNull
 	public List<LogId> getLogIds() {
 		if (logIds == null) {
 			logIds = new ArrayList<LogId>();
@@ -66,7 +70,8 @@ public class ProjectConfiguration {
 		this.logIds = logIds;
 	}
 
-	public LogConfiguration getLogConfiguration(PsiFile file) {
+	@NotNull
+	public LogConfiguration getLogConfiguration(@NotNull PsiFile file) {
 		for (TargetedLogConfiguration configuration : getLogConfigurations().getTargetedLogConfigurations()) {
 			if (configuration.isTargetForFile(file))
 				return configuration;
@@ -74,10 +79,12 @@ public class ProjectConfiguration {
 		return getLogConfigurations().getDefaultLogConfiguration();
 	}
 
+	@NotNull
 	public ProjectLogConfigurations getLogConfigurations() {
-		if (logConfigurations == null)
-			setLogConfigurations(new ProjectLogConfigurations());
-		return logConfigurations;
+		ProjectLogConfigurations configurations = logConfigurations;
+		if (configurations == null)
+			setLogConfigurations(configurations = new ProjectLogConfigurations());
+		return configurations;
 	}
 
 	public void setLogConfigurations(ProjectLogConfigurations logConfigurations) {

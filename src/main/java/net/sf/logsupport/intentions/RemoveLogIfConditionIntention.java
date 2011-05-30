@@ -42,7 +42,7 @@ public class RemoveLogIfConditionIntention extends AbstractLogConditionIntention
 	@Override
 	public void doInvoke(PsiMethodCallExpression expression) {
 		PsiIfStatement statement = findSurroundingCondition(expression);
-		PsiStatement branch = statement.getThenBranch();
+		PsiStatement branch = statement == null ? null : statement.getThenBranch();
 		if (branch == null)
 			return;
 

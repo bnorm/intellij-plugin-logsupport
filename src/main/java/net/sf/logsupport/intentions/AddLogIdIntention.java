@@ -19,6 +19,7 @@ package net.sf.logsupport.intentions;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiLiteralExpression;
 import net.sf.logsupport.L10N;
+import net.sf.logsupport.util.NumericLogIdGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import static net.sf.logsupport.util.LogPsiUtil.getLogIdGenerator;
@@ -44,8 +45,10 @@ public class AddLogIdIntention extends AbstractLogIdIntention {
 	 */
 	@Override
 	public String adjustId(PsiClass target, String literalText) {
-		String nextId = getLogIdGenerator(target.getContainingFile()).nextId();
-		return '"' + nextId + literalText.substring(1);
+		NumericLogIdGenerator generator = getLogIdGenerator(target.getContainingFile());
+		if (generator == null)
+			return literalText;
+		return '"' + generator.nextId() + literalText.substring(1);
 	}
 
 	/**

@@ -50,8 +50,9 @@ public class LoggerFieldBuilder {
 	public PsiField createField(PsiElement place) {
 		final PsiField field;
 		final PsiClass cls = classForPlace(place);
-		if (cls != null) {
-			LogFramework framework = LogConfiguration.getInstance(place.getContainingFile()).getDefaultLogFramework();
+		final LogFramework framework = LogConfiguration.getInstance(place.getContainingFile()).getDefaultLogFramework();
+
+		if (cls != null && framework != null) {
 			final LogPsiElementFactory factory = LogPsiUtil.getFactory(place.getContainingFile());
 
 			// Creating a unique field name.
@@ -114,25 +115,26 @@ public class LoggerFieldBuilder {
 
 					try {
 						PsiClass cls = classForPlace(place);
-						PsiElement brace = ReflectionUtil.invoke(cls, "getLBrace"); // IF changed in IDEA 9/10
+						LogConfiguration config = LogConfiguration.getInstance(place.getContainingFile());
+						if (config != null) {
+							PsiElement brace = ReflectionUtil.invoke(cls, "getLBrace"); // IF changed in IDEA 9/10
+							LogPsiElementFactory factory = LogPsiUtil.getFactory(place.getContainingFile());
+							LogFramework framework = config.getDefaultLogFramework();
 
-						LogPsiElementFactory factory = LogPsiUtil.getFactory(place.getContainingFile());
-						LogFramework framework = LogConfiguration.getInstance(
-								place.getContainingFile()).getDefaultLogFramework();
+							PsiElement addedField;
+							if (framework.isInsertLoggerAtEndOfClass()) {
+								addedField = addFieldBeforeAnchor(factory, cls, field, brace);
+							} else {
+								PsiField[] allFields = cls.getFields();
+								if (allFields.length == 0) {
+									addedField = cls.addAfter(field, brace);
+									cls.addAfter(factory.createWhiteSpaceFromText("\n\n\t"), brace);
+								} else
+									addedField = addFieldBeforeAnchor(factory, cls, field, allFields[0]);
+							}
 
-						PsiElement addedField;
-						if (framework.isInsertLoggerAtEndOfClass()) {
-							addedField = addFieldBeforeAnchor(factory, cls, field, brace);
-						} else {
-							PsiField[] allFields = cls.getFields();
-							if (allFields.length == 0) {
-								addedField = cls.addAfter(field, brace);
-								cls.addAfter(factory.createWhiteSpaceFromText("\n\n\t"), brace);
-							} else
-								addedField = addFieldBeforeAnchor(factory, cls, field, allFields[0]);
+							shortenFQNames(addedField);
 						}
-
-						shortenFQNames(addedField);
 					} finally {
 						manager.doPostponedOperationsAndUnblockDocument(document);
 					}
