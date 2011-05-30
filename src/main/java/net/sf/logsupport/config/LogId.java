@@ -52,7 +52,7 @@ public class LogId implements Cloneable {
 		LogIdGenerator generator = createGenerator(matcherPattern, formatPattern, prefix, trailer, 10, 10);
 		String id = generator.nextId();
 		return id.equals(generator.extractId(id + "Sample Message")) &&
-				id.equals(generator.extractId(id + " Sample Message \r\n\twith white-spacesöäüß."));
+				id.equals(generator.extractId(id + " Sample Message \r\n\twith white-spaces."));
 	}
 
 	private String name;

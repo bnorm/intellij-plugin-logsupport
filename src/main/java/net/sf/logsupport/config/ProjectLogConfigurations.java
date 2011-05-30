@@ -17,6 +17,7 @@
 package net.sf.logsupport.config;
 
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +54,12 @@ public class ProjectLogConfigurations implements Cloneable {
 		}
 	}
 
+	@NotNull
 	public DefaultLogConfiguration getDefaultLogConfiguration() {
-		if (defaultLogConfiguration == null)
-			setDefaultLogConfiguration(new DefaultLogConfiguration());
-		return defaultLogConfiguration;
+		DefaultLogConfiguration configuration = defaultLogConfiguration;
+		if (configuration == null)
+			setDefaultLogConfiguration(configuration = new DefaultLogConfiguration());
+		return configuration;
 	}
 
 	public void setDefaultLogConfiguration(DefaultLogConfiguration defaultLogConfiguration) {
@@ -74,6 +77,7 @@ public class ProjectLogConfigurations implements Cloneable {
 		return configuration;
 	}
 
+	@NotNull
 	public List<TargetedLogConfiguration> getTargetedLogConfigurations() {
 		if (targetedLogConfigurations == null)
 			targetedLogConfigurations = new ArrayList<TargetedLogConfiguration>();

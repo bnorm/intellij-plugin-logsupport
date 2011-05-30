@@ -146,6 +146,7 @@ public class LogPsiUtil {
 	 * @param place The place to return an ID generator for.
 	 * @return the id generator for the given project.
 	 */
+	@Nullable
 	public static NumericLogIdGenerator getLogIdGenerator(@NotNull PsiElement place) {
 		return LogConfiguration.getInstance(place.getContainingFile()).getLogIdGenerator();
 	}
@@ -162,8 +163,7 @@ public class LogPsiUtil {
 			if (literalText.startsWith("\"")) {
 				try {
 					LogIdGenerator idGenerator = getLogIdGenerator(expression);
-					return idGenerator != null &&
-							idGenerator.extractId(literalText.substring(1)) != null;
+					return idGenerator != null && idGenerator.extractId(literalText.substring(1)) != null;
 				} catch (PsiInvalidElementAccessException e) {
 					return false;
 				}
@@ -279,7 +279,13 @@ public class LogPsiUtil {
 		return calls;
 	}
 
-	private static boolean canBeLoggerCall(PsiMethodCallExpression callExpression) {
+	/**
+	 * Performs a weak name based comparison to decide whether the call expression is possible a log call.
+	 *
+	 * @param callExpression the call expression to validate.
+	 * @return true if the call expression can be a logger call.
+	 */
+	public static boolean canBeLoggerCall(@NotNull PsiMethodCallExpression callExpression) {
 		boolean canBeLogMethod = true;
 
 		// Apply a string filter to check only those method calls that are relevant.
@@ -381,18 +387,27 @@ public class LogPsiUtil {
 	 * @param file   The underlying parsed file.
 	 * @return The supported expression instance or 'null' if not found.
 	 */
+	@Nullable
 	public static PsiMethodCallExpression findSupportedMethodCallExpression(Editor editor, PsiFile file) {
-		PsiElement psiUnderCaret = PsiUtil.getElementAtOffset(file, editor.getCaretModel().getOffset());
+		PsiMethodCallExpression callExpression = findMethodCallExpressionAtCaret(editor, file);
+		return callExpression == null || !isSupportedLoggerCall(callExpression) ? null : callExpression;
+	}
 
-		PsiMethodCallExpression callExpression = findElement(iterateParents(psiUnderCaret),
+	/**
+	 * Finds and returns a method call expression under the current caret.
+	 *
+	 * @param editor The editor to retrieve the caret position from.
+	 * @param file   The underlying parsed file.
+	 * @return The call expression or 'null' if the caret is at a call expression.
+	 */
+	@Nullable
+	public static PsiMethodCallExpression findMethodCallExpressionAtCaret(Editor editor, PsiFile file) {
+		final PsiElement psiUnderCaret = PsiUtil.getElementAtOffset(file, editor.getCaretModel().getOffset());
+		return findElement(iterateParents(psiUnderCaret),
 				PsiMethodCallExpression.class,
 				PsiExpressionList.class, PsiBinaryExpression.class,
 				PsiReferenceExpression.class, PsiIdentifier.class,
 				PsiVariable.class, PsiLiteralExpression.class, PsiJavaToken.class);
-
-		if (callExpression != null && isSupportedLoggerCall(callExpression))
-			return callExpression;
-		return null;
 	}
 
 	/**

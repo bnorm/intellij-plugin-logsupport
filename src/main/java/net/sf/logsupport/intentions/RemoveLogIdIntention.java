@@ -46,6 +46,8 @@ public class RemoveLogIdIntention extends AbstractLogIdIntention {
 	@Override
 	public String adjustId(PsiClass target, String literalText) {
 		LogIdGenerator generator = getLogIdGenerator(target.getContainingFile());
+		if (generator == null)
+			return literalText;
 		String previousId = generator.extractId(literalText.substring(1));
 		return literalText.replace(previousId, "");
 	}

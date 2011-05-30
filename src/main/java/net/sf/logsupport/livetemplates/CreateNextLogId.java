@@ -23,11 +23,8 @@ import com.intellij.codeInsight.template.TextResult;
 import com.intellij.psi.PsiFile;
 import net.sf.logsupport.config.LogConfiguration;
 import net.sf.logsupport.config.LogLevel;
+import net.sf.logsupport.util.NumericLogIdGenerator;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collections;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * Creates the next log ID and returns it if logIds are enabled.
@@ -62,15 +59,18 @@ public class CreateNextLogId extends AbstractMacro {
 		PsiFile file = getPsiFile(context);
 		if (file != null && expressions.length == 1) {
 			LogLevel level = parseLogLevel(expressions[0], context);
-			LogConfiguration configuration = LogConfiguration.getInstance(file);
+			LogConfiguration config = LogConfiguration.getInstance(file);
 
-			if (configuration.isUseLogIds() && configuration.getLogIdLevels().contains(level)) {
+			if (config.isUseLogIds() && config.getLogIdLevels().contains(level)) {
 				String key = file.getName() + "-" + context.getEditor().getCaretModel().getLogicalPosition().line;
 				if (key.equals(lastIdResultKey))
 					result = lastIdResult;
 				else {
-					result = lastIdResult = new TextResult(configuration.getLogIdGenerator().nextId());
-					lastIdResultKey = key;
+					NumericLogIdGenerator generator = config.getLogIdGenerator();
+					if (generator != null) {
+						result = lastIdResult = new TextResult(generator.nextId());
+						lastIdResultKey = key;
+					}
 				}
 			}
 		}
