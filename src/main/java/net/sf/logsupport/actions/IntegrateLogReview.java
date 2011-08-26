@@ -163,13 +163,13 @@ public class IntegrateLogReview extends AbstractAction {
 					while (mi.hasNext()) {
 						LogMessage m = mi.next();
 
-						if (m.logMessage.equals(message.logMessage)) {
+						if (m.getLogMessage().equals(message.getLogMessage())) {
 							if (LOG.isDebugEnabled())
 								LOG.debug("Not integrating unchanged log message '" + message + "'");
 							mi.remove();
 						}
 
-						if (m.logMessage.size() != message.logMessage.size()) {
+						if (m.getLogMessage().size() != message.getLogMessage().size()) {
 							LOG.warn("The log message artifacts differ in length, " +
 									"not applying reviewed message '" + message + "' to '" + m + "'");
 							mi.remove();
@@ -221,8 +221,8 @@ public class IntegrateLogReview extends AbstractAction {
 						List<LogMessage> msgs = fileMessages.get(message);
 						if (msgs != null) {
 							for (LogMessage msg : msgs) {
-								Iterator<MessageArtifact> source = message.logMessage.iterator();
-								Iterator<MessageArtifact> target = msg.logMessage.iterator();
+								Iterator<MessageArtifact> source = message.getLogMessage().iterator();
+								Iterator<MessageArtifact> target = msg.getLogMessage().iterator();
 
 								while (source.hasNext() && target.hasNext()) {
 									MessageArtifact sma = source.next();

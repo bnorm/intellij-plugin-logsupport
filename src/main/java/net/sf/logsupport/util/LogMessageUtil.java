@@ -17,12 +17,15 @@
 package net.sf.logsupport.util;
 
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import net.sf.logsupport.config.LogConfiguration;
 import net.sf.logsupport.config.LogLevel;
 import org.apache.commons.codec.binary.Hex;
 
+import java.lang.ref.WeakReference;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -93,9 +96,11 @@ public class LogMessageUtil {
 	 */
 	public final static class LogMessage {
 
-		public String source = "";
-		public String id = "", logLevel = "", logId = "";
-		public List<MessageArtifact> logMessage = new ArrayList<MessageArtifact>();
+		private transient WeakReference<PsiMethodCallExpression> callExpression;
+
+		private String source;
+		private String id = "", logLevel = "", logId = "";
+		private List<MessageArtifact> logMessage = new ArrayList<MessageArtifact>();
 
 		private LogMessage(String id, String logLevel, String logId, List<String> messageArtifacts) {
 			this.id = id;
@@ -106,22 +111,13 @@ public class LogMessageUtil {
 		}
 
 		private LogMessage(PsiMethodCallExpression callExpression, boolean mergeConstantExpressions) {
-			VirtualFile sourceFile = callExpression.getContainingFile().getVirtualFile();
-			if (sourceFile != null) {
-				source = sourceFile.getPresentableUrl();
-				VirtualFile baseDir = callExpression.getProject().getBaseDir();
-				if (baseDir != null)
-					source = source.substring(baseDir.getPresentableUrl().length());
-
-				Document document = callExpression.getContainingFile().getViewProvider().getDocument();
-				if (document != null)
-					source += ":" + document.getLineNumber(callExpression.getTextOffset());
-			}
+			this.callExpression = new WeakReference<PsiMethodCallExpression>(callExpression);
 
 			// Extract LogLevel
 			LogLevel ll = LogPsiUtil.findLogLevel(callExpression);
 			if (ll != null)
 				logLevel = ll.name();
+
 
 			PsiLiteralExpression literalExpression =
 					LogPsiUtil.findSupportedLiteralExpression(callExpression.getArgumentList());
@@ -155,6 +151,51 @@ public class LogMessageUtil {
 			} catch (NoSuchAlgorithmException e) {
 				throw new RuntimeException(e);
 			}
+		}
+
+		public String getSource() {
+			if (source == null) {
+				PsiMethodCallExpression callExpression = this.callExpression.get();
+				VirtualFile sourceFile = callExpression == null ? null : callExpression.getContainingFile().getVirtualFile();
+				if (sourceFile != null) {
+					String source = sourceFile.getPresentableUrl();
+
+					ModuleManager moduleManager = ModuleManager.getInstance(callExpression.getProject());
+					for (Module module : moduleManager.getModules()) {
+						for (VirtualFile virtualFile : VirtualFileUtil.getSourceDirectories(module, true)) {
+							String moduleSourceURL = virtualFile.getPresentableUrl();
+							if (source.startsWith(moduleSourceURL)) {
+								source = "[" + module.getName() + "]:" + source.substring(moduleSourceURL.length() + 1);
+								break;
+							}
+						}
+					}
+
+					Document document = callExpression.getContainingFile().getViewProvider().getDocument();
+					if (document != null)
+						source += ":" + document.getLineNumber(callExpression.getTextOffset());
+
+					this.source = source;
+				} else
+					source = "";
+			}
+			return source;
+		}
+
+		public String getId() {
+			return id;
+		}
+
+		public String getLogLevel() {
+			return logLevel;
+		}
+
+		public String getLogId() {
+			return logId;
+		}
+
+		public List<MessageArtifact> getLogMessage() {
+			return Collections.unmodifiableList(logMessage);
 		}
 
 		@Override
