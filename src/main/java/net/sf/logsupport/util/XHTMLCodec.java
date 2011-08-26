@@ -199,9 +199,9 @@ public class XHTMLCodec extends LogMessageUtil implements Codec {
 				Element td = (Element) nl.item(i);
 				String className = td.getAttribute("class");
 				if ("logId".equals(className))
-					td.setTextContent(entry.getKey().logId);
+					td.setTextContent(entry.getKey().getLogId());
 				else if ("logLevel".equals(className))
-					td.setTextContent(entry.getKey().logLevel);
+					td.setTextContent(entry.getKey().getLogLevel());
 				else if ("logSource".equals(className)) {
 					td.setTextContent("");
 					boolean first = true;
@@ -210,16 +210,16 @@ public class XHTMLCodec extends LogMessageUtil implements Codec {
 							first = false;
 						else
 							td.appendChild(template.createElement("br"));
-						td.appendChild(template.createTextNode(logEntry.source.concat("\n")));
+						td.appendChild(template.createTextNode(logEntry.getSource().concat("\n")));
 					}
 				} else if ("logMessage".equals(className)) {
 					Element tr = (Element) td.getParentNode();
-					tr.setAttribute("id", entry.getKey().id);
+					tr.setAttribute("id", entry.getKey().getId());
 
 					td.setTextContent("");
-					for (MessageArtifact artifact : entry.getKey().logMessage) {
+					for (MessageArtifact artifact : entry.getKey().getLogMessage()) {
 						if (artifact.isEditable()) {
-							String t = artifact.toString(), logId = entry.getKey().logId;
+							String t = artifact.toString(), logId = entry.getKey().getLogId();
 							if (logId != null && t.startsWith(logId))
 								t = t.substring(logId.length());
 							td.appendChild(template.createTextNode(t));
