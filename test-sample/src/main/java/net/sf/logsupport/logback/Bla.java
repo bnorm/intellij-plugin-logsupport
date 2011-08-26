@@ -18,7 +18,7 @@ public class Bla extends Super {
     {
         boolean b = DEBUG_ENABLED;
 
-        if (myLogger.isDebugEnabled()) { if (b) { log.debug("asdas"); } }
+        if (myLogger.isDebugEnabled()) { myLogger.debug("asd"); }
 
         log.info("#SuperLOG-00726:");
 
