@@ -64,7 +64,14 @@ public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
 				public int compare(PsiMethodCallExpression o1, PsiMethodCallExpression o2) {
 					VirtualFile v1 = o1.getContainingFile().getVirtualFile();
 					VirtualFile v2 = o2.getContainingFile().getVirtualFile();
-					return (v1 == null ? "" : v1.getUrl()).compareTo((v2 == null ? "" : v2.getUrl()));
+
+					int value = (v1 == null ? "" : v1.getUrl()).compareTo((v2 == null ? "" : v2.getUrl()));
+
+					// If the calls are in the same file, we sort by the order inside the file.
+					if (value == 0)
+						value = Math.max(-1, Math.min(1, o1.getTextOffset() - o2.getTextOffset()));
+
+					return value;
 				}
 			},
 			new AbstractMethodComparator("Log Level") {
