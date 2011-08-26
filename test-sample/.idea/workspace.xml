@@ -16,9 +16,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" name="Default" comment="" />
+    <ignored path=".idea/workspace.xml" />
     <ignored path="Log Framework Tests.iws" />
     <ignored path="$USER_HOME_GRIFFON$/" />
-    <ignored path=".idea/workspace.xml" />
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="Commander">
@@ -78,7 +78,7 @@
       <file leaf-file-name="Bla.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="52" selection-start="472" selection-end="472" vertical-scroll-proportion="0.25515464">
+            <state line="22" column="17" selection-start="504" selection-end="504" vertical-scroll-proportion="0.064432986">
               <folding />
             </state>
           </provider>
@@ -322,10 +322,10 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
-    <property name="GoToClass.includeLibraries" value="false" />
     <property name="GenerateAntBuildDialog.backupFiles" value="true" />
-    <property name="options.searchVisible" value="true" />
+    <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -746,7 +746,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/sf/logsupport/logback/Bla.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="52" selection-start="472" selection-end="472" vertical-scroll-proportion="0.25515464">
+        <state line="22" column="17" selection-start="504" selection-end="504" vertical-scroll-proportion="0.064432986">
           <folding />
         </state>
       </provider>
