@@ -12,12 +12,13 @@ public class Bla extends Super {
 
     private static MyLogger myLogger;
 
-    private static final Logger log = LoggerFactory.getLogger(Bla.class);
-    private static final boolean DEBUG_ENABLED = log.isDebugEnabled();
+    private final Logger log = LoggerFactory.getLogger(Bla.class);
+    private final boolean DEBUG_ENABLED = log.isDebugEnabled();
 
     {
         boolean b = DEBUG_ENABLED;
 
+        if (myLogger.isDebugEnabled()) { if (b) { log.debug("asdas"); } }
 
         log.info("#SuperLOG-00726:");
 

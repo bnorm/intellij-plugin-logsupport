@@ -69,8 +69,7 @@
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <UsedPathMacros>
-    <macro name="USER_HOME_GRAILS" />
-    <macro name="USER_HOME_GRIFFON" />
+    <macro name="USER_HOME_GRIFFON" description="" />
   </UsedPathMacros>
 </project>
 

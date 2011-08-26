@@ -79,10 +79,8 @@
 		<ul>
 			<li>1.0.9
 				<ol>
-				    <li>Fixed: Curser.</li>
-					<li>Improvement: Log calls with condition can be made in single or newline blocks with braces.</li>
-					<li>Improvement: A message is shown when a logger field has to be created and no choice was yet made
-                                     what default log framework to use for the project.</li>
+				    <li>Fixed 3396819: Using braced conditions, the cursor is not positioned correctly.</li>
+					<li>Improvement: Showing a notification when no default log framework is set but required.</li>
 					<li>Improvement 3305941: Shorten source names in log review.</li>
 					<li>Improvement 3398563: Log reviews should maintain the order of logs as they appear.</li>
 				</ol>
@@ -146,7 +144,7 @@
 		</ul>
 	]]></change-notes>
 
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <vendor>Juergen Kellerer</vendor>
     <category>Code tools</category>
 
