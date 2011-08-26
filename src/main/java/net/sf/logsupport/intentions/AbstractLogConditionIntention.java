@@ -17,9 +17,15 @@
 package net.sf.logsupport.intentions;
 
 import com.intellij.codeInsight.template.macro.MacroUtil;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.PsiUtil;
 import net.sf.logsupport.config.ConditionFormat;
 import net.sf.logsupport.config.LogConfiguration;
 import net.sf.logsupport.config.LogFramework;
@@ -31,6 +37,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.String.format;
+
 /**
  * Defines a base class to support condition handling.
  *
@@ -39,12 +47,12 @@ import java.util.Map;
  */
 public abstract class AbstractLogConditionIntention extends AbstractLogIntention {
 
+	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.intentions.AbstractLogConditionIntention");
 	private static final Map<ConditionFormat, String> conditionTemplates = new HashMap<ConditionFormat, String>();
 
 	static {
-		conditionTemplates.put(ConditionFormat.lineBreak, "if (%s) \n\tlog()");
-		conditionTemplates.put(ConditionFormat.lineBreakAndBraces, "if (%s) { log(); }");
-		conditionTemplates.put(ConditionFormat.noLineBreak, "if (%s) log()");
+		conditionTemplates.put(ConditionFormat.simpleWithNewLine, "if (%s) \n log()");
+		conditionTemplates.put(ConditionFormat.simple, "if (%s) log()");
 	}
 
 	static PsiElementFilter dummyLogMethodCallFilter = new PsiElementFilter() {
@@ -124,8 +132,7 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 			LogConfiguration config = LogConfiguration.getInstance(expression.getContainingFile());
 			String conditionalMethod = framework.getEnabledGetterMethod().get(level);
 
-			if (config != null &&
-					(ignoreDisabledLevels || config.getConditionalLogLevels().contains(level)) &&
+			if ((ignoreDisabledLevels || config.getConditionalLogLevels().contains(level)) &&
 					qualifier != null && conditionalMethod != null && !conditionalMethod.isEmpty()) {
 
 				final PsiElement context = expression.getContext();
@@ -159,16 +166,15 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 						conditionalMethod = qualifier.getText() + '.' + conditionalMethod;
 				}
 
-				String template = conditionTemplates.get(config.getConditionFormat());
-				return (PsiIfStatement) factory.createStatementFromText(
-						String.format(template, conditionalMethod), context);
+				String template = conditionTemplates.get(ConditionFormat.toNonBlockFormat(config.getConditionFormat()));
+				return (PsiIfStatement) factory.createStatementFromText(format(template, conditionalMethod), context);
 			}
 		}
 
 		return null;
 	}
 
-	public static PsiIfStatement createIfCondition(PsiMethodCallExpression expression) {
+	private static PsiIfStatement createIfCondition(PsiMethodCallExpression expression) {
 		PsiIfStatement statement = createPlainIfCondition(expression, false, true);
 
 		if (statement != null) {
@@ -182,5 +188,41 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 		}
 
 		return null;
+	}
+
+	public static void wrapInIfConditionIfRequired(PsiMethodCallExpression expression) {
+		final PsiFile psiFile = expression.getContainingFile();
+		PsiIfStatement ifCondition = createIfCondition(expression);
+		int offset = expression.getTextOffset();
+
+		if (ifCondition != null) {
+			// Note: we must allocate these vars here, as it won't work after the call to replace.
+			final Document document = psiFile.getViewProvider().getDocument();
+			final Project project = expression.getProject();
+
+			// Replacing the expression with the condition (containing the expression already)
+			expression.replace(ifCondition);
+
+
+			//
+			// A bit hackish but the only solution that allows to insert braces without compromising caret positions
+			// when called during the post processing of a live template.
+
+			final LogConfiguration config = LogConfiguration.getInstance(psiFile);
+			boolean blockFormat = config.getConditionFormat() == ConditionFormat.toBlockFormat(config.getConditionFormat());
+			if (blockFormat && document != null) {
+				PsiDocumentManager.getInstance(project).doPostponedOperationsAndUnblockDocument(document);
+
+				PsiElement elementAtOffset = PsiUtil.getElementAtOffset(psiFile, offset);
+				if (elementAtOffset != null && elementAtOffset.getParent() instanceof PsiIfStatement)
+					ifCondition = (PsiIfStatement) elementAtOffset.getParent();
+
+				PsiStatement thenBranch = ifCondition.getThenBranch();
+				if (thenBranch != null) {
+					document.insertString(thenBranch.getTextOffset() + thenBranch.getTextLength(), "}");
+					document.insertString(thenBranch.getTextOffset() - 1, "{");
+				}
+			}
+		}
 	}
 }
