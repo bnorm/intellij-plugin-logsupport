@@ -35,6 +35,8 @@ import java.lang.ref.SoftReference;
 import java.lang.reflect.Method;
 import java.util.*;
 
+import static net.sf.logsupport.util.ReflectionUtil.invoke;
+
 /**
  * Common set of utility methods to simplify working with PSI.
  *
@@ -47,25 +49,6 @@ public class LogPsiUtil {
 
 	private static Reference<Map<String, PsiMethodCallExpression>> logLevelCache =
 			new SoftReference<Map<String, PsiMethodCallExpression>>(null);
-
-	//
-	// Fixing compatibility issues between interfaces in IDEA 8 & 9 by using reflection to call.
-	//
-	private static Method computeConstantHelperMethod;
-
-	static {
-		try {
-			computeConstantHelperMethod = PsiConstantEvaluationHelper.class.
-					getMethod("computeConstantExpression", PsiExpression.class, Boolean.TYPE);
-		} catch (NoSuchMethodException e) {
-			try {
-				computeConstantHelperMethod = PsiConstantEvaluationHelper.class.
-						getMethod("computeConstantExpression", PsiElement.class, Boolean.TYPE);
-			} catch (NoSuchMethodException e1) {
-				LOG.error("Failed to find helper method that can compute constant expressions. ", e1);
-			}
-		}
-	}
 
 	private static Language groovy;
 
@@ -609,21 +592,24 @@ public class LogPsiUtil {
 
 	@Nullable
 	public static Object computeConstantExpression(PsiExpression expression, boolean throwExceptionOnOverflow) {
-		JavaPsiFacade facade = JavaPsiFacade.getInstance(expression.getProject());
-		PsiConstantEvaluationHelper helper = facade.getConstantEvaluationHelper();
+		final JavaPsiFacade facade = JavaPsiFacade.getInstance(expression.getProject());
+		final PsiConstantEvaluationHelper helper = facade.getConstantEvaluationHelper();
 
 		//
-		// Fixing compatibility issues between interfaces in IDEA 8 & 9 by using reflection to call.
-		//
-		if (computeConstantHelperMethod != null)
-			try {
-				return computeConstantHelperMethod.invoke(helper, expression, throwExceptionOnOverflow);
-			} catch (Exception e) {
-				LOG.warn("Failed to invoke computeConstantExpression() via reflection, " +
-						"using unsafe direct call (may break in some IDEA versions).");
-			}
-
-		return helper.computeConstantExpression(expression, throwExceptionOnOverflow);
+		// Fixing compatibility issues between interfaces in IDEA 8,9,10,... by using reflection to call.
+        try {
+            try {
+                return invoke(helper, "computeConstantExpression", expression, throwExceptionOnOverflow);
+            } catch (NoSuchMethodError e) {
+                if (throwExceptionOnOverflow)
+                    throw e;
+                return invoke(helper, "computeConstantExpression", expression);
+            }
+        } catch (Exception e) {
+            LOG.warn("Failed to invoke computeConstantExpression() via reflection, " +
+                    "using unsafe direct call (may break in some IDEA versions).");
+            return null;
+        }
 	}
 
 

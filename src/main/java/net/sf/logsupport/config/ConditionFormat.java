@@ -23,5 +23,30 @@ package net.sf.logsupport.config;
  * @version 1.0
  */
 public enum ConditionFormat {
-	noLineBreak, lineBreak, lineBreakAndBraces,
+	simple,
+	simpleWithNewLine,
+	simpleBlock,
+	simpleBlockWithNewLine,;
+
+	public static ConditionFormat toBlockFormat(ConditionFormat format) {
+		switch (format) {
+			case simple:
+				return simpleBlock;
+			case simpleWithNewLine:
+				return simpleBlockWithNewLine;
+			default:
+				return format;
+		}
+	}
+
+	public static ConditionFormat toNonBlockFormat(ConditionFormat format) {
+		switch (format) {
+			case simpleBlock:
+				return simple;
+			case simpleBlockWithNewLine:
+				return simpleWithNewLine;
+			default:
+				return format;
+		}
+	}
 }

@@ -36,7 +36,7 @@ public class DefaultLogConfiguration extends LogConfiguration implements Cloneab
 
 	private Set<LogLevel> logIdLevels;
 	private Set<LogLevel> conditionalLogLevels;
-	private ConditionFormat conditionFormat = ConditionFormat.lineBreak;
+	private ConditionFormat conditionFormat = ConditionFormat.simpleWithNewLine;
 
 	String defaultFrameworkName;
 	String logIdName;
@@ -226,7 +226,7 @@ public class DefaultLogConfiguration extends LogConfiguration implements Cloneab
 	@Override
 	public ConditionFormat getConditionFormat() {
 		if (conditionFormat == null)
-			conditionFormat = ConditionFormat.lineBreak;
+			conditionFormat = ConditionFormat.simpleWithNewLine;
 		return conditionFormat;
 	}
 

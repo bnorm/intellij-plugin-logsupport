@@ -17,11 +17,12 @@ public class Bla extends Super {
 
     {
         boolean b = DEBUG_ENABLED;
-        if (b)
-            log.debug("#SuperLOG-004b0:kkk");
+
+
+        log.info("#SuperLOG-00726:");
 
         Object[] argArray = {b};
-        log.info("#SuperLOG-00370:asdasd, {}", argArray);
+        log.info("#SuperLOG-0debug(sdasd, {}", argArray);
         if (DEBUG_ENABLED)
             log.debug("#SuperLOG-0037a:asdsad");
 

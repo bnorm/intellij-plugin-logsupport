@@ -16,10 +16,10 @@
   -->
 
 <idea-plugin version="2" url="http://logsupport.sf.net/">
-	<id>LogSupport</id>
-	<name>Log Support</name>
+    <id>LogSupport</id>
+    <name>Log Support</name>
 
-	<description><![CDATA[
+    <description><![CDATA[
 		Makes using log frameworks as painless as printing to <code>stdout</code> by
 		adding <b>intentions</b>, <b>live templates</b> and <b>code inspections</b> that
 		support the most important aspects of the configured log framework.<br>
@@ -75,8 +75,18 @@
 		<p>
 	]]></description>
 
-	<change-notes><![CDATA[
+    <change-notes><![CDATA[
 		<ul>
+			<li>1.0.9
+				<ol>
+				    <li>Fixed: Curser.</li>
+					<li>Improvement: Log calls with condition can be made in single or newline blocks with braces.</li>
+					<li>Improvement: A message is shown when a logger field has to be created and no choice was yet made
+                                     what default log framework to use for the project.</li>
+					<li>Improvement 3305941: Shorten source names in log review.</li>
+					<li>Improvement 3398563: Log reviews should maintain the order of logs as they appear.</li>
+				</ol>
+			</li>
 			<li>1.0.8
 				<ol>
 					<li>Fixed 3308797: Log calls are not always detected correctly.</li>
@@ -136,102 +146,102 @@
 		</ul>
 	]]></change-notes>
 
-	<version>1.0.8</version>
-	<vendor>Juergen Kellerer</vendor>
-	<category>Code tools</category>
+    <version>1.0.8</version>
+    <vendor>Juergen Kellerer</vendor>
+    <category>Code tools</category>
 
-	<resource-bundle>net.sf.logsupport.L10N</resource-bundle>
+    <resource-bundle>net.sf.logsupport.L10N</resource-bundle>
 
-	<idea-version since-build="8000"/>
+    <idea-version since-build="8000"/>
 
-	<application-components>
-		<component>
-			<implementation-class>net.sf.logsupport.LogSupportComponent</implementation-class>
-		</component>
-	</application-components>
+    <application-components>
+        <component>
+            <implementation-class>net.sf.logsupport.LogSupportComponent</implementation-class>
+        </component>
+    </application-components>
 
-	<project-components>
-		<component>
-			<implementation-class>net.sf.logsupport.LogSupportProjectComponent</implementation-class>
-		</component>
-	</project-components>
+    <project-components>
+        <component>
+            <implementation-class>net.sf.logsupport.LogSupportProjectComponent</implementation-class>
+        </component>
+    </project-components>
 
-	<actions>
-		<group id="LogSupport.ProcessLogReviews" icon="/icons/logsupport-16.png" popup="true"
-				text="Log Review" description="Allows to generate or integrate log review documents.">
-			<add-to-group group-id="ToolsMenu" anchor="last"/>
+    <actions>
+        <group id="LogSupport.ProcessLogReviews" icon="/icons/logsupport-16.png" popup="true"
+               text="Log Review" description="Allows to generate or integrate log review documents.">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
 
-			<action id="LogSupport.GenerateLogReview" class="net.sf.logsupport.actions.GenerateLogReview"
-					text="Generate Log Review" icon="/icons/generate-review.png"
-					description="Generates a new log review document, containing the log messages of the current project."/>
+            <action id="LogSupport.GenerateLogReview" class="net.sf.logsupport.actions.GenerateLogReview"
+                    text="Generate Log Review" icon="/icons/generate-review.png"
+                    description="Generates a new log review document, containing the log messages of the current project."/>
 
-			<action id="LogSupport.IntegrateLogReview" class="net.sf.logsupport.actions.IntegrateLogReview"
-					text="Integrate Log Review" icon="/icons/integrate-review.png"
-					description="Integrates a reviewed log review document, overriding the log messages inside the project."/>
-		</group>
+            <action id="LogSupport.IntegrateLogReview" class="net.sf.logsupport.actions.IntegrateLogReview"
+                    text="Integrate Log Review" icon="/icons/integrate-review.png"
+                    description="Integrates a reviewed log review document, overriding the log messages inside the project."/>
+        </group>
 
-		<group id="LogSupport.ProcessLogCallsInContext" icon="/icons/logsupport-16.png" popup="true"
-				text="Log Support" description="Log related processing methods.">
-			<add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        <group id="LogSupport.ProcessLogCallsInContext" icon="/icons/logsupport-16.png" popup="true"
+               text="Log Support" description="Log related processing methods.">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
             <add-to-group group-id="CodeMenu" anchor="last"/>
             <add-to-group group-id="NavbarPopupMenu" anchor="last"/>
 
-			<action id="LogSupport.AddLogIfConditions" class="net.sf.logsupport.actions.AddLogIfConditions"
-					text="Add missing 'if' statements"
-					description="Add 'if' statements to selected log levels where missing."/>
+            <action id="LogSupport.AddLogIfConditions" class="net.sf.logsupport.actions.AddLogIfConditions"
+                    text="Add missing 'if' statements"
+                    description="Add 'if' statements to selected log levels where missing."/>
 
-			<action id="LogSupport.RemoveLogIfConditions" class="net.sf.logsupport.actions.RemoveLogIfConditions"
-					text="Remove 'if' statement from log calls"
-					description="Remove 'if' statement from selected log levels where missing."/>
+            <action id="LogSupport.RemoveLogIfConditions" class="net.sf.logsupport.actions.RemoveLogIfConditions"
+                    text="Remove 'if' statement from log calls"
+                    description="Remove 'if' statement from selected log levels where missing."/>
 
-			<separator/>
+            <separator/>
 
-			<action id="LogSupport.AddLogIds" class="net.sf.logsupport.actions.AddLogIds"
-					text="Add log IDs" icon="/icons/add-logids.png"
-					description="Adds log IDs to selected log levels where missing."/>
+            <action id="LogSupport.AddLogIds" class="net.sf.logsupport.actions.AddLogIds"
+                    text="Add log IDs" icon="/icons/add-logids.png"
+                    description="Adds log IDs to selected log levels where missing."/>
 
-			<action id="LogSupport.AddOrReplaceLogIds" class="net.sf.logsupport.actions.AddOrReplaceLogIds"
-					text="Add or replace log IDs" icon="/icons/sync-logids.png"
-					description="Adds or replaces log IDs on selected log levels."/>
+            <action id="LogSupport.AddOrReplaceLogIds" class="net.sf.logsupport.actions.AddOrReplaceLogIds"
+                    text="Add or replace log IDs" icon="/icons/sync-logids.png"
+                    description="Adds or replaces log IDs on selected log levels."/>
 
-			<separator/>
+            <separator/>
 
-			<action id="LogSupport.RemoveLogIds" class="net.sf.logsupport.actions.RemoveLogIds"
-					text="Remove log IDs" icon="/icons/remove-logids.png"
-					description="Removes all log IDs from selected log levels."/>
-		</group>
-	</actions>
+            <action id="LogSupport.RemoveLogIds" class="net.sf.logsupport.actions.RemoveLogIds"
+                    text="Remove log IDs" icon="/icons/remove-logids.png"
+                    description="Removes all log IDs from selected log levels."/>
+        </group>
+    </actions>
 
-	<extensions defaultExtensionNs="com.intellij">
-		<liveTemplateMacro implementation="net.sf.logsupport.livetemplates.ResolveOptionalVariableOfType"/>
-		<liveTemplateMacro implementation="net.sf.logsupport.livetemplates.ResolveLoggerInstance"/>
-		<liveTemplateMacro implementation="net.sf.logsupport.livetemplates.ResolveLogMethod"/>
-		<liveTemplateMacro implementation="net.sf.logsupport.livetemplates.CreateNextLogId"/>
-		<liveTemplateOptionalProcessor implementation="net.sf.logsupport.livetemplates.TemplatePostProcessor"/>
-		<defaultLiveTemplatesProvider implementation="net.sf.logsupport.livetemplates.TemplatesProvider"/>
+    <extensions defaultExtensionNs="com.intellij">
+        <liveTemplateMacro implementation="net.sf.logsupport.livetemplates.ResolveOptionalVariableOfType"/>
+        <liveTemplateMacro implementation="net.sf.logsupport.livetemplates.ResolveLoggerInstance"/>
+        <liveTemplateMacro implementation="net.sf.logsupport.livetemplates.ResolveLogMethod"/>
+        <liveTemplateMacro implementation="net.sf.logsupport.livetemplates.CreateNextLogId"/>
+        <liveTemplateOptionalProcessor implementation="net.sf.logsupport.livetemplates.TemplatePostProcessor"/>
+        <defaultLiveTemplatesProvider implementation="net.sf.logsupport.livetemplates.TemplatesProvider"/>
 
-		<inspectionToolProvider implementation="net.sf.logsupport.inspections.InspectionsProvider"/>
+        <inspectionToolProvider implementation="net.sf.logsupport.inspections.InspectionsProvider"/>
 
-		<intentionAction>			
-			<categoryKey>name</categoryKey>
-			<className>net.sf.logsupport.intentions.AddLogIfConditionIntention</className>
-		</intentionAction>
-		<intentionAction>
-			<categoryKey>name</categoryKey>
-			<className>net.sf.logsupport.intentions.RemoveLogIfConditionIntention</className>
-		</intentionAction>
+        <intentionAction>
+            <categoryKey>name</categoryKey>
+            <className>net.sf.logsupport.intentions.AddLogIfConditionIntention</className>
+        </intentionAction>
+        <intentionAction>
+            <categoryKey>name</categoryKey>
+            <className>net.sf.logsupport.intentions.RemoveLogIfConditionIntention</className>
+        </intentionAction>
 
-		<intentionAction>
-			<categoryKey>name</categoryKey>
-			<className>net.sf.logsupport.intentions.AddLogIdIntention</className>
-		</intentionAction>
-		<intentionAction>
-			<categoryKey>name</categoryKey>
-			<className>net.sf.logsupport.intentions.ReplaceLogIdIntention</className>
-		</intentionAction>
-		<intentionAction>
-			<categoryKey>name</categoryKey>
-			<className>net.sf.logsupport.intentions.RemoveLogIdIntention</className>
-		</intentionAction>
-	</extensions>
+        <intentionAction>
+            <categoryKey>name</categoryKey>
+            <className>net.sf.logsupport.intentions.AddLogIdIntention</className>
+        </intentionAction>
+        <intentionAction>
+            <categoryKey>name</categoryKey>
+            <className>net.sf.logsupport.intentions.ReplaceLogIdIntention</className>
+        </intentionAction>
+        <intentionAction>
+            <categoryKey>name</categoryKey>
+            <className>net.sf.logsupport.intentions.RemoveLogIdIntention</className>
+        </intentionAction>
+    </extensions>
 </idea-plugin>
