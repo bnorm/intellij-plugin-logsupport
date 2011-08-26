@@ -5,7 +5,7 @@
       <ProjectLogConfigurations>
         <option name="defaultLogConfiguration">
           <DefaultLogConfiguration>
-            <option name="conditionFormat" value="simpleBlockWithNewLine" />
+            <option name="conditionFormat" value="block" />
             <option name="conditionalLogLevels">
               <set>
                 <option value="trace" />

@@ -20,33 +20,55 @@ package net.sf.logsupport.config;
  * Defines the possible format for the log condition.
  *
  * @author Juergen_Kellerer, 2010-04-27
- * @version 1.0
  */
 public enum ConditionFormat {
+	/**
+	 * Simple {@code if (x) log(m); } format.
+	 */
 	simple,
+	/**
+	 * Simple {@code if (x) \n\t log(m); } format with line break.
+	 */
 	simpleWithNewLine,
-	simpleBlock,
-	simpleBlockWithNewLine,;
 
-	public static ConditionFormat toBlockFormat(ConditionFormat format) {
-		switch (format) {
+	/**
+	 * Single line {@code if (x) { log(m); }} format.
+	 */
+	block,
+	/**
+	 * Single line {@code if (x) \n { log(m); }} format.
+	 */
+	blockWithNewLine,;
+
+	/**
+	 * Translates this condition format to one using blocks.
+	 *
+	 * @return a block format.
+	 */
+	public ConditionFormat toBlockFormat() {
+		switch (this) {
 			case simple:
-				return simpleBlock;
+				return block;
 			case simpleWithNewLine:
-				return simpleBlockWithNewLine;
+				return blockWithNewLine;
 			default:
-				return format;
+				return this;
 		}
 	}
 
-	public static ConditionFormat toNonBlockFormat(ConditionFormat format) {
-		switch (format) {
-			case simpleBlock:
+	/**
+	 * Translates this condition format to one that is not using blocks.
+	 *
+	 * @return a format without any braces.
+	 */
+	public ConditionFormat toNonBlockFormat() {
+		switch (this) {
+			case block:
 				return simple;
-			case simpleBlockWithNewLine:
+			case blockWithNewLine:
 				return simpleWithNewLine;
 			default:
-				return format;
+				return this;
 		}
 	}
 }

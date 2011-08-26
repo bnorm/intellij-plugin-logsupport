@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.String.format;
+import static net.sf.logsupport.config.ConditionFormat.blockWithNewLine;
 
 /**
  * Defines a base class to support condition handling.
@@ -144,7 +145,7 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 						final PsiMethodCallExpression expectedCondition = createExpectedConditionFor(expression);
 						if (expectedCondition != null) {
 							for (PsiVariable variable : variables) {
-								PsiExpression condition = LogPsiUtil.resolveVariableInitializer(variable);
+								final PsiExpression condition = LogPsiUtil.resolveVariableInitializer(variable);
 								if (isValidCondition(expectedCondition, condition)) {
 									PsiIdentifier nameIdentifier = variable.getNameIdentifier();
 									if (nameIdentifier != null) {
@@ -166,7 +167,7 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 						conditionalMethod = qualifier.getText() + '.' + conditionalMethod;
 				}
 
-				String template = conditionTemplates.get(ConditionFormat.toNonBlockFormat(config.getConditionFormat()));
+				String template = conditionTemplates.get(config.getConditionFormat().toNonBlockFormat());
 				return (PsiIfStatement) factory.createStatementFromText(format(template, conditionalMethod), context);
 			}
 		}
@@ -191,12 +192,12 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 	}
 
 	public static void wrapInIfConditionIfRequired(PsiMethodCallExpression expression) {
-		final PsiFile psiFile = expression.getContainingFile();
 		PsiIfStatement ifCondition = createIfCondition(expression);
-		int offset = expression.getTextOffset();
+		final int offset = expression.getTextOffset();
 
 		if (ifCondition != null) {
 			// Note: we must allocate these vars here, as it won't work after the call to replace.
+			final PsiFile psiFile = expression.getContainingFile();
 			final Document document = psiFile.getViewProvider().getDocument();
 			final Project project = expression.getProject();
 
@@ -209,20 +210,40 @@ public abstract class AbstractLogConditionIntention extends AbstractLogIntention
 			// when called during the post processing of a live template.
 
 			final LogConfiguration config = LogConfiguration.getInstance(psiFile);
-			boolean blockFormat = config.getConditionFormat() == ConditionFormat.toBlockFormat(config.getConditionFormat());
+			boolean blockFormat = config.getConditionFormat() == config.getConditionFormat().toBlockFormat();
 			if (blockFormat && document != null) {
-				PsiDocumentManager.getInstance(project).doPostponedOperationsAndUnblockDocument(document);
+				final PsiDocumentManager instance = PsiDocumentManager.getInstance(project);
 
-				PsiElement elementAtOffset = PsiUtil.getElementAtOffset(psiFile, offset);
-				if (elementAtOffset != null && elementAtOffset.getParent() instanceof PsiIfStatement)
-					ifCondition = (PsiIfStatement) elementAtOffset.getParent();
+				instance.doPostponedOperationsAndUnblockDocument(document);
 
-				PsiStatement thenBranch = ifCondition.getThenBranch();
-				if (thenBranch != null) {
-					document.insertString(thenBranch.getTextOffset() + thenBranch.getTextLength(), "}");
-					document.insertString(thenBranch.getTextOffset() - 1, "{");
+				if ((ifCondition = findIfStatementAtCaret(psiFile, offset)) != null) {
+					PsiStatement thenBranch = ifCondition.getThenBranch();
+					if (thenBranch != null) {
+						final TextRange textRange = thenBranch.getTextRange();
+						final String thenBranchText = thenBranch.getText();
+
+						document.insertString(textRange.getEndOffset() + (thenBranchText.endsWith(";") ? 0 : 1),
+								config.getConditionFormat() == blockWithNewLine ? "\n} " : " } ");
+						document.insertString(textRange.getStartOffset() - 1,
+								config.getConditionFormat() == blockWithNewLine ? " {\n" : " { ");
+					}
+				}
+
+				instance.commitDocument(document);
+
+				if ((ifCondition = findIfStatementAtCaret(psiFile, offset)) != null) {
+					CodeStyleManager styleManager = CodeStyleManager.getInstance(project);
+					TextRange textRange = ifCondition.getTextRange();
+					styleManager.reformatRange(psiFile, textRange.getStartOffset() - 1, textRange.getEndOffset() + 1);
 				}
 			}
 		}
+	}
+
+	private static PsiIfStatement findIfStatementAtCaret(PsiFile psiFile, int offset) {
+		PsiElement elementAtOffset = PsiUtil.getElementAtOffset(psiFile, offset);
+		if (elementAtOffset != null && elementAtOffset.getParent() instanceof PsiIfStatement)
+			return (PsiIfStatement) elementAtOffset.getParent();
+		return null;
 	}
 }
