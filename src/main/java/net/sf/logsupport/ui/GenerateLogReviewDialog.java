@@ -18,6 +18,7 @@ package net.sf.logsupport.ui;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.EmptyRunnable;
@@ -28,6 +29,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethodCallExpression;
 import net.sf.logsupport.config.LogLevel;
 import net.sf.logsupport.ui.util.AbstractEventListener;
+import net.sf.logsupport.ui.util.Dialogs;
 import net.sf.logsupport.util.Codec;
 import net.sf.logsupport.util.LogPsiUtil;
 import org.jetbrains.annotations.NotNull;
@@ -253,7 +255,7 @@ public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
 			public void run() {
 				// Check if we have something to do
 				if (reviewableCalls.isEmpty()) {
-					Messages.showInfoMessage(
+					Dialogs.showInfoDialog(
 							"Did not find any log messages inside this project.",
 							"No log messages found.");
 					return;
@@ -288,7 +290,7 @@ public class GenerateLogReviewDialog extends AbstractLogLevelAwareDialog {
 						Desktop.getDesktop().open(reviewFile);
 				} catch (IOException e) {
 					LOG.error(String.format("Failed writing into the log review file '%s'", reviewFile), e);
-					Messages.showErrorDialog(String.format(
+					Dialogs.showErrorDialog(String.format(
 							"Failed writing into the log review file '%s'", reviewFile),
 							"Failed creating log review.");
 				}
