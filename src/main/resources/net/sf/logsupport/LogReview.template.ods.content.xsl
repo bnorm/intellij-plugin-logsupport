@@ -321,19 +321,19 @@
 										   style:text-outline="false" fo:text-shadow="none"/>
 				</style:style>
 				<style:style style:name="co1" style:family="table-column">
-					<style:table-column-properties fo:break-before="auto" style:column-width="3cm"/>
+					<style:table-column-properties fo:break-before="auto" style:column-width="1.5cm"/>
 				</style:style>
 				<style:style style:name="co2" style:family="table-column">
-					<style:table-column-properties fo:break-before="auto" style:column-width="2.25cm"/>
+					<style:table-column-properties fo:break-before="auto" style:column-width="2cm"/>
 				</style:style>
 				<style:style style:name="co3" style:family="table-column">
-					<style:table-column-properties fo:break-before="auto" style:column-width="3.5cm"/>
+					<style:table-column-properties fo:break-before="auto" style:column-width="3.3cm"/>
 				</style:style>
 				<style:style style:name="co4" style:family="table-column">
-					<style:table-column-properties fo:break-before="auto" style:column-width="10cm"/>
+					<style:table-column-properties fo:break-before="auto" style:column-width="16cm"/>
 				</style:style>
 				<style:style style:name="co5" style:family="table-column">
-					<style:table-column-properties fo:break-before="auto" style:column-width="12cm"/>
+					<style:table-column-properties fo:break-before="auto" style:column-width="10cm"/>
 				</style:style>
 				<style:style style:name="co6" style:family="table-column">
 					<style:table-column-properties fo:break-before="auto" style:column-width="1.7cm"/>

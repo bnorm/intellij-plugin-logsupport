@@ -66,6 +66,34 @@ public class Dialogs {
 				Messages.getWarningIcon()) == JOptionPane.YES_OPTION;
 	}
 
+	/**
+	 * Shows an info message without blocking the calling thread.
+	 *
+	 * @param message the message to show.
+	 * @param title   the window title.
+	 */
+	public static void showInfoDialog(final String message, final String title) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				Messages.showInfoMessage(message, title);
+			}
+		});
+	}
+
+	/**
+	 * Shows an info message without blocking the calling thread.
+	 *
+	 * @param message the message to show.
+	 * @param title   the window title.
+	 */
+	public static void showErrorDialog(final String message, final String title) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				Messages.showErrorDialog(message, title);
+			}
+		});
+	}
+
 	private Dialogs() {
 	}
 }

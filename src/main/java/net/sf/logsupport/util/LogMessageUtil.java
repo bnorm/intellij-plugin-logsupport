@@ -165,7 +165,7 @@ public class LogMessageUtil {
 						for (VirtualFile virtualFile : VirtualFileUtil.getSourceDirectories(module, true)) {
 							String moduleSourceURL = virtualFile.getPresentableUrl();
 							if (source.startsWith(moduleSourceURL)) {
-								source = "[" + module.getName() + "]:" + source.substring(moduleSourceURL.length() + 1);
+								source = "[" + module.getName() + "]: " + source.substring(moduleSourceURL.length() + 1).replace('\\', '/');
 								break;
 							}
 						}
