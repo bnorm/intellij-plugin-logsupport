@@ -19,6 +19,15 @@
     <id>LogSupport</id>
     <name>Log Support</name>
 
+	<version>1.0.10</version>
+	<vendor logo="/icons/logsupport-16.png">Juergen Kellerer</vendor>
+	<category>Code tools</category>
+
+
+	<resource-bundle>net.sf.logsupport.L10N</resource-bundle>
+
+	<idea-version since-build="8000"/>
+
     <description><![CDATA[
 		Makes using log frameworks as painless as printing to <code>stdout</code> by
 		adding <b>intentions</b>, <b>live templates</b> and <b>code inspections</b> that
@@ -79,7 +88,7 @@
 		<ul>
 			<li>1.0.10
 				<ol>
-				    <li>Fixed 3401836: Deadlock in the UI when generating log review on project with no matching log messages.</li>
+				    <li>Fixed 3401836: Deadlock when generating log reviews and no matching log messages were found.</li>
 					<li>Improvement: Added support for static log methods.</li>
 					<li>Improvement: Added configurations for Android 'Log' and slf4j 'XLogger'.</li>
 				</ol>
@@ -150,14 +159,6 @@
 			</li>
 		</ul>
 	]]></change-notes>
-
-    <version>1.0.10</version>
-    <vendor>Juergen Kellerer</vendor>
-    <category>Code tools</category>
-
-    <resource-bundle>net.sf.logsupport.L10N</resource-bundle>
-
-    <idea-version since-build="8000"/>
 
     <application-components>
         <component>
