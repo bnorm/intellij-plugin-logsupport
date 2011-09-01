@@ -46,6 +46,7 @@ public class LogFramework {
 	private String loggerFactoryMethod;
 	private String defaultLoggerFieldName = "log";
 	private boolean insertLoggerAtEndOfClass;
+	private boolean logMethodsAreStatic;
 	private String loggerFieldAccessModifier = PsiModifier.PRIVATE;
 	private boolean useStaticLogger = true, useFinalLogger = true;
 
@@ -89,6 +90,7 @@ public class LogFramework {
 		defaultLoggerFieldName = other.defaultLoggerFieldName;
 		loggerFieldAccessModifier = other.loggerFieldAccessModifier;
 		insertLoggerAtEndOfClass = other.insertLoggerAtEndOfClass;
+		logMethodsAreStatic = other.logMethodsAreStatic;
 		useFinalLogger = other.useFinalLogger;
 		useStaticLogger = other.useStaticLogger;
 
@@ -96,7 +98,7 @@ public class LogFramework {
 		logMessagesCanUsePlaceholders = other.logMessagesCanUsePlaceholders;
 		placeholderCustomFormat = other.placeholderCustomFormat;
 		placeholdersCanBeUsedWithThrowables = other.placeholdersCanBeUsedWithThrowables;
-		
+
 		logMethod.clear();
 		logMethod.putAll(other.logMethod);
 
@@ -135,6 +137,7 @@ public class LogFramework {
 			return false;
 		if (!loggerFieldAccessModifier.equals(framework.loggerFieldAccessModifier)) return false;
 		if (insertLoggerAtEndOfClass != framework.insertLoggerAtEndOfClass) return false;
+		if (logMethodsAreStatic != framework.logMethodsAreStatic) return false;
 		if (useFinalLogger != framework.useFinalLogger) return false;
 		if (useStaticLogger != framework.useStaticLogger) return false;
 		if (logMessagesCanUsePlaceholders != framework.logMessagesCanUsePlaceholders) return false;
@@ -157,6 +160,7 @@ public class LogFramework {
 		result = 31 * result + (loggerFactoryMethod != null ? loggerFactoryMethod.hashCode() : 0);
 		result = 31 * result + (defaultLoggerFieldName != null ? defaultLoggerFieldName.hashCode() : 0);
 		result = 31 * result + (insertLoggerAtEndOfClass ? 1 : 0);
+		result = 31 * result + (logMethodsAreStatic ? 1 : 0);
 		result = 31 * result + loggerFieldAccessModifier.hashCode();
 		result = 31 * result + (useStaticLogger ? 1 : 0);
 		result = 31 * result + (useFinalLogger ? 1 : 0);
@@ -167,6 +171,14 @@ public class LogFramework {
 		result = 31 * result + logMethod.hashCode();
 		result = 31 * result + enabledGetterMethod.hashCode();
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "LogFramework{" +
+				"name='" + name + '\'' +
+				", loggerClass='" + loggerClass + '\'' +
+				'}';
 	}
 
 	public String getName() {
@@ -191,15 +203,13 @@ public class LogFramework {
 
 	public String getLoggerFactoryMethod(String forClass) {
 		try {
-			return String.format(loggerFactoryMethod, forClass);
+			return String.format(loggerFactoryMethod == null ? "" : loggerFactoryMethod, forClass);
 		} catch (IllegalFormatException e) {
 			return loggerFactoryMethod;
 		}
 	}
 
 	public void setLoggerFactoryMethod(String loggerFactoryMethod) {
-		if (loggerFactoryMethod == null || loggerFactoryMethod.isEmpty())
-			throw new IllegalArgumentException("Argument may not be empty");
 		this.loggerFactoryMethod = loggerFactoryMethod;
 	}
 
@@ -257,6 +267,14 @@ public class LogFramework {
 
 	public void setInsertLoggerAtEndOfClass(boolean insertLoggerAtEndOfClass) {
 		this.insertLoggerAtEndOfClass = insertLoggerAtEndOfClass;
+	}
+
+	public boolean isLogMethodsAreStatic() {
+		return logMethodsAreStatic;
+	}
+
+	public void setLogMethodsAreStatic(boolean logMethodsAreStatic) {
+		this.logMethodsAreStatic = logMethodsAreStatic;
 	}
 
 	public String getDefaultLoggerFieldName() {

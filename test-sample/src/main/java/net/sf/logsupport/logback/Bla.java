@@ -2,6 +2,7 @@ package net.sf.logsupport.logback;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import android.util.Log;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,6 +22,8 @@ public class Bla extends Super {
         if (myLogger.isDebugEnabled()) { myLogger.debug("asd"); }
 
         log.info("#SuperLOG-00726:");
+
+        if (myLogger.isDebugEnabled()) { myLogger.debug(""); }
 
         Object[] argArray = {b};
         log.info("#SuperLOG-0debug(sdasd, {}", argArray);

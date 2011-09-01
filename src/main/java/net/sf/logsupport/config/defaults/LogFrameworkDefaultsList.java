@@ -30,9 +30,11 @@ public class LogFrameworkDefaultsList extends AbstractList<LogFramework> {
 
 	private List<LogFramework> defaultLogFrameworks = Arrays.asList(
 			(LogFramework) new SLF4JLogFramework(),
+			(LogFramework) new SLF4JXLogFramework(),
 			(LogFramework) new JBossLogFrameworkF(),
 			(LogFramework) new JBossLogFrameworkV(),
 			(LogFramework) new LOG4J12LogFramework(),
+			(LogFramework) new AndroidLogFramework(),
 			(LogFramework) new JULLogFramework(),
 			(LogFramework) new CommonsLogFramework(),
 			(LogFramework) new IntellijLogFramework()

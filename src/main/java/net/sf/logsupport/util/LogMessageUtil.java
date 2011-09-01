@@ -119,8 +119,7 @@ public class LogMessageUtil {
 				logLevel = ll.name();
 
 
-			PsiLiteralExpression literalExpression =
-					LogPsiUtil.findSupportedLiteralExpression(callExpression.getArgumentList());
+			PsiLiteralExpression literalExpression = LogPsiUtil.findSupportedLiteralExpression(callExpression.getArgumentList());
 
 			if (literalExpression != null) {
 				// Extract ID

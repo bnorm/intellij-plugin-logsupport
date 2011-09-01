@@ -12,27 +12,10 @@
                 <option value="debug" />
               </set>
             </option>
-            <option name="defaultFrameworkName" value="&lt;html&gt;&lt;i&gt;Disabled&lt;/i&gt;&lt;/html&gt;" />
-            <option name="logIdName" value="Hex ID" />
-            <option name="logIdSequenceValue" value="1850" />
+            <option name="defaultFrameworkName" value="android-util-log" />
           </DefaultLogConfiguration>
         </option>
       </ProjectLogConfigurations>
-    </option>
-    <option name="logIds">
-      <list>
-        <LogId>
-          <option name="name" value="Default" />
-        </LogId>
-        <LogId>
-          <option name="format" value="hexadecimal" />
-          <option name="formatPattern" value="%05x" />
-          <option name="matcherPattern" value="^(#*[A-Za-z_\-+~\.]+[A-Fa-f0-9]+[:;#]).*$" />
-          <option name="maxValue" value="1048575" />
-          <option name="name" value="Hex ID" />
-          <option name="prefix" value="#SuperLOG-" />
-        </LogId>
-      </list>
     </option>
   </component>
 </project>

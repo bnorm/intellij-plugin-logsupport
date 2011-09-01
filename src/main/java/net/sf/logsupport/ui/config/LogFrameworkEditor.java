@@ -51,11 +51,13 @@ public class LogFrameworkEditor implements Editor {
 	private JPanel editorPanel; //NOSONAR - field is binding
 	private JTabbedPane tabbedPane; //NOSONAR - field is binding
 
+	private JPanel loggerFieldPanel; //NOSONAR - field is binding
 	private JTextField defaultLoggerFieldName; //NOSONAR - field is binding
 	private JComboBox fieldCreatePosition; //NOSONAR - field is binding
 	private JComboBox loggerFieldAccessModifier; //NOSONAR - field is binding
 	private JCheckBox useStaticLogger; //NOSONAR - field is binding
 	private JCheckBox useFinalLogger; //NOSONAR - field is binding
+	private JCheckBox logMethodsAreStatic; //NOSONAR - field is binding
 
 	private JComboBox loggerClass; //NOSONAR - field is binding
 	private JButton resetToDefaultsButton; //NOSONAR - field is binding
@@ -86,6 +88,17 @@ public class LogFrameworkEditor implements Editor {
 		loggerFieldAccessModifier.setModel(new DefaultComboBoxModel(
 				LogFramework.LOGGER_ACCESS_MODIFIERS.toArray()));
 
+		final AbstractEventListener fieldCreateOptionsDisabler = new AbstractEventListener() {
+			@Override
+			public void eventOccurred(EventObject e) {
+				boolean enabled = !logMethodsAreStatic.isSelected();
+				UIUtil.setEnabled(loggerFieldPanel, enabled, true);
+				loggerFactoryMethod.setEnabled(enabled);
+			}
+		};
+		logMethodsAreStatic.addItemListener(fieldCreateOptionsDisabler);
+		fieldCreateOptionsDisabler.stateChanged(null);
+
 		// Configure loggerClass related elements
 		for (LogFramework framework : configuration.getFrameworks())
 			loggerClass.addItem(framework.getLoggerClass());
@@ -104,7 +117,7 @@ public class LogFrameworkEditor implements Editor {
 		for (LogFramework.MessageFormatType type : MessageFormatType.values())
 			placeholderFormatSelection.addItem(L10N.message("LogFrameworkEditor.MessageFormatType." + type.name()));
 
-		AbstractEventListener detailsEnabler = new AbstractEventListener() {
+		final AbstractEventListener placeholderDetailsEnabler = new AbstractEventListener() {
 			@Override
 			public void eventOccurred(EventObject e) {
 				boolean enabled = logMessagesCanUsePlaceholders.isSelected();
@@ -113,9 +126,9 @@ public class LogFrameworkEditor implements Editor {
 						placeholderFormatSelection.getSelectedIndex() == MessageFormatType.custom.ordinal());
 			}
 		};
-		placeholderFormatSelection.addItemListener(detailsEnabler);
-		logMessagesCanUsePlaceholders.addChangeListener(detailsEnabler);
-		detailsEnabler.stateChanged(null);
+		placeholderFormatSelection.addItemListener(placeholderDetailsEnabler);
+		logMessagesCanUsePlaceholders.addChangeListener(placeholderDetailsEnabler);
+		placeholderDetailsEnabler.stateChanged(null);
 
 		// Build the level to method mapping.
 		GridLayoutFacade layoutFacade = new GridLayoutFacade(methodMappingPanel, 3, 1, 2, 2);
