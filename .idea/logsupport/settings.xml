@@ -5,7 +5,7 @@
       <ProjectLogConfigurations>
         <option name="defaultLogConfiguration">
           <DefaultLogConfiguration>
-            <option name="conditionFormat" value="lineBreakAndBraces" />
+            <option name="conditionFormat" value="simple" />
             <option name="conditionalLogLevels">
               <set>
                 <option value="trace" />

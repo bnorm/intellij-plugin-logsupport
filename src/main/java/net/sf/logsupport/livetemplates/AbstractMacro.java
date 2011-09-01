@@ -34,6 +34,7 @@ import net.sf.logsupport.config.LogFramework;
 import net.sf.logsupport.config.LogLevel;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Base implementation for log related macros.
@@ -93,7 +94,8 @@ public abstract class AbstractMacro implements com.intellij.codeInsight.template
 	 * @param context The context to evaluate.
 	 * @return the psi file that the context refers to.
 	 */
-	protected PsiFile getPsiFile(ExpressionContext context) {
+	@Nullable
+	protected PsiFile getPsiFile(@NotNull ExpressionContext context) {
 		Project project = context.getProject();
 		return PsiDocumentManager.getInstance(project).getPsiFile(context.getEditor().getDocument());
 	}
@@ -105,7 +107,8 @@ public abstract class AbstractMacro implements com.intellij.codeInsight.template
 	 * @param context the context to evaluate.
 	 * @return the element under the caret of the expression context.
 	 */
-	protected PsiElement getPlace(PsiFile file, ExpressionContext context) {
+	@Nullable
+	protected PsiElement getPlace(PsiFile file, @NotNull ExpressionContext context) {
 		int offset = context.getStartOffset();
 		PsiDocumentManager.getInstance(file.getProject()).commitAllDocuments();
 		return file.findElementAt(offset);
@@ -118,7 +121,8 @@ public abstract class AbstractMacro implements com.intellij.codeInsight.template
 	 * @param context	The context to evaluate against.
 	 * @return the type of the variable.
 	 */
-	protected String resolveVariableType(Expression expression, ExpressionContext context) {
+	@Nullable
+	protected String resolveVariableType(Expression expression, @NotNull ExpressionContext context) {
 		Result result = expression.calculateResult(context);
 		String variableName = String.valueOf(result);
 		return resolveVariableType(variableName, context);
@@ -131,14 +135,26 @@ public abstract class AbstractMacro implements com.intellij.codeInsight.template
 	 * @param context	  The context to evaluate against.
 	 * @return the type of the variable.
 	 */
-	protected String resolveVariableType(String variableName, ExpressionContext context) {
+	@Nullable
+	protected String resolveVariableType(String variableName, @NotNull ExpressionContext context) {
 		int offset = context.getStartOffset();
 		PsiFile file = getPsiFile(context);
-		PsiElement place = file.findElementAt(offset);
+		PsiElement place = file == null ? null : file.findElementAt(offset);
 
-		for (PsiVariable variable : MacroUtil.getVariablesVisibleAt(place, variableName)) {
-			if (variable.getName().equals(variableName))
-				return variable.getType().getCanonicalText();
+		if (file != null && place != null) {
+			// Try to resolve the real variable type.
+			for (PsiVariable variable : MacroUtil.getVariablesVisibleAt(place, variableName)) {
+				String name = variable.getName();
+				if (name != null && name.equals(variableName))
+					return variable.getType().getCanonicalText();
+			}
+		}
+
+		// Look after static logger methods if variableName points to a class instead of a local variable.
+		Application application = ApplicationManager.getApplication();
+		for (LogFramework framework : application.getComponent(LogSupportComponent.class).getState().getFrameworks()) {
+			if (framework.isLogMethodsAreStatic() && framework.getLoggerClass().equals(variableName))
+				return variableName;
 		}
 
 		return null;
@@ -154,14 +170,12 @@ public abstract class AbstractMacro implements com.intellij.codeInsight.template
 	protected String resolveLogMethodExpression(String loggerClass, LogLevel level) {
 		if (loggerClass != null) {
 			Application application = ApplicationManager.getApplication();
-			for (LogFramework framework : application.getComponent(
-					LogSupportComponent.class).getState().getFrameworks()) {
+			for (LogFramework framework : application.getComponent(LogSupportComponent.class).getState().getFrameworks()) {
 				if (framework.getLoggerClass().equals(loggerClass))
 					return framework.getLogMethod().get(level);
 			}
 
-			log.warn("Failed resolving a log method using logger class '" +
-					loggerClass + "', using default method name instead.");
+			log.warn("Failed resolving a log method using logger class '" + loggerClass + "', using default method name instead.");
 		}
 		return level.name();
 	}

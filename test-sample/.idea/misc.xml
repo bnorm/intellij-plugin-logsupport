@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="false" version="4">
+<project relativePaths="true" version="4">
   <component name="DependencyValidationManager">
     <scope name="Log4j Scope" pattern="src[Log Framework Tests]:net.sf.logsupport.log4j..*" />
     <scope name="LogBack Scope" pattern="src[Log Framework Tests]:net.sf.logsupport.logback..*" />
@@ -69,7 +69,7 @@
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <UsedPathMacros>
-    <macro name="USER_HOME_GRIFFON" description="" />
+    <macro name="MAVEN_REPOSITORY" description="Maven Local Repostiry" />
   </UsedPathMacros>
 </project>
 

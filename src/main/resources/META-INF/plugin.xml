@@ -77,6 +77,13 @@
 
     <change-notes><![CDATA[
 		<ul>
+			<li>1.0.10
+				<ol>
+				    <li>Fixed 3401836: Deadlock in the UI when generating log review on project with no matching log messages.</li>
+					<li>Improvement: Added support for static log methods.</li>
+					<li>Improvement: Added configurations for Android 'Log' and slf4j 'XLogger'.</li>
+				</ol>
+			</li>
 			<li>1.0.9
 				<ol>
 				    <li>Fixed 3396819: Using braced conditions, the cursor is not positioned correctly.</li>
@@ -144,7 +151,7 @@
 		</ul>
 	]]></change-notes>
 
-    <version>1.0.9</version>
+    <version>1.0.10</version>
     <vendor>Juergen Kellerer</vendor>
     <category>Code tools</category>
 

@@ -32,7 +32,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
-import java.lang.reflect.Method;
 import java.util.*;
 
 import static net.sf.logsupport.util.ReflectionUtil.invoke;
@@ -167,13 +166,11 @@ public class LogPsiUtil {
 
 		if (framework != null && qualifier != null) {
 			for (Map.Entry<LogLevel, String> e : framework.getLogMethod().entrySet()) {
-				String key = qualifier.getText() + "." + e.getValue().trim() +
-						(e.getValue().contains("(") ? "" : "()");
+				String key = qualifier.getText() + "." + e.getValue().trim() + (e.getValue().contains("(") ? "" : "()");
 
 				Map<String, PsiMethodCallExpression> cache = logLevelCache.get();
 				if (cache == null) {
-					logLevelCache = new SoftReference<Map<String, PsiMethodCallExpression>>(
-							cache = new HashMap<String, PsiMethodCallExpression>());
+					logLevelCache = new SoftReference<Map<String, PsiMethodCallExpression>>(cache = new HashMap<String, PsiMethodCallExpression>());
 				}
 
 				PsiMethodCallExpression referenceExpression = cache.get(key);
@@ -205,7 +202,7 @@ public class LogPsiUtil {
 			return null;
 
 		final PsiFile file = expression.getContainingFile();
-		final PsiType type = findSupportedLoggerType(file, qualifier.getType());
+		final PsiType type = findSupportedLoggerType(file, qualifier);
 		if (type != null) {
 			String loggerClass = type.getCanonicalText();
 			LogConfiguration configuration = LogConfiguration.getInstance(file);
@@ -304,8 +301,8 @@ public class LogPsiUtil {
 		final PsiReferenceExpression ref = callExpression.getMethodExpression();
 		if (ref.isQualified() && canBeLoggerCall(callExpression)) {
 			final PsiExpression qualifierExpression = ref.getQualifierExpression();
-			return qualifierExpression != null &&
-					isSupportedLoggerCall(qualifierExpression.getContainingFile(), qualifierExpression.getType());
+			if (qualifierExpression != null)
+				return findSupportedLoggerType(qualifierExpression.getContainingFile(), qualifierExpression) != null;
 		}
 
 		return false;
@@ -325,11 +322,37 @@ public class LogPsiUtil {
 	/**
 	 * Returns the target type of a supported logger class.
 	 *
+	 * @param file				The file instance containing the logger.
+	 * @param qualifierExpression The qualifierExpression that of a log method call expression.
+	 * @return the target type of the logger or 'null' if the given type is not supported.
+	 */
+	@Nullable
+	public static PsiType findSupportedLoggerType(@NotNull PsiFile file, @Nullable PsiExpression qualifierExpression) {
+		if (qualifierExpression != null) {
+			PsiType type = qualifierExpression.getType();
+
+			// Seconds chance, try to resolve the type using a reference.
+			if (type == null && qualifierExpression instanceof PsiReferenceExpression) {
+				PsiElement resolved = ((PsiReferenceExpression) qualifierExpression).resolve();
+				if (resolved instanceof PsiClass) {
+					type = LogPsiUtil.getFactory(file).createTypeFromText(((PsiClass) resolved).getQualifiedName(), resolved);
+				}
+			}
+
+			return findSupportedLoggerType(file, type);
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the target type of a supported logger class.
+	 *
 	 * @param file	   The file instance containing the logger.
 	 * @param loggerType The type of the logger that received the logger call.
 	 * @return the target type of the logger or 'null' if the given type is not supported.
 	 */
-	public static PsiType findSupportedLoggerType(PsiFile file, PsiType loggerType) {
+	@Nullable
+	public static PsiType findSupportedLoggerType(@NotNull PsiFile file, @Nullable PsiType loggerType) {
 		if (loggerType != null) {
 			List<PsiType> types = Arrays.asList(loggerType);
 			while (!types.isEmpty()) {
@@ -433,8 +456,7 @@ public class LogPsiUtil {
 		PsiLiteralExpression firstExpression = null;
 
 		while (firstChild != null) {
-			firstExpression = findElement(iterateSiblings(firstChild, true),
-					PsiLiteralExpression.class, elementIgnoreList);
+			firstExpression = findElement(iterateSiblings(firstChild, true), PsiLiteralExpression.class, elementIgnoreList);
 
 			// If the literal expression is not inside the expression list, it may be contained
 			// inside a binary expression, if so, we retry.
@@ -597,19 +619,19 @@ public class LogPsiUtil {
 
 		//
 		// Fixing compatibility issues between interfaces in IDEA 8,9,10,... by using reflection to call.
-        try {
-            try {
-                return invoke(helper, "computeConstantExpression", expression, throwExceptionOnOverflow);
-            } catch (NoSuchMethodError e) {
-                if (throwExceptionOnOverflow)
-                    throw e;
-                return invoke(helper, "computeConstantExpression", expression);
-            }
-        } catch (Exception e) {
-            LOG.warn("Failed to invoke computeConstantExpression() via reflection, " +
-                    "using unsafe direct call (may break in some IDEA versions).");
-            return null;
-        }
+		try {
+			try {
+				return invoke(helper, "computeConstantExpression", expression, throwExceptionOnOverflow);
+			} catch (NoSuchMethodError e) {
+				if (throwExceptionOnOverflow)
+					throw e;
+				return invoke(helper, "computeConstantExpression", expression);
+			}
+		} catch (Exception e) {
+			LOG.warn("Failed to invoke computeConstantExpression() via reflection, " +
+					"using unsafe direct call (may break in some IDEA versions).");
+			return null;
+		}
 	}
 
 

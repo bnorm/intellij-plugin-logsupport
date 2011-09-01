@@ -16,5 +16,11 @@
             <groupId>ch.qos.logback</groupId>
             <version>0.9.18</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>2.1.2</version>
+        </dependency>
     </dependencies>
 </project>

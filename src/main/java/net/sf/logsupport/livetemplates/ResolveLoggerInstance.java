@@ -18,13 +18,17 @@ package net.sf.logsupport.livetemplates;
 
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.template.*;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import net.sf.logsupport.config.LogConfiguration;
+import net.sf.logsupport.config.LogFramework;
+import net.sf.logsupport.util.LogPsiUtil;
 import net.sf.logsupport.util.LoggerFieldBuilder;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -35,6 +39,7 @@ import java.util.Set;
  */
 public class ResolveLoggerInstance extends AbstractResolveMacro {
 
+	private static final Logger LOG = Logger.getInstance("#net.sf.logsupport.livetemplates.ResolveLoggerInstance");
 	private static volatile String lastCreatedLoggerInstance;
 
 	public static String getLastCreatedLoggerInstance() {
@@ -87,9 +92,18 @@ public class ResolveLoggerInstance extends AbstractResolveMacro {
 
 	@Override
 	protected PsiElement[] resolveVariables(Set<String> stringTypes, PsiFile file, ExpressionContext context) {
+		final PsiElement place = getPlace(file, context);
+		final LogFramework framework = LogConfiguration.getInstance(place.getContainingFile()).getDefaultLogFramework();
+
 		PsiElement[] variables = super.resolveVariables(stringTypes, file, context);
+
+		if (framework != null && framework.isLogMethodsAreStatic()) {
+			if (LOG.isDebugEnabled()) LOG.debug("Default logger uses static method, adding the logger class to the list of resolved variables.");
+			variables = variables == null ? new PsiElement[1] : Arrays.copyOf(variables, variables.length + 1);
+			variables[variables.length - 1] = LogPsiUtil.getFactory(file).createExpressionFromText(framework.getLoggerClass(), place);
+		}
+
 		if (variables != null && variables.length == 0) {
-			PsiElement place = getPlace(file, context);
 			PsiField field = createField(file, place);
 			if (field != null) {
 				setLastCreatedLoggerInstance(field.getType().getCanonicalText());
