@@ -95,7 +95,7 @@
 			</li>
 			<li>1.0.9
 				<ol>
-				    <li>Fixed 3396819: Using braced conditions, the cursor is not positioned correctly.</li>
+				    <li>Fixed 3396819: The cursor is not positioned correctly with braced conditions.</li>
 					<li>Improvement: Showing a notification when no default log framework is set but required.</li>
 					<li>Improvement 3305941: Shorten source names in log review.</li>
 					<li>Improvement 3398563: Log reviews should maintain the order of logs as they appear.</li>
