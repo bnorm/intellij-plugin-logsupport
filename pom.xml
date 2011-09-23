@@ -120,8 +120,9 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://logsupport.svn.sourceforge.net/svnroot/logsupport/trunk</connection>
-		<url>http://logsupport.svn.sourceforge.net/viewvc/logsupport/trunk/</url>
+		<connection>scm:hg:http://logsupport.hg.sourceforge.net:8000/hgroot/logsupport/logsupport</connection>
+		<developerConnection>scm:hg:ssh://logsupport.hg.sourceforge.net/hgroot/logsupport/logsupport</developerConnection>
+		<url>http://logsupport.hg.sourceforge.net/hgweb/logsupport/</url>
 	</scm>
 
 	<ciManagement>
