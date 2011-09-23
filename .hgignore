@@ -1,0 +1,15 @@
+# Use regexp syntax to define patterns of non-vcs files.
+syntax: regexp
+
+# Exclude files beginning with "~"
+([\\/]~|^~)
+
+# Exclude build targets
+([\\/]o|^o)ut$
+([\\/]t|^t)arget$
+
+# Exclude other resources
+\.orig
+\.log.*
+release\.properties$
+\.releaseBackup$
