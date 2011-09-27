@@ -206,7 +206,7 @@
 				<version>2.4</version>
 				<configuration>
 					<configLocation>
-						https://www.tinyjee.org/sonar/profiles/export?format=checkstyle&amp;language=java&amp;name=Java%2520-%2520Relaxed%2520Rules
+						http://www.tinyjee.org/sonar/profiles/export?format=checkstyle&amp;language=java&amp;name=Java%2520-%2520Relaxed%2520Rules
 					</configLocation>
 				</configuration>
 			</plugin>
