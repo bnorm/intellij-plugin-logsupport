@@ -34,8 +34,7 @@
 	</description>
 
 	<properties>
-		<svn.tag>trunk</svn.tag>
-		<hudson.tag>Trunk</hudson.tag>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<idea.name>IntelliJ IDEA</idea.name>
 		<idea.version>8</idea.version>
@@ -127,7 +126,7 @@
 
 	<ciManagement>
 		<system>hudson</system>
-		<url>http://www.tinyjee.org/hudson/job/Log%20Support%20-%20IDEA%20Plugin%20(${hudson.tag})/</url>
+		<url>http://www.tinyjee.org/hudson/job/Log%20Support%20-%20IDEA%20Plugin%20(Dev)/</url>
 	</ciManagement>
 
 	<build>
@@ -207,7 +206,7 @@
 				<version>2.4</version>
 				<configuration>
 					<configLocation>
-						http://www.tinyjee.org/sonar/profiles/export?format=checkstyle&amp;language=java&amp;name=Java%2520-%2520Relaxed%2520Rules
+						https://www.tinyjee.org/sonar/profiles/export?format=checkstyle&amp;language=java&amp;name=Java%2520-%2520Relaxed%2520Rules
 					</configLocation>
 				</configuration>
 			</plugin>
@@ -220,7 +219,7 @@
 					<failOnError>false</failOnError>
 					<xmlOutput>true</xmlOutput>
 					<includeFilterFile>
-						http://www.tinyjee.org/sonar/profiles/export?format=findbugs&amp;language=java&amp;name=Java%2520-%2520Relaxed%2520Rules
+						https://www.tinyjee.org/sonar/profiles/export?format=findbugs&amp;language=java&amp;name=Java%2520-%2520Relaxed%2520Rules
 					</includeFilterFile>
 				</configuration>
 			</plugin-->
