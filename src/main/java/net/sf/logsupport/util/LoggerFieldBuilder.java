@@ -25,6 +25,7 @@ import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.IncorrectOperationException;
 import net.sf.logsupport.config.LogConfiguration;
 import net.sf.logsupport.config.LogFramework;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Is a helper object used to build logger fields and assign them to classes.
@@ -116,11 +117,11 @@ public class LoggerFieldBuilder {
 					try {
 						PsiClass cls = classForPlace(place);
 						LogConfiguration config = LogConfiguration.getInstance(place.getContainingFile());
-						if (config != null) {
-							PsiElement brace = ReflectionUtil.invoke(cls, "getLBrace"); // IF changed in IDEA 9/10
-							LogPsiElementFactory factory = LogPsiUtil.getFactory(place.getContainingFile());
-							LogFramework framework = config.getDefaultLogFramework();
+						PsiElement brace = ReflectionUtil.invoke(cls, "getLBrace"); // IF changed in IDEA 9/10
+						LogPsiElementFactory factory = LogPsiUtil.getFactory(place.getContainingFile());
+						LogFramework framework = config.getDefaultLogFramework();
 
+						if (framework != null) {
 							PsiElement addedField;
 							if (framework.isInsertLoggerAtEndOfClass()) {
 								addedField = addFieldBeforeAnchor(factory, cls, field, brace);
@@ -128,11 +129,10 @@ public class LoggerFieldBuilder {
 								PsiField[] allFields = cls.getFields();
 								if (allFields.length == 0) {
 									addedField = cls.addAfter(field, brace);
-									cls.addAfter(factory.createWhiteSpaceFromText("\n\n\t"), brace);
+									cls.addAfter(factory.createExpressionFromText("\n\n\t", cls.getContext()), brace);
 								} else
 									addedField = addFieldBeforeAnchor(factory, cls, field, allFields[0]);
 							}
-
 							shortenFQNames(addedField);
 						}
 					} finally {
@@ -154,12 +154,12 @@ public class LoggerFieldBuilder {
 		return null;
 	}
 
-	private static PsiElement addFieldBeforeAnchor(LogPsiElementFactory factory,
-												   PsiClass cls, PsiField field, PsiElement anchor) {
-		PsiElement addedField;
-		cls.addBefore(factory.createWhiteSpaceFromText("\n\t"), anchor);
+	private static PsiElement addFieldBeforeAnchor(@NotNull LogPsiElementFactory factory,
+	                                               @NotNull PsiClass cls, @NotNull PsiField field, @NotNull PsiElement anchor) {
+		final PsiElement addedField, context = anchor.getContext();
+		cls.addBefore(factory.createExpressionFromText("\n\t", context), anchor);
 		addedField = cls.addBefore(field, anchor);
-		cls.addBefore(factory.createWhiteSpaceFromText("\n"), anchor);
+		cls.addBefore(factory.createExpressionFromText("\n", context), anchor);
 
 		return addedField;
 	}

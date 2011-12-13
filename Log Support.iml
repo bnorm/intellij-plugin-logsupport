@@ -11,16 +11,16 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="TEST" name="junit 4.8.1" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/plugins/Groovy/lib/Groovy.jar!/" />
+          <root url="jar://C:/Program Files (x86)/JetBrains/IntelliJ IDEA 8/plugins/Groovy/lib/Groovy.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="junit 4.8.1" level="project" />
   </component>
 </module>
 

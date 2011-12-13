@@ -41,6 +41,7 @@ public class ResolveOptionalVariableOfType extends AbstractResolveMacro {
 	/**
 	 * {@inheritDoc}
 	 */
+	@NotNull
 	public String getDefaultValue() {
 		return "a";
 	}
