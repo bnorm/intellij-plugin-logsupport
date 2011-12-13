@@ -60,6 +60,13 @@ public abstract class AbstractMacro implements com.intellij.codeInsight.template
 	}
 
 	/**
+	 * Is defined since IDEA 11.
+	 */
+	public String getPresentableName() {
+		return getName();
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public String getDescription() {
@@ -70,6 +77,7 @@ public abstract class AbstractMacro implements com.intellij.codeInsight.template
 	 * {@inheritDoc}
 	 */
 	@NonNls
+	@NotNull
 	public String getDefaultValue() {
 		return "";
 	}

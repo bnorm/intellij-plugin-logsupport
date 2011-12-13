@@ -19,8 +19,8 @@ package net.sf.logsupport.ui.config;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.MasterDetailsComponent;
-import com.intellij.openapi.ui.MasterDetailsStateService;
 import com.intellij.openapi.ui.NamedConfigurable;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Conditions;
 import com.intellij.util.Icons;
 import net.sf.logsupport.L10N;
@@ -32,6 +32,8 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.*;
+
+import static net.sf.logsupport.util.ReflectionUtil.invoke;
 
 /**
  * Is an abstract implementation of a common MasterDetailsComponent to
@@ -48,20 +50,9 @@ public abstract class AbstractMasterDetailsPanel<E> extends MasterDetailsCompone
 	private volatile E lastNewElement;
 
 	protected AbstractMasterDetailsPanel(@NotNull LogSupportComponent logSupport,
-										 LogSupportProjectComponent projectComponent) {
+	                                     LogSupportProjectComponent projectComponent) {
 		this.logSupport = logSupport;
 		this.projectComponent = projectComponent;
-
-		if (projectComponent != null) {
-			try {
-				MasterDetailsStateService service = projectComponent.getProject().
-						getComponent(MasterDetailsStateService.class);
-				service.register(getId(), this);
-			} catch (Throwable t) {
-				// ignore
-			}
-		}
-
 		initTree();
 	}
 
@@ -129,7 +120,7 @@ public abstract class AbstractMasterDetailsPanel<E> extends MasterDetailsCompone
 		Set<String> remainingNames = getNamesInPanel();
 		List<E> elements = getElementsFromBackingStore();
 
-		for (Iterator<E> i = elements.iterator(); i.hasNext();) {
+		for (Iterator<E> i = elements.iterator(); i.hasNext(); ) {
 			E element = i.next();
 			if (!remainingNames.contains(getElementName(element)))
 				i.remove();
@@ -188,10 +179,20 @@ public abstract class AbstractMasterDetailsPanel<E> extends MasterDetailsCompone
 		}
 	}
 
+	static Condition conditionForMyDeleteAction() {
+		try {
+			// Newer IDEA version expect Condition<Object[]> instead of the plain Conditions.TRUE result.
+			return invoke(MasterDetailsComponent.class, "forAll", Conditions.TRUE);
+		} catch (NoSuchMethodError e) {
+			return (Condition) Conditions.TRUE;
+		}
+	}
+
 	protected class DeleteAction extends MyDeleteAction {
 
+		@SuppressWarnings("unchecked")
 		public DeleteAction() {
-			super(Conditions.TRUE);
+			super(conditionForMyDeleteAction());
 		}
 
 		@Override

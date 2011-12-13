@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import static net.sf.logsupport.util.ReflectionUtil.invoke;
+
 /**
  * TODO
  *
@@ -41,7 +43,7 @@ public abstract class AbstractResolveMacro extends AbstractMacro {
 
 		Set set = new LinkedHashSet();
 		for (PsiElement variable : variables)
-			ReflectionUtil.invoke(JavaTemplateUtil.class, "addElementLookupItem", set, variable);
+			invoke(JavaTemplateUtil.class, "addElementLookupItem", set, variable);
 
 		int i = 0;
 		LookupElement[] elements = new LookupElement[set.size()];

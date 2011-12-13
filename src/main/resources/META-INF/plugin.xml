@@ -19,7 +19,7 @@
     <id>LogSupport</id>
     <name>Log Support</name>
 
-	<version>1.0.10</version>
+	<version>1.0.11</version>
 	<vendor logo="/icons/logsupport-16.png">Juergen Kellerer</vendor>
 	<category>Code tools</category>
 
@@ -86,6 +86,11 @@
 
     <change-notes><![CDATA[
 		<ul>
+			<li>1.0.11
+				<ol>
+					<li>Fixed compatibility issues with IDEA >= 11.0</li>
+				</ol>
+			</li>
 			<li>1.0.10
 				<ol>
 				    <li>Fixed 3401836: Deadlock when generating log reviews and no matching log messages were found.</li>

@@ -57,6 +57,7 @@ public class ResolveLoggerInstance extends AbstractResolveMacro {
 	/**
 	 * {@inheritDoc}
 	 */
+	@NotNull
 	public String getDefaultValue() {
 		return "log";
 	}

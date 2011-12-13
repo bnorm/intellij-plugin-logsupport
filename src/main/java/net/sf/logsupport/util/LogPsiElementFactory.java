@@ -36,6 +36,4 @@ public interface LogPsiElementFactory {
 	PsiElement createExpressionFromText(String text, PsiElement context);
 
 	PsiElement createStatementFromText(String text, PsiElement context);
-
-	PsiElement createWhiteSpaceFromText(String text);
 }

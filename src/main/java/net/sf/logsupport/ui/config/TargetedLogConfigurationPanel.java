@@ -18,6 +18,8 @@ package net.sf.logsupport.ui.config;
 
 import com.intellij.ide.DataManager;
 import com.intellij.ide.util.scopeChooser.ScopeChooserConfigurable;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.options.newEditor.OptionsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.HyperlinkLabel;
@@ -34,19 +36,17 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.sf.logsupport.util.ReflectionUtil.invoke;
+
 /**
  * Implements an editor for targeted (scopes) log configuration.
  *
  * @author Juergen_Kellerer, 2010-04-12
- * @version 1.0
  */
 public class TargetedLogConfigurationPanel extends AbstractSortableTableEditor<TargetedLogConfiguration> {
 
-	private final String useDefaultLabel = "<html><i>" +
-			L10N.message("TargetedLogConfigurationPanel.noChange") + "</i></html>";
-
-	private final HyperlinkLabel scopesLink =
-			new HyperlinkLabel(L10N.message("TargetedLogConfigurationPanel.scopesLink"));
+	private final String useDefaultLabel = "<html><i>" + L10N.message("TargetedLogConfigurationPanel.noChange") + "</i></html>";
+	private final HyperlinkLabel scopesLink = new HyperlinkLabel(L10N.message("TargetedLogConfigurationPanel.scopesLink"));
 
 	private Project project;
 	private ProjectLogConfigurations configurations;
@@ -58,11 +58,30 @@ public class TargetedLogConfigurationPanel extends AbstractSortableTableEditor<T
 		// Configure scopes link
 		scopesLink.setVisible(!project.isDefault());
 		scopesLink.addHyperlinkListener(new HyperlinkListener() {
+			private Object getLinkTarget() {
+				try {
+					// IDEA 8-10: In platform, ScopeChooserConfigurable is registered as a service, not as a top-level configurable
+					try {
+						Class<?> factory = Class.forName("com.intellij.ide.util.scopeChooser.ScopeChooserConfigurable$Factory");
+						Object factoryInstance = ServiceManager.getService(project, factory);
+						if (factoryInstance != null) {
+							return invoke(factoryInstance, "getInstance");
+						}
+					} catch (ClassNotFoundException e) {
+						// Newer version of IntelliJ do not have this factory.
+					}
+					return ShowSettingsUtil.getInstance().findProjectConfigurable(project, ScopeChooserConfigurable.class);
+				} catch (IllegalArgumentException e) {
+					// From IDEA 11, the class is returned instead of the instance..
+					return ScopeChooserConfigurable.class;
+				}
+			}
+
 			public void hyperlinkUpdate(final HyperlinkEvent e) {
 				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 					final OptionsEditor optionsEditor = OptionsEditor.KEY.getData(DataManager.getInstance().getDataContext());
 					if (optionsEditor != null)
-						optionsEditor.select(ScopeChooserConfigurable.getInstance(project));
+						invoke(optionsEditor, "select", getLinkTarget());
 				}
 			}
 		});
@@ -250,8 +269,7 @@ public class TargetedLogConfigurationPanel extends AbstractSortableTableEditor<T
 			renderer = new TableCellRenderer() {
 				public Component getTableCellRendererComponent(
 						JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-					Component c = parentRenderer.getTableCellRendererComponent(
-							table, value, isSelected, hasFocus, row, column);
+					Component c = parentRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 					boolean enabled = isCellEditable(currentRow);
 					c.setEnabled(enabled);
 					return c;

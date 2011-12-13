@@ -58,7 +58,7 @@ public class LogPsiUtil {
 					groovy = language;
 			}
 		} catch (Throwable t) {
-			// ignore
+
 		}
 	}
 
@@ -89,10 +89,6 @@ public class LogPsiUtil {
 				public PsiElement createStatementFromText(String text, PsiElement context) {
 					return factory.createStatementFromText(text);
 				}
-
-				public PsiElement createWhiteSpaceFromText(String text) {
-					return factory.createExpressionFromText(text);
-				}
 			};
 		} else {
 			return new LogPsiElementFactory() {
@@ -113,10 +109,6 @@ public class LogPsiUtil {
 
 				public PsiElement createStatementFromText(String text, PsiElement context) {
 					return factory.createStatementFromText(text, context);
-				}
-
-				public PsiElement createWhiteSpaceFromText(String text) {
-					return factory.createWhiteSpaceFromText(text);
 				}
 			};
 		}
