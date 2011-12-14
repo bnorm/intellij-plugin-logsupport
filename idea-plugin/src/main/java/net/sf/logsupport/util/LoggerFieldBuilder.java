@@ -129,7 +129,7 @@ public class LoggerFieldBuilder {
 								PsiField[] allFields = cls.getFields();
 								if (allFields.length == 0) {
 									addedField = cls.addAfter(field, brace);
-									cls.addAfter(factory.createExpressionFromText("\n\n\t", cls.getContext()), brace);
+									cls.addAfter(factory.createWhiteSpaceFromText("\n\n\t"), brace);
 								} else
 									addedField = addFieldBeforeAnchor(factory, cls, field, allFields[0]);
 							}
@@ -156,10 +156,10 @@ public class LoggerFieldBuilder {
 
 	private static PsiElement addFieldBeforeAnchor(@NotNull LogPsiElementFactory factory,
 	                                               @NotNull PsiClass cls, @NotNull PsiField field, @NotNull PsiElement anchor) {
-		final PsiElement addedField, context = anchor.getContext();
-		cls.addBefore(factory.createExpressionFromText("\n\t", context), anchor);
+		final PsiElement addedField;
+		cls.addBefore(factory.createWhiteSpaceFromText("\n\t"), anchor);
 		addedField = cls.addBefore(field, anchor);
-		cls.addBefore(factory.createExpressionFromText("\n", context), anchor);
+		cls.addBefore(factory.createWhiteSpaceFromText("\n"), anchor);
 
 		return addedField;
 	}

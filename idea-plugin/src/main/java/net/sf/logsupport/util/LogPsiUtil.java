@@ -71,8 +71,9 @@ public class LogPsiUtil {
 	public static LogPsiElementFactory getFactory(final @NotNull PsiFile file) {
 		if (groovy != null && file.getLanguage().is(groovy)) {
 			return new LogPsiElementFactory() {
-				org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory factory =
+				private final org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory factory =
 						org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory.getInstance(file.getProject());
+				private final PsiParserFacade psiParserFacade = PsiParserFacade.SERVICE.getInstance(file.getProject());
 
 				public PsiField createField(String text, PsiType type, PsiElement context) {
 					return null;
@@ -89,10 +90,15 @@ public class LogPsiUtil {
 				public PsiElement createStatementFromText(String text, PsiElement context) {
 					return factory.createStatementFromText(text);
 				}
+
+				public PsiElement createWhiteSpaceFromText(String text) {
+					return psiParserFacade.createWhiteSpaceFromText(text);
+				}
 			};
 		} else {
 			return new LogPsiElementFactory() {
-				PsiElementFactory factory = JavaPsiFacade.getInstance(file.getProject()).getElementFactory();
+				private final PsiElementFactory factory = JavaPsiFacade.getInstance(file.getProject()).getElementFactory();
+				private final PsiParserFacade psiParserFacade = PsiParserFacade.SERVICE.getInstance(file.getProject());
 
 				public PsiField createField(String text, PsiType type, PsiElement context) {
 					//return factory.createField(text, type);
@@ -109,6 +115,10 @@ public class LogPsiUtil {
 
 				public PsiElement createStatementFromText(String text, PsiElement context) {
 					return factory.createStatementFromText(text, context);
+				}
+
+				public PsiElement createWhiteSpaceFromText(String text) {
+					return psiParserFacade.createWhiteSpaceFromText(text);
 				}
 			};
 		}

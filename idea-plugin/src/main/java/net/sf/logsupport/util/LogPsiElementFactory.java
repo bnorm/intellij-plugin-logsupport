@@ -18,7 +18,6 @@ package net.sf.logsupport.util;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiStatement;
 import com.intellij.psi.PsiType;
 
 /**
@@ -36,4 +35,6 @@ public interface LogPsiElementFactory {
 	PsiElement createExpressionFromText(String text, PsiElement context);
 
 	PsiElement createStatementFromText(String text, PsiElement context);
+
+	PsiElement createWhiteSpaceFromText(String text);
 }
