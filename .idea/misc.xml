@@ -29,6 +29,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/idea-plugin/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
       </set>
     </option>
@@ -72,29 +73,15 @@
       </value>
     </option>
   </component>
-  <component name="SvnBranchConfigurationManager">
-    <option name="myConfigurationMap">
-      <map>
-        <entry key="$PROJECT_DIR$">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="trunkUrl" value="https://logsupport.svn.sourceforge.net/svnroot/logsupport/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="mySupportsUserInfoFilter" value="true" />
-  </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="XSLT-Support.FileAssociationsManager">
-    <file url="file://$PROJECT_DIR$/src/main/resources/net/sf/logsupport/LogReview.template.ods.style.xsl">
-      <association url="file://$PROJECT_DIR$/src/main/resources/net/sf/logsupport/LogReview.template.xhtml" />
+    <file url="file://$PROJECT_DIR$/idea-plugin/src/main/resources/net/sf/logsupport/LogReview.template.ods.style.xsl">
+      <association url="file://$PROJECT_DIR$/idea-plugin/src/main/resources/net/sf/logsupport/LogReview.template.xhtml" />
     </file>
-    <file url="file://$PROJECT_DIR$/src/main/resources/net/sf/logsupport/LogReview.template.ods.content.xsl">
-      <association url="file://$PROJECT_DIR$/src/main/resources/net/sf/logsupport/LogReview.template.xhtml" />
+    <file url="file://$PROJECT_DIR$/idea-plugin/src/main/resources/net/sf/logsupport/LogReview.template.ods.content.xsl">
+      <association url="file://$PROJECT_DIR$/idea-plugin/src/main/resources/net/sf/logsupport/LogReview.template.xhtml" />
     </file>
-    <file url="file://$PROJECT_DIR$/src/main/resources/net/sf/logsupport/LogReview.import.ods.xsl">
+    <file url="file://$PROJECT_DIR$/idea-plugin/src/main/resources/net/sf/logsupport/LogReview.import.ods.xsl">
       <association url="file://$PROJECT_DIR$/test.xml" />
     </file>
   </component>

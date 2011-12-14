@@ -12,8 +12,23 @@
                 <option value="debug" />
               </set>
             </option>
-            <option name="defaultFrameworkName" value="android-util-log" />
+            <option name="defaultFrameworkName" value="slf4j" />
           </DefaultLogConfiguration>
+        </option>
+        <option name="targetedLogConfigurations">
+          <list>
+            <TargetedLogConfiguration>
+              <option name="conditionFormat" value="block" />
+              <option name="conditionalLogLevels">
+                <set>
+                  <option value="trace" />
+                  <option value="debug" />
+                </set>
+              </option>
+              <option name="defaultFrameworkName" value="android-util-log" />
+              <option name="targetScopeName" value="android" />
+            </TargetedLogConfiguration>
+          </list>
         </option>
       </ProjectLogConfigurations>
     </option>

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="true" version="4">
+<project relativePaths="false" version="4">
   <component name="DependencyValidationManager">
-    <scope name="Log4j Scope" pattern="src[Log Framework Tests]:net.sf.logsupport.log4j..*" />
-    <scope name="LogBack Scope" pattern="src[Log Framework Tests]:net.sf.logsupport.logback..*" />
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
+  </component>
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
   </component>
   <component name="IdProvider" IDEtalkID="2C5A6605A5C5863FBAB626FE36189FD5" />
   <component name="JavadocGenerationManager">
