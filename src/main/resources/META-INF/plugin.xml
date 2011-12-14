@@ -19,19 +19,33 @@
     <id>LogSupport</id>
     <name>Log Support</name>
 
-	<version>1.0.11</version>
+	<version>1.0.11-10_and_older</version>
 	<vendor logo="/icons/logsupport-16.png">Juergen Kellerer</vendor>
 	<category>Code tools</category>
 
 
 	<resource-bundle>net.sf.logsupport.L10N</resource-bundle>
 
-	<idea-version since-build="8000"/>
+	<idea-version since-build="8000" until-build="107.999"/>
 
     <description><![CDATA[
-		Makes using log frameworks as painless as printing to <code>stdout</code> by
-		adding <b>intentions</b>, <b>live templates</b> and <b>code inspections</b> that
-		support the most important aspects of the configured log framework.<br>
+		<b>Log Support:</b>
+        <p>
+        This plugin supports <b>creating</b> and <b>managing log calls</b>.
+        <p>
+        Once installed the plugin makes using log frameworks as painless as printing to <i>stdout</i>,
+        with the addition of <b>intentions</b>, <b>live templates</b> and <b>code inspections</b>
+		that support the most important aspects of the configured log framework.
+		<br>
+		Whenever you'd attempt to write to <i>stdout</i> using
+		"<b>sout + <i>TAB</i></b>" you can now use "<b>logd + <i>TAB</i></b>" to write a
+		debug log line instead (other log levels are accessible via similarly named live templates).
+		<p>
+		The plugin is aware of loggers that are currently reachable in the context and can also
+		add new loggers if none are reachable. Creating log output remains the same no matter what
+		log framework is used as all operations inside the bundled live templates are performed using
+		the framework that was previously defined for the current project scope.
+		Log calls are validated and optionally wrapped in conditional expressions if this is desired.
 		<p>
 		On top of the basic feature set, enterprise class features like <b>log ID</b> and
 		<b>log review</b> generation are available to help improving the overall
@@ -46,12 +60,13 @@
 			</li>
 			<li>Assists in the generation of log IDs</li>
 			<li>
-				Generates editable XHTML review documents containing a collection of log messages
-				that can be reviewed and adjusted by a non-developer (e.g. technical writer).
+				Generates editable <i>XHTML</i> or <i>ODS</i> (Open Document Spreadsheet) review
+				documents containing a  collection of log messages that can be reviewed and adjusted
+				by a non-developer  (e.g. technical writer).
 			</li>
 			<li>
-				Adds 5 live templates <code>logt</code>, <code>logd</code>, <code>logi</code>,
-				<code>logw</code> and <code>loge</code> that offer a framework neutral way
+				Adds 5 live templates <b>logt</b>, <b>logd</b>, <b>logi</b>,
+				<b>logw</b> and <b>loge</b> that offer a framework neutral way
 				of using log calls in the day to day business.
 			</li>
 			<li>
@@ -73,8 +88,7 @@
 						printf enabled frameworks.
 					</li>
 					<li>
-						Throwables can be combined with formatted messages
-						(e.g. logback does not support this)
+						Throwables can be combined with formatted messages (e.g. logback does not support this)
 					</li>
 				</ul>
 			</li>
@@ -89,6 +103,8 @@
 			<li>1.0.11
 				<ol>
 					<li>Fixed compatibility issues with IDEA >= 11.0</li>
+					<li>Refactored the plugin to have 2 build targets, one for IDEA < 11 and one for >= 11.
+					(thanks to B.K. for opening the thread <a href="http://devnet.jetbrains.net/message/5304686#5304686">#5304686</a>)</li>
 				</ol>
 			</li>
 			<li>1.0.10
