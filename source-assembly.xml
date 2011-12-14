@@ -33,19 +33,31 @@
 		</fileSet>
 		<fileSet>
 			<directory>idea-plugin</directory>
+			<excludes>
+				<exclude>target/**</exclude>
+			</excludes>
 			<filtered>false</filtered>
 		</fileSet>
 		<fileSet>
 			<directory>idea11-plugin</directory>
 			<filtered>false</filtered>
+			<excludes>
+				<exclude>target/**</exclude>
+			</excludes>
 		</fileSet>
 		<fileSet>
 			<directory>idea11-stubs</directory>
 			<filtered>false</filtered>
+			<excludes>
+				<exclude>target/**</exclude>
+			</excludes>
 		</fileSet>
 		<fileSet>
 			<directory>test-sample</directory>
 			<filtered>false</filtered>
+			<excludes>
+				<exclude>target/**</exclude>
+			</excludes>
 		</fileSet>
 		<fileSet>
 			<directory>.</directory>
