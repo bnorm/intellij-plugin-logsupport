@@ -32,6 +32,10 @@
 			<filtered>false</filtered>
 		</fileSet>
 		<fileSet>
+			<directory>src</directory>
+			<filtered>false</filtered>
+		</fileSet>
+		<fileSet>
 			<directory>idea-plugin</directory>
 			<excludes>
 				<exclude>target/**</exclude>
