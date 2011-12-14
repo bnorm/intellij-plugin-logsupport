@@ -86,6 +86,7 @@
 								<descriptor>assembly.xml</descriptor>
 							</descriptors>
 							<attach>true</attach>
+							<outputDirectory>${project.basedir}/../</outputDirectory>
 						</configuration>
 						<goals>
 							<goal>single</goal>

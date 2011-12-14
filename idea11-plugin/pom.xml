@@ -51,6 +51,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>logsupport11-plugin</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -62,6 +63,7 @@
 								<descriptor>assembly.xml</descriptor>
 							</descriptors>
 							<attach>true</attach>
+							<outputDirectory>${project.basedir}/../</outputDirectory>
 						</configuration>
 						<goals>
 							<goal>single</goal>

@@ -32,7 +32,15 @@
 			<filtered>false</filtered>
 		</fileSet>
 		<fileSet>
-			<directory>src</directory>
+			<directory>idea-plugin</directory>
+			<filtered>false</filtered>
+		</fileSet>
+		<fileSet>
+			<directory>idea11-plugin</directory>
+			<filtered>false</filtered>
+		</fileSet>
+		<fileSet>
+			<directory>idea11-stubs</directory>
 			<filtered>false</filtered>
 		</fileSet>
 		<fileSet>
