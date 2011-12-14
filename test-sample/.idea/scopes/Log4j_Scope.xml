@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Log4j Scope" pattern="src[Log Framework Tests]:net.sf.logsupport.log4j..*" />
+</component>

@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Log Support.iml" filepath="$PROJECT_DIR$/Log Support.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idea-plugin/idea-plugin.iml" filepath="$PROJECT_DIR$/idea-plugin/idea-plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idea11-plugin/idea11-plugin.iml" filepath="$PROJECT_DIR$/idea11-plugin/idea11-plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idea11-stubs/idea11-stubs.iml" filepath="$PROJECT_DIR$/idea11-stubs/idea11-stubs.iml" />
     </modules>
   </component>
 </project>
