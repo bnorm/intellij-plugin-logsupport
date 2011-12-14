@@ -165,6 +165,7 @@
 							<descriptors>
 								<descriptor>source-assembly.xml</descriptor>
 							</descriptors>
+							<outputDirectory>${project.basedir}</outputDirectory>
 							<attach>false</attach>
 						</configuration>
 						<goals>

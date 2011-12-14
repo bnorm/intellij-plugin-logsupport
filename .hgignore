@@ -6,6 +6,7 @@ syntax: regexp
 
 # Exclude build targets
 ([\\/]o|^o)ut$
+([\\/]o|^o)utput$
 ([\\/]t|^t)arget$
 
 # Exclude other resources
@@ -13,3 +14,5 @@ syntax: regexp
 \.log.*
 release\.properties$
 \.releaseBackup$
+.*dist\.zip$
+.*workspace\.xml$
