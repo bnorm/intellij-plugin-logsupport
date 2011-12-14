@@ -15,8 +15,7 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -25,7 +24,7 @@
 	<parent>
 		<groupId>net.sf.logsupport</groupId>
 		<artifactId>idea-plugin-project</artifactId>
-		<version>1.0.11-SNAPSHOT</version>
+		<version>1.0.11</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -39,13 +38,13 @@
 		<dependency>
 			<groupId>net.sf.logsupport</groupId>
 			<artifactId>idea11-stubs</artifactId>
-			<version>1.0.11-SNAPSHOT</version>
+			<version>1.0.11</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.logsupport</groupId>
 			<artifactId>idea-plugin</artifactId>
-			<version>1.0.11-SNAPSHOT</version>
+			<version>1.0.11</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
@@ -78,30 +77,25 @@
 						<phase>process-classes</phase>
 						<configuration>
 							<tasks>
-								<mkdir dir="${project.build.outputDirectory}"/>
+								<mkdir dir="${project.build.outputDirectory}" />
 								<copy todir="${project.build.outputDirectory}">
 									<fileset dir="${project.basedir}/../idea-plugin/target/classes">
-										<exclude name="**/AbstractMacroBase.*"/>
+										<exclude name="**/AbstractMacroBase.*" />
 									</fileset>
 								</copy>
 
-								<replace file="${project.build.outputDirectory}/META-INF/plugin.xml"
-								         token="-10_and_older&lt;/version"
-								         value="-11_and_newer&lt;/version"/>
+								<replace file="${project.build.outputDirectory}/META-INF/plugin.xml" token="-10_and_older&lt;/version" value="-11_and_newer&lt;/version" />
 
-								<replace file="${project.build.outputDirectory}/META-INF/plugin.xml"
-								         token='since-build="8000" until-build="107.999"'
-								         value='since-build="111.69"'/>
+								<replace file="${project.build.outputDirectory}/META-INF/plugin.xml" token="since-build=&quot;8000&quot; until-build=&quot;107.999&quot;" value="since-build=&quot;111.69&quot;" />
 
 								<path id="compile.classpath">
-									<fileset dir="${idea.home}/lib" includes="*.jar"/>
-									<fileset dir="${idea.home}/plugins/Groovy/lib" includes="*.jar"/>
+									<fileset dir="${idea.home}/lib" includes="*.jar" />
+									<fileset dir="${idea.home}/plugins/Groovy/lib" includes="*.jar" />
 								</path>
 
-								<taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="compile.classpath"/>
+								<taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="compile.classpath" />
 
-								<javac2 srcdir="${project.build.sourceDirectory}" destdir="${project.build.outputDirectory}"
-								        source="1.5" target="1.5" includes="**/*.form" classpathref="compile.classpath"/>
+								<javac2 srcdir="${project.build.sourceDirectory}" destdir="${project.build.outputDirectory}" source="1.5" target="1.5" includes="**/*.form" classpathref="compile.classpath" />
 							</tasks>
 						</configuration>
 						<goals>
